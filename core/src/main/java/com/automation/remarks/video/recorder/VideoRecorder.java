@@ -1,5 +1,6 @@
 package com.automation.remarks.video.recorder;
 
+import com.automation.remarks.video.VideoConfiguration;
 import org.aeonbits.owner.ConfigFactory;
 
 import java.io.File;
