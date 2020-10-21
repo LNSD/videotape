@@ -1,4 +1,4 @@
-package com.automation.remarks.video.recorder;
+package com.automation.remarks.video;
 
 import com.automation.remarks.video.SystemUtils;
 import com.automation.remarks.video.enums.RecorderType;
