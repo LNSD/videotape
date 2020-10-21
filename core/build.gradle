@@ -23,3 +23,7 @@ jar{
                 .collect { it.isDirectory() ? it : zipTree(it)}
     }
 }
+
+clean {
+    delete "${projectDir}/video"
+}
