@@ -1,17 +1,17 @@
 dependencies {
-    compile project(':core')
-    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.7'
-    compile group: 'org.testng', name: 'testng', version: '6.9.9'
-    compile group: 'org.json', name: 'json', version: '20180813'
-    testCompile group: 'org.mockito', name: 'mockito-core', version: '2.25.1', transitive: false
+  implementation project(':core')
+  implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.7'
+  implementation group: 'org.testng', name: 'testng', version: '6.9.9'
+  implementation group: 'org.json', name: 'json', version: '20180813'
 
-    testCompile project(':remote')
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    testCompile group: 'com.codeborne', name: 'selenide', version: '4.14.2'
-    testCompile group: 'com.google.inject', name: 'guice', version: '4.2.2'
-    testCompile group: 'io.github.bonigarcia', name: 'webdrivermanager', version: '3.3.0'
+  testImplementation project(':remote')
+  testImplementation group: 'org.mockito', name: 'mockito-core', version: '2.25.1', transitive: false
+  testImplementation group: 'junit', name: 'junit', version: '4.12'
+  testImplementation group: 'com.codeborne', name: 'selenide', version: '4.14.2'
+  testImplementation group: 'com.google.inject', name: 'guice', version: '4.2.2'
+  testImplementation group: 'io.github.bonigarcia', name: 'webdrivermanager', version: '3.3.0'
 }
 
-test{
-    useTestNG()
+test {
+  useTestNG()
 }

@@ -1,9 +1,9 @@
 dependencies {
-  compile project(':core')
-  compile group: 'junit', name: 'junit', version: '4.12'
+  implementation project(':core')
+  implementation group: 'junit', name: 'junit', version: '4.12'
 
-  testCompile group: 'org.mockito', name: 'mockito-core', version: '2.25.1', transitive: false
-  testRuntime group: 'net.bytebuddy', name: 'byte-buddy', version: '1.9.11'
+  testImplementation group: 'org.mockito', name: 'mockito-core', version: '2.25.1', transitive: false
+  testRuntimeOnly group: 'net.bytebuddy', name: 'byte-buddy', version: '1.9.11'
 }
 
 test {
