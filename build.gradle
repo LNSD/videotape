@@ -1,6 +1,7 @@
 plugins {
   id 'idea'
-  id 'com.bmuschko.nexus' version '2.3.1' apply false
+  id 'com.bmuschko.nexus' version '2.3.1'
+  id 'com.adarshr.test-logger' version '2.1.1'
 }
 
 subprojects {
@@ -8,6 +9,7 @@ subprojects {
   apply plugin: 'maven'
   apply plugin: 'com.bmuschko.nexus'
   apply plugin: 'signing'
+  apply plugin: 'com.adarshr.test-logger'
 
   archivesBaseName = baseArchiveName + '-' + project.name
 
@@ -62,11 +64,10 @@ subprojects {
   nexus {
     sign = true
   }
+}
 
-  test {
-    testLogging {
-      events "passed", "skipped", "failed"
-      exceptionFormat = 'full'
-    }
-  }
+testlogger {
+  theme 'mocha'
+  slowThreshold 5000
+  showFullStackTraces true
 }
