@@ -1,4 +1,7 @@
 dependencies {
+  implementation 'org.projectlombok:lombok:1.18.16'
+  annotationProcessor 'org.projectlombok:lombok:1.18.16'
+
   implementation project(':core')
   implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.7'
   implementation group: 'org.testng', name: 'testng', version: '6.9.9'
