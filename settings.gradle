@@ -1,3 +1,4 @@
+rootProject.name = 'video-recorder-java'
 include 'core'
 include 'testng'
 include 'junit'
