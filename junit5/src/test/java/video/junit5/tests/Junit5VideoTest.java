@@ -3,7 +3,6 @@ package video.junit5.tests;
 import com.automation.remarks.junit5.Video;
 import com.automation.remarks.junit5.VideoExtension;
 import com.automation.remarks.video.recorder.monte.MonteRecorder;
-import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Optional;
@@ -24,7 +23,7 @@ public class Junit5VideoTest extends BaseTest {
 
   @BeforeEach
   public void setUp() throws IOException {
-    FileUtils.deleteDirectory(new File(MonteRecorder.conf().folder()));
+    FileUtils.deleteDirectory(MonteRecorder.conf().folder());
   }
 
   @Video

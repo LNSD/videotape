@@ -4,10 +4,9 @@ import com.automation.remarks.testng.VideoListener;
 import com.automation.remarks.video.enums.RecorderType;
 import com.automation.remarks.video.enums.RecordingMode;
 import com.automation.remarks.video.recorder.monte.MonteRecorder;
-import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
+import java.util.Collections;
 import org.apache.commons.io.FileUtils;
 import org.testng.IClass;
 import org.testng.ITestContext;
@@ -35,7 +34,7 @@ public class BaseTest {
   }
 
   private static void deleteVideoDir() throws IOException {
-    FileUtils.deleteDirectory(new File(MonteRecorder.conf().folder()));
+    FileUtils.deleteDirectory(MonteRecorder.conf().folder());
   }
 
   @BeforeMethod
@@ -64,7 +63,7 @@ public class BaseTest {
     XmlTest xmlTest = new XmlTest();
     XmlSuite suite = new XmlSuite();
     xmlTest.setXmlSuite(suite);
-    suite.setListeners(Arrays.asList(VideoListener.class.getName()));
+    suite.setListeners(Collections.singletonList(VideoListener.class.getName()));
     when(context.getCurrentXmlTest()).thenReturn(xmlTest);
     return result;
   }

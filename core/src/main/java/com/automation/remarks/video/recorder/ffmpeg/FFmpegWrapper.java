@@ -29,7 +29,7 @@ public class FFmpegWrapper {
   private File temporaryFile;
 
   public void startFFmpeg(String... args) {
-    File videoFolder = new File(conf().folder());
+    File videoFolder = conf().folder();
     if (!videoFolder.exists()) {
       videoFolder.mkdirs();
     }
@@ -82,9 +82,9 @@ public class FFmpegWrapper {
   }
 
   private File getFile(final String filename) {
-    File movieFolder = new File(conf().folder());
+    File outputFolder = conf().folder();
     final String name = filename + "_recording_" + DateUtils.formatDate(new Date(), "yyyy_dd_MM_HH_mm_ss");
-    return new File(movieFolder + File.separator + name + EXTENSION);
+    return new File(outputFolder, name + EXTENSION);
   }
 
   private String getScreenSize() {

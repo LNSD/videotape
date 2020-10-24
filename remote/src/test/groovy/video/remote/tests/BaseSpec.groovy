@@ -24,7 +24,7 @@ abstract class BaseSpec extends Specification {
   }
 
   def getVideoFiles() {
-    new File(MonteRecorder.conf().folder()).listFiles()
+    MonteRecorder.conf().folder().listFiles()
   }
 
 }

@@ -93,7 +93,7 @@ public class MonteRecorder extends VideoRecorder {
         .setRectangle(captureSize)
         .setFileFormat(fileFormat)
         .setScreenFormat(screenFormat)
-        .setFolder(new File(videoConfiguration.folder()))
+        .setFolder(videoConfiguration.folder())
         .setMouseFormat(mouseFormat).build();
   }
 }

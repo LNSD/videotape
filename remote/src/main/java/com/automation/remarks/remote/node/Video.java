@@ -30,7 +30,7 @@ public class Video extends HttpServlet {
 
   private void process(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     String path = req.getPathInfo();
-    MonteRecorder.conf().folder();
+
     try {
       switch (path) {
         case "/start":
@@ -54,7 +54,7 @@ public class Video extends HttpServlet {
           break;
         default:
           updateResponse(resp, HttpStatus.SC_NOT_FOUND,
-              "Wrong Action! Method doesn't support");
+              "Wrong Action! Method not supported");
       }
     } catch (Exception ex) {
       updateResponse(resp, HttpStatus.SC_INTERNAL_SERVER_ERROR,

@@ -6,6 +6,7 @@ import com.automation.remarks.video.enums.RecordingMode
 import com.automation.remarks.video.enums.VideoSaveMode
 import com.automation.remarks.video.recorder.VideoRecorder
 import spock.lang.Unroll
+import spock.util.environment.RestoreSystemProperties
 
 /**
  * Created by sergey on 09.10.16.
@@ -13,14 +14,16 @@ import spock.lang.Unroll
 @Unroll
 class VideoConfigurationTest extends BaseSpec {
 
+  @RestoreSystemProperties
   def "default config should be loaded"() {
     given:
+    System.setProperty('user.dir', '.')
 
     when:
     def conf = VideoRecorder.conf()
 
     then:
-    conf.folder() == System.getProperty("user.dir") + "/video"
+    conf.folder() == new File("./video")
     conf.frameRate() == 24
     conf.mode() == RecordingMode.ANNOTATED
     conf.recorderType() == RecorderType.MONTE

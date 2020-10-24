@@ -4,6 +4,7 @@ import com.automation.remarks.video.enums.RecorderType;
 import com.automation.remarks.video.enums.RecordingMode;
 import com.automation.remarks.video.enums.VideoSaveMode;
 import java.awt.*;
+import java.io.File;
 import org.aeonbits.owner.Config;
 import org.aeonbits.owner.Config.LoadPolicy;
 import org.aeonbits.owner.Config.LoadType;
@@ -22,7 +23,7 @@ public interface VideoConfiguration extends Config {
 
   @Key("video.folder")
   @DefaultValue("${user.dir}/video")
-  String folder();
+  File folder();
 
   @Key("video.enabled")
   @DefaultValue("true")
