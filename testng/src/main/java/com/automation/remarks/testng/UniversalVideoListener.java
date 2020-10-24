@@ -1,9 +1,8 @@
 package com.automation.remarks.testng;
 
 import com.automation.remarks.video.recorder.VideoRecorder;
-import org.testng.ITestResult;
-
 import java.util.List;
+import org.testng.ITestResult;
 
 import static com.automation.remarks.testng.utils.ListenerUtils.getFileName;
 import static com.automation.remarks.testng.utils.MethodUtils.getVideoAnnotation;

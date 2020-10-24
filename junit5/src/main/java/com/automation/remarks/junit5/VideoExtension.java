@@ -3,14 +3,13 @@ package com.automation.remarks.junit5;
 import com.automation.remarks.video.RecorderFactory;
 import com.automation.remarks.video.recorder.IVideoRecorder;
 import com.automation.remarks.video.recorder.VideoRecorder;
+import java.io.File;
+import java.lang.reflect.Method;
+import java.util.Optional;
 import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
 import org.junit.jupiter.api.extension.BeforeTestExecutionCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.platform.commons.util.AnnotationUtils;
-
-import java.io.File;
-import java.lang.reflect.Method;
-import java.util.Optional;
 
 import static com.automation.remarks.video.RecordingUtils.doVideoProcessing;
 import static com.automation.remarks.video.RecordingUtils.videoEnabled;
@@ -21,6 +20,14 @@ import static com.automation.remarks.video.RecordingUtils.videoEnabled;
 public class VideoExtension implements BeforeTestExecutionCallback, AfterTestExecutionCallback {
 
   private IVideoRecorder recorder;
+
+  private static String getVideoFileName(Video annotation, String methodName) {
+    if (annotation == null) {
+      return methodName;
+    }
+    String name = annotation.name();
+    return name.length() > 1 ? name : methodName;
+  }
 
   @Override
   public void beforeTestExecution(ExtensionContext context) throws Exception {
@@ -39,18 +46,14 @@ public class VideoExtension implements BeforeTestExecutionCallback, AfterTestExe
 
     String fileName = getFileName(context.getTestMethod().get());
     File video = stopRecording(fileName);
-    if (context.getExecutionException().isPresent()) {
-      doVideoProcessing(false, video);
-    } else {
-      doVideoProcessing(true, video);
-    }
+    doVideoProcessing(!context.getExecutionException().isPresent(), video);
   }
 
   private boolean videoDisabled(Method testMethod) {
     Optional<com.automation.remarks.video.annotations.Video> video = AnnotationUtils.findAnnotation(testMethod, com.automation.remarks.video.annotations.Video.class);
 
     return video.map(v -> !videoEnabled(v))
-            .orElseGet(() -> true);
+        .orElseGet(() -> true);
 
     //return !video.isPresent() && !videoEnabled(video.get());
   }
@@ -59,14 +62,6 @@ public class VideoExtension implements BeforeTestExecutionCallback, AfterTestExe
     String methodName = testMethod.getName();
     Video video = testMethod.getAnnotation(Video.class);
     return getVideoFileName(video, methodName);
-  }
-
-  private static String getVideoFileName(Video annotation, String methodName) {
-    if (annotation == null) {
-      return methodName;
-    }
-    String name = annotation.name();
-    return name.length() > 1 ? name : methodName;
   }
 
   private File stopRecording(String filename) {

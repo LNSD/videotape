@@ -6,22 +6,36 @@ import com.automation.remarks.video.recorder.ffmpeg.LinuxFFmpegRecorder;
 import com.automation.remarks.video.recorder.ffmpeg.MacFFmpegRecorder;
 import com.automation.remarks.video.recorder.ffmpeg.WindowsFFmpegRecorder;
 import com.automation.remarks.video.recorder.monte.MonteRecorder;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.SystemUtils;
 
 /**
  * Created by sepi on 19.07.16.
  */
+@Slf4j
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RecorderFactory {
 
     public static IVideoRecorder getRecorder(RecorderType recorderType) {
-        if (recorderType.equals(RecorderType.FFMPEG)) {
+
+        if (recorderType == RecorderType.FFMPEG) {
             if (SystemUtils.IS_OS_WINDOWS) {
                 return new WindowsFFmpegRecorder();
-            } else if (SystemUtils.IS_OS_MAC) {
+            }
+            if (SystemUtils.IS_OS_MAC) {
                 return new MacFFmpegRecorder();
             }
-            return new LinuxFFmpegRecorder();
+            if (SystemUtils.IS_OS_LINUX) {
+                return new LinuxFFmpegRecorder();
+            }
+
+            String os = System.getProperty("os.name", "unknown");
+            throw new NotImplementedException(String.format("OS '%s' not supported", os));
         }
+
         return new MonteRecorder();
     }
 }

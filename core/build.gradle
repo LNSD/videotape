@@ -27,5 +27,5 @@ processResources {
 }
 
 clean {
-    delete "${projectDir}/video"
+  delete "${projectDir}/video"
 }

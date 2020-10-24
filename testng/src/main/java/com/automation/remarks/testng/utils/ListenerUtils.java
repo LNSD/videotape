@@ -11,9 +11,9 @@ import static com.automation.remarks.testng.utils.MethodUtils.getVideoAnnotation
  */
 public class ListenerUtils {
 
-    public static String getFileName(ITestResult result) {
-        String methodName = result.getMethod().getMethodName();
-        Video video = getVideoAnnotation(result);
-        return RecordingUtils.getVideoFileName(video,methodName);
-    }
+  public static String getFileName(ITestResult result) {
+    String methodName = result.getMethod().getMethodName();
+    Video video = getVideoAnnotation(result);
+    return RecordingUtils.getVideoFileName(video, methodName);
+  }
 }

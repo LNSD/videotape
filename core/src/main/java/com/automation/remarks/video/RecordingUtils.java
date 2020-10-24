@@ -4,7 +4,6 @@ import com.automation.remarks.video.annotations.Video;
 import com.automation.remarks.video.enums.RecordingMode;
 import com.automation.remarks.video.enums.VideoSaveMode;
 import com.automation.remarks.video.recorder.VideoRecorder;
-
 import java.io.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

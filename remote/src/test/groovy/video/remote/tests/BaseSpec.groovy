@@ -11,20 +11,20 @@ import static java.lang.Thread.sleep
  */
 abstract class BaseSpec extends Specification {
 
-    final String NODE_SERVLET_URL = "http://localhost:5555/extra/Video"
+  final String NODE_SERVLET_URL = "http://localhost:5555/extra/Video"
 
-    def setupSpec() {
-        runGrid()
-    }
+  def setupSpec() {
+    runGrid()
+  }
 
-    def runGrid() {
-        String[] args = []
-        StartGrid.main(args)
-        sleep(1000)
-    }
+  def runGrid() {
+    String[] args = []
+    StartGrid.main(args)
+    sleep(1000)
+  }
 
-    def getVideoFiles(){
-        new File(MonteRecorder.conf().folder()).listFiles()
-    }
+  def getVideoFiles() {
+    new File(MonteRecorder.conf().folder()).listFiles()
+  }
 
 }

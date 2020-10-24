@@ -13,21 +13,21 @@ import spock.lang.Unroll
 @Unroll
 class VideoConfigurationTest extends BaseSpec {
 
-    def "default config should be loaded"() {
-        given:
+  def "default config should be loaded"() {
+    given:
 
-        when:
-        def conf = VideoRecorder.conf()
+    when:
+    def conf = VideoRecorder.conf()
 
-        then:
-        conf.folder() == System.getProperty("user.dir") + "/video"
-        conf.frameRate() == 24
-        conf.mode() == RecordingMode.ANNOTATED
-        conf.recorderType() == RecorderType.MONTE
-        conf.saveMode() == VideoSaveMode.FAILED_ONLY
-        conf.videoEnabled()
-        conf.screenSize() == SystemUtils.systemScreenDimension
-        !conf.isRemote()
-        conf.fileName() == null
-    }
+    then:
+    conf.folder() == System.getProperty("user.dir") + "/video"
+    conf.frameRate() == 24
+    conf.mode() == RecordingMode.ANNOTATED
+    conf.recorderType() == RecorderType.MONTE
+    conf.saveMode() == VideoSaveMode.FAILED_ONLY
+    conf.videoEnabled()
+    conf.screenSize() == SystemUtils.systemScreenDimension
+    !conf.isRemote()
+    conf.fileName() == null
+  }
 }
