@@ -4,6 +4,10 @@ import com.automation.remarks.testng.VideoListener;
 import com.automation.remarks.video.enums.RecorderType;
 import com.automation.remarks.video.enums.RecordingMode;
 import com.automation.remarks.video.recorder.monte.MonteRecorder;
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.util.Arrays;
 import org.apache.commons.io.FileUtils;
 import org.testng.IClass;
 import org.testng.ITestContext;
@@ -15,11 +19,6 @@ import org.testng.internal.ConstructorOrMethod;
 import org.testng.xml.XmlSuite;
 import org.testng.xml.XmlTest;
 
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -30,14 +29,6 @@ public class BaseTest {
 
   protected Method testMethod;
 
-  @BeforeMethod
-  public void beforeMethod(Method method) throws IOException {
-    this.testMethod = method;
-    deleteVideoDir();
-    System.setProperty("video.mode", RecordingMode.ANNOTATED.toString());
-    System.setProperty("recorder.type", RecorderType.MONTE.toString());
-  }
-
   @AfterClass
   public static void tearDown() throws Exception {
     // deleteVideoDir();
@@ -45,6 +36,14 @@ public class BaseTest {
 
   private static void deleteVideoDir() throws IOException {
     FileUtils.deleteDirectory(new File(MonteRecorder.conf().folder()));
+  }
+
+  @BeforeMethod
+  public void beforeMethod(Method method) throws IOException {
+    this.testMethod = method;
+    deleteVideoDir();
+    System.setProperty("video.mode", RecordingMode.ANNOTATED.toString());
+    System.setProperty("video.recorder.type", RecorderType.MONTE.toString());
   }
 
   protected ITestResult prepareMock(Class<?> tClass, Method method) {

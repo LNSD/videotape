@@ -3,13 +3,14 @@ package com.automation.remarks.testng.test;
 import com.automation.remarks.testng.VideoListener;
 import com.automation.remarks.video.annotations.Video;
 import com.automation.remarks.video.recorder.monte.MonteRecorder;
+import java.io.File;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 import org.testng.annotations.Test;
 
-import java.io.File;
-
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNotEquals;
+import static org.testng.Assert.assertTrue;
 
 /**
  * Created by sergey on 18.06.16.
@@ -105,8 +106,8 @@ public class TestNGVideoListenerTest extends BaseTest {
   @Test
   @Video()
   public void shouldNotBeRecordingForSuccessTestWithFfmpegAndSaveModeFailOnly() throws InterruptedException {
-    System.setProperty("video.save.mode","FAILED_ONLY");
-    System.setProperty("recorder.type","FFMPEG");
+    System.setProperty("video.save.mode", "FAILED_ONLY");
+    System.setProperty("video.recorder.type", "FFMPEG");
 
     ITestResult result = prepareMock(testMethod);
     VideoListener listener = new VideoListener();
@@ -120,8 +121,8 @@ public class TestNGVideoListenerTest extends BaseTest {
   @Test
   @Video()
   public void shouldBeRecordingForFailTestWithFfmpegAndSaveModeFailOnly() throws InterruptedException {
-    System.setProperty("video.save.mode","FAILED_ONLY");
-    System.setProperty("recorder.type","FFMPEG");
+    System.setProperty("video.save.mode", "FAILED_ONLY");
+    System.setProperty("video.recorder.type", "FFMPEG");
 
 
     ITestResult result = prepareMock(testMethod);
@@ -136,8 +137,8 @@ public class TestNGVideoListenerTest extends BaseTest {
   @Test
   @Video()
   public void shouldBeRecordingIfCustomVideoAnnotation() {
-    System.setProperty("video.save.mode","FAILED_ONLY");
-    System.setProperty("recorder.type","FFMPEG");
+    System.setProperty("video.save.mode", "FAILED_ONLY");
+    System.setProperty("video.recorder.type", "FFMPEG");
 
     ITestResult result = prepareMock(TestNgCustomVideoListenerTest.class, testMethod);
     ITestListener listener = new CustomVideoListener();

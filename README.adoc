@@ -151,12 +151,12 @@ Create properties file **video.properties** in classpath:
 video.folder=${user home}/video
 video.enabled=false               // default true
 video.mode=ALL                    // default ANNOTATED
-recorder.type=FFMPEG              // default MONTE
+video.recorder.type=FFMPEG              // default MONTE
 video.save.mode=ALL               // default FAILED_ONLY
 video.frame.rate=1                // default 24
-ffmpeg.format=x11grab             // default value depends on OS platform
-ffmpeg.display=:0.0               // default value depends on OS platform
-ffmpeg.pixelFormat=yuv444p        // default yuv420p (for Apple QuickTime player compatibility)
+video.ffmpeg.format=x11grab             // default value depends on OS platform
+video.ffmpeg.display=:0.0               // default value depends on OS platform
+video.ffmpeg.pixelFormat=yuv444p        // default yuv420p (for Apple QuickTime player compatibility)
 ----
 
 or with maven
@@ -165,12 +165,12 @@ or with maven
  mvn test -Dvideo.folder=custom_folder // default video
           -Dvideo.enabled=false        // default true
           -Dvideo.mode=ALL             // default ANNOTATED
-          -Drecorder.type=FFMPEG       // default MONTE
+          -Dvideo.recorder.type=FFMPEG       // default MONTE
           -Dvideo.save.mode=ALL        // default FAILED_ONLY
           -Dvideo.frame.rate=1         // default 24
           -Dvideo.screen.size=1024x768 // custom screen size
-          -Dffmpeg.display=:1.0+10,20  // custom display configuration for ffmpeg
-          -Dffmpeg.pixelFormat=yuv444p // default yuv420p
+          -Dvideo.ffmpeg.display=:1.0+10,20  // custom display configuration for ffmpeg
+          -Dvideo.ffmpeg.pixelFormat=yuv444p // default yuv420p
 ----
 
 === FFMPEG recorder configuration
@@ -302,7 +302,7 @@ public class IntegrationTest {
         driver = new RemoteWebDriver(hubUrl, DesiredCapabilities.firefox());
         String nodeIp = GridInfoExtractor.getNodeIp(hubUrl, driver.getSessionId().toString());
         System.setProperty("video.remote", "true");
-        System.setProperty("remote.video.hub", nodeIp);
+        System.setProperty("video.remote.hub", nodeIp);
     }
 
     @Test

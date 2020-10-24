@@ -15,7 +15,7 @@ class VideoRecorderTest extends SpockBaseTest {
 
     def "should be video file in folder with #type"() {
         given:
-        System.getProperty("recorder.type", type.toString())
+        System.getProperty("video.recorder.type", type.toString())
 
         when:
         File video = recordVideo()
@@ -28,7 +28,7 @@ class VideoRecorderTest extends SpockBaseTest {
 
     def "should be video in #name folder with #type"() {
         given:
-        System.setProperty("recorder.type", type.toString())
+        System.setProperty("video.recorder.type", type.toString())
         System.setProperty("video.folder", name)
 
         when:
@@ -43,7 +43,7 @@ class VideoRecorderTest extends SpockBaseTest {
 
     def "should be absolute recording path with #type"() {
         given:
-        System.setProperty("recorder.type", type.toString())
+        System.setProperty("video.recorder.type", type.toString())
 
         when:
         File video = recordVideo()
@@ -56,7 +56,7 @@ class VideoRecorderTest extends SpockBaseTest {
 
     def "should be exact video file name for #type"() {
         given:
-        System.setProperty("recorder.type", type.toString())
+        System.setProperty("video.recorder.type", type.toString())
 
         when:
         File video = recordVideo()
@@ -80,8 +80,8 @@ class VideoRecorderTest extends SpockBaseTest {
 
     def "should record video with custom pixel format for #type"() {
         given:
-        System.setProperty("recorder.type", type.toString())
-        System.setProperty("ffmpeg.pixelFormat", "yuv444p")
+        System.setProperty("video.recorder.type", type.toString())
+        System.setProperty("video.ffmpeg.pixelFormat", "yuv444p")
 
         when:
         File video = recordVideo()

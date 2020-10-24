@@ -1,30 +1,28 @@
 package com.automation.remarks.video;
 
-import com.automation.remarks.video.SystemUtils;
 import com.automation.remarks.video.enums.RecorderType;
 import com.automation.remarks.video.enums.RecordingMode;
 import com.automation.remarks.video.enums.VideoSaveMode;
+import java.awt.*;
 import org.aeonbits.owner.Config;
 import org.aeonbits.owner.Config.LoadPolicy;
 import org.aeonbits.owner.Config.LoadType;
 import org.aeonbits.owner.Config.Sources;
 
-import java.awt.*;
-import java.io.File;
-
 /**
  * Created by sergey on 4/13/16.
  */
 @LoadPolicy(LoadType.MERGE)
-@Sources({ "classpath:video.properties",
-           "classpath:ffmpeg-${os.type}.properties" })
+@Sources({
+    "system:properties",
+    "classpath:video.properties",
+    "classpath:ffmpeg-${os.type}.properties"
+})
 public interface VideoConfiguration extends Config {
 
   @Key("video.folder")
-  default String folder() {
-    final String defaultFolder = System.getProperty("user.dir") + File.separator + "video";
-    return System.getProperty("video.folder", defaultFolder);
-  }
+  @DefaultValue("${user.dir}/video")
+  String folder();
 
   @Key("video.enabled")
   @DefaultValue("true")
@@ -34,18 +32,18 @@ public interface VideoConfiguration extends Config {
   @DefaultValue("ANNOTATED")
   RecordingMode mode();
 
+  @Key("video.remote.hub")
   @DefaultValue("http://localhost:4444")
-  @Key("remote.video.hub")
   String remoteUrl();
 
-  @DefaultValue("false")
   @Key("video.remote")
+  @DefaultValue("false")
   Boolean isRemote();
 
   @Key("video.name")
   String fileName();
 
-  @Key("recorder.type")
+  @Key("video.recorder.type")
   @DefaultValue("MONTE")
   RecorderType recorderType();
 
@@ -53,8 +51,8 @@ public interface VideoConfiguration extends Config {
   @DefaultValue("FAILED_ONLY")
   VideoSaveMode saveMode();
 
-  @DefaultValue("24")
   @Key("video.frame.rate")
+  @DefaultValue("24")
   int frameRate();
 
   @Key("video.screen.size")
@@ -62,13 +60,13 @@ public interface VideoConfiguration extends Config {
     return SystemUtils.getSystemScreenDimension();
   }
 
-  @Key("ffmpeg.format")
+  @Key("video.ffmpeg.format")
   String ffmpegFormat();
 
-  @Key("ffmpeg.display")
+  @Key("video.ffmpeg.display")
   String ffmpegDisplay();
 
+  @Key("video.ffmpeg.pixelFormat")
   @DefaultValue("yuv420p")
-  @Key("ffmpeg.pixelFormat")
   String ffmpegPixelFormat();
 }
