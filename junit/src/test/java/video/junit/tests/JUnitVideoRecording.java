@@ -75,7 +75,7 @@ public class JUnitVideoRecording {
 
   @Before
   public void setUp() throws IOException {
-    FileUtils.deleteDirectory(new File(MonteRecorder.conf().folder()));
+    FileUtils.deleteDirectory(MonteRecorder.conf().folder());
   }
 
   @After

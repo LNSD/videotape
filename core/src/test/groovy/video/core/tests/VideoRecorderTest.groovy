@@ -13,82 +13,82 @@ import static com.automation.remarks.video.recorder.VideoRecorder.conf
 @Unroll
 class VideoRecorderTest extends BaseSpec {
 
-    def "should be video file in folder with #type"() {
-        given:
-        System.getProperty("video.recorder.type", type.toString())
+  def "should be video file in folder with #type"() {
+    given:
+    System.getProperty("video.recorder.type", type.toString())
 
-        when:
-        File video = recordVideo()
-        then:
-        video.exists()
+    when:
+    File video = recordVideo()
+    then:
+    video.exists()
 
-        where:
-        type << [RecorderType.FFMPEG, RecorderType.MONTE]
-    }
+    where:
+    type << [RecorderType.FFMPEG, RecorderType.MONTE]
+  }
 
-    def "should be video in #name folder with #type"() {
-        given:
-        System.setProperty("video.recorder.type", type.toString())
-        System.setProperty("video.folder", name)
+  def "should be video in #name folder with #type"() {
+    given:
+    System.setProperty("video.recorder.type", type.toString())
+    System.setProperty("video.folder", name)
 
-        when:
-        File video = recordVideo()
-        then:
-        video.parentFile.name == name
+    when:
+    File video = recordVideo()
+    then:
+    video.parentFile.name == name
 
-        where:
-        name = "video"
-        type << [RecorderType.FFMPEG, RecorderType.MONTE]
-    }
+    where:
+    name = "video"
+    type << [RecorderType.FFMPEG, RecorderType.MONTE]
+  }
 
-    def "should be absolute recording path with #type"() {
-        given:
-        System.setProperty("video.recorder.type", type.toString())
+  def "should be absolute recording path with #type"() {
+    given:
+    System.setProperty("video.recorder.type", type.toString())
 
-        when:
-        File video = recordVideo()
-        then:
-        video.absolutePath.startsWith(new File(conf().folder()).getAbsolutePath() + File.separator + VIDEO_FILE_NAME)
+    when:
+    File video = recordVideo()
+    then:
+    video.absolutePath.startsWith(conf().folder().getAbsolutePath() + File.separator + VIDEO_FILE_NAME)
 
-        where:
-        type << [RecorderType.FFMPEG, RecorderType.MONTE]
-    }
+    where:
+    type << [RecorderType.FFMPEG, RecorderType.MONTE]
+  }
 
-    def "should be exact video file name for #type"() {
-        given:
-        System.setProperty("video.recorder.type", type.toString())
+  def "should be exact video file name for #type"() {
+    given:
+    System.setProperty("video.recorder.type", type.toString())
 
-        when:
-        File video = recordVideo()
-        then:
-        video.exists()
-        video.getName().startsWith(VIDEO_FILE_NAME)
+    when:
+    File video = recordVideo()
+    then:
+    video.exists()
+    video.getName().startsWith(VIDEO_FILE_NAME)
 
-        where:
-        type << [RecorderType.FFMPEG, RecorderType.MONTE]
-    }
+    where:
+    type << [RecorderType.FFMPEG, RecorderType.MONTE]
+  }
 
-    def "should be recording exception for Monte if recording was not started"() {
-        when:
-        new MonteRecorder().stopAndSave(VIDEO_FILE_NAME)
+  def "should be recording exception for Monte if recording was not started"() {
+    when:
+    new MonteRecorder().stopAndSave(VIDEO_FILE_NAME)
 
-        then:
-        RecordingException ex = thrown()
-        // Alternative syntax: def ex = thrown(InvalidDeviceException)
-        ex.message == "Video recording was not started"
-    }
+    then:
+    RecordingException ex = thrown()
+    // Alternative syntax: def ex = thrown(InvalidDeviceException)
+    ex.message == "Video recording was not started"
+  }
 
-    def "should record video with custom pixel format for #type"() {
-        given:
-        System.setProperty("video.recorder.type", type.toString())
-        System.setProperty("video.ffmpeg.pixelFormat", "yuv444p")
+  def "should record video with custom pixel format for #type"() {
+    given:
+    System.setProperty("video.recorder.type", type.toString())
+    System.setProperty("video.ffmpeg.pixelFormat", "yuv444p")
 
-        when:
-        File video = recordVideo()
-        then:
-        video.exists()
+    when:
+    File video = recordVideo()
+    then:
+    video.exists()
 
-        where:
-        type << [RecorderType.FFMPEG, RecorderType.MONTE]
-    }
+    where:
+    type << [RecorderType.FFMPEG, RecorderType.MONTE]
+  }
 }

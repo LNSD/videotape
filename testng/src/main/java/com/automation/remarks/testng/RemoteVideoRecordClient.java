@@ -18,7 +18,7 @@ public class RemoteVideoRecordClient implements IVideoRecordClient {
 
   @Override
   public void start() {
-    String folderUrl = encodeFilePath(new File(VideoRecorder.conf().folder()));
+    String folderUrl = encodeFilePath(VideoRecorder.conf().folder());
     String url = servletUrl + "/start?&folder=" + folderUrl;
     sendRecordingRequest(url);
   }
