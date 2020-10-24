@@ -3,13 +3,14 @@ package com.automation.remarks.video.recorder.monte;
 import com.automation.remarks.video.exception.RecordingException;
 import com.automation.remarks.video.recorder.VideoConfiguration;
 import com.automation.remarks.video.recorder.VideoRecorder;
-import org.apache.log4j.Logger;
 import org.monte.media.Format;
 import org.monte.media.FormatKeys;
 import org.monte.media.math.Rational;
 
 import java.awt.*;
 import java.io.File;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.monte.media.FormatKeys.EncodingKey;
 import static org.monte.media.FormatKeys.FrameRateKey;
@@ -24,7 +25,7 @@ import static org.monte.media.VideoFormatKeys.*;
  */
 public class MonteRecorder extends VideoRecorder {
 
-    private static final Logger log = org.apache.log4j.Logger.getLogger(MonteRecorder.class);
+    private static final Logger log = LoggerFactory.getLogger(MonteRecorder.class);
 
     private MonteScreenRecorder screenRecorder;
     private VideoConfiguration videoConfiguration;

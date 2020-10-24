@@ -4,9 +4,10 @@ import com.automation.remarks.video.annotations.Video;
 import com.automation.remarks.video.enums.RecordingMode;
 import com.automation.remarks.video.enums.VideoSaveMode;
 import com.automation.remarks.video.recorder.VideoRecorder;
-import org.apache.log4j.Logger;
 
 import java.io.File;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
@@ -15,7 +16,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
  */
 public class RecordingUtils {
 
-  private static final Logger logger = Logger.getLogger(RecordingUtils.class);
+  private static final Logger logger = LoggerFactory.getLogger(RecordingUtils.class);
 
   private RecordingUtils() {
   }

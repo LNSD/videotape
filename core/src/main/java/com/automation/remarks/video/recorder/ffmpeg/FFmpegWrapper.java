@@ -2,7 +2,6 @@ package com.automation.remarks.video.recorder.ffmpeg;
 
 import com.automation.remarks.video.DateUtils;
 import org.apache.commons.lang3.SystemUtils;
-import org.apache.log4j.Logger;
 
 import java.awt.*;
 import java.io.File;
@@ -11,6 +10,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static com.automation.remarks.video.SystemUtils.*;
 import static com.automation.remarks.video.recorder.VideoRecorder.conf;
@@ -20,7 +21,7 @@ import static com.automation.remarks.video.recorder.VideoRecorder.conf;
  */
 public class FFmpegWrapper {
 
-    private static final Logger log = org.apache.log4j.Logger.getLogger(FFMpegRecorder.class);
+    private static final Logger log = LoggerFactory.getLogger(FFMpegRecorder.class);
 
     public static final String RECORDING_TOOL = "ffmpeg";
     private static final String TEM_FILE_NAME = "temporary";

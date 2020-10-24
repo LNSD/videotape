@@ -3,7 +3,8 @@ package com.automation.remarks.video;
 import com.automation.remarks.video.enums.OsType;
 import com.automation.remarks.video.exception.RecordingException;
 import com.automation.remarks.video.recorder.ffmpeg.FFMpegRecorder;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.zeroturnaround.exec.ProcessExecutor;
 
 import java.awt.*;
@@ -20,7 +21,7 @@ import static org.apache.commons.lang3.SystemUtils.IS_OS_WINDOWS;
  */
 public class SystemUtils {
 
-    private static final Logger log = org.apache.log4j.Logger.getLogger(FFMpegRecorder.class);
+    private static final Logger log = LoggerFactory.getLogger(FFMpegRecorder.class);
 
     public static String runCommand(final List<String> args) {
         log.info("Trying to execute the following command: " + args);

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+  <Appenders>
+    <Console name="CA" target="SYSTEM_OUT">
+      <PatternLayout pattern="%-4r [%t] %-5p %c %x - %m%n"/>
+    </Console>
+    <File name="FA" fileName="build/test-results/ffmpeg.log" append="false">
+      <PatternLayout pattern="[%-5p] %d %c - %m%n"/>
+    </File>
+  </Appenders>
+  <Loggers>
+    <Logger name="com.automation.remarks.video.recorder" level="debug"/>
+    <Root level="info">
+      <AppenderRef ref="CA"/>
+      <AppenderRef ref="FA"/>
+    </Root>
+  </Loggers>
+</Configuration>
