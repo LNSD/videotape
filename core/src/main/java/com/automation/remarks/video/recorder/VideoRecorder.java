@@ -12,18 +12,13 @@ import org.aeonbits.owner.ConfigFactory;
  * Created by sepi on 19.07.16.
  */
 public abstract class VideoRecorder implements IVideoRecorder {
+
+  @Getter
+  @Setter
   private static File lastVideo;
 
   public static VideoConfiguration conf() {
     ConfigFactory.setProperty("os.type", OperatingSystem.getOS());
     return ConfigFactory.create(VideoConfiguration.class);
-  }
-
-  public static File getLastRecording() {
-    return lastVideo;
-  }
-
-  protected void setLastVideo(File video) {
-    lastVideo = video;
   }
 }

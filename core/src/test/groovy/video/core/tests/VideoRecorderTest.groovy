@@ -75,7 +75,7 @@ class VideoRecorderTest extends BaseSpec {
         then:
         RecordingException ex = thrown()
         // Alternative syntax: def ex = thrown(InvalidDeviceException)
-        ex.message == "Video recording wasn't started"
+        ex.message == "Video recording was not started"
     }
 
     def "should record video with custom pixel format for #type"() {
