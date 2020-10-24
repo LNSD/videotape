@@ -1,7 +1,32 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2020 Lorenzo Delgado
+ * Copyright (c) 2016 Serhii Pirohov
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ */
+
 plugins {
   id 'idea'
   id 'java'
-  id 'com.bmuschko.nexus' version '2.3.1'
   id 'com.adarshr.test-logger' version '2.1.1'
 }
 
@@ -14,54 +39,11 @@ allprojects {
 
 subprojects {
   apply plugin: 'java-library'
-  apply plugin: 'maven'
-  apply plugin: 'com.bmuschko.nexus'
-  apply plugin: 'signing'
   apply plugin: 'com.adarshr.test-logger'
 
   archivesBaseName = baseArchiveName + '-' + project.name
 
   sourceCompatibility = 1.8
-
-  modifyPom {
-    project {
-      name 'com.automation.remarks.video-recorder'
-      packaging 'jar'
-      description 'Video Recorder is a library that allows to record selenium tests'
-      url 'https://github.com/SergeyPirogov/VideoRecorder'
-
-      scm {
-        url 'scm:git@github.com:SergeyPirogov/VideoRecorder.git'
-        connection 'scm:git@github.com:SergeyPirogov/VideoRecorder.git'
-        developerConnection 'scm:git@github.com:SergeyPirogov/VideoRecorder.git'
-      }
-
-      licenses {
-        license {
-          name 'The Apache Software License, Version 2.0'
-          url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-          distribution 'repo'
-        }
-      }
-
-      developers {
-        developer {
-          id 'SerhiiP'
-          name 'Sergey Pirogov'
-        }
-      }
-    }
-  }
-
-  extraArchive {
-    sources = true
-    tests = false
-    javadoc = true
-  }
-
-  nexus {
-    sign = true
-  }
 
   test {
     // Disable the test report for the individual test task
