@@ -59,7 +59,7 @@ public class TestNGRemoteListenerTest extends BaseTest {
     RemoteVideoListener listener = new RemoteVideoListener();
     listener.onTestStart(result);
     listener.onTestFailure(result);
-    File file = MonteRecorder.getLastRecording();
+    File file = MonteRecorder.getLastVideo();
     assertTrue(file.exists());
   }
 
@@ -70,7 +70,7 @@ public class TestNGRemoteListenerTest extends BaseTest {
     RemoteVideoListener listener = new RemoteVideoListener();
     listener.onTestStart(result);
     listener.onTestSuccess(result);
-    File file = MonteRecorder.getLastRecording();
+    File file = MonteRecorder.getLastVideo();
     assertFalse(file.exists());
   }
 
@@ -81,7 +81,7 @@ public class TestNGRemoteListenerTest extends BaseTest {
     RemoteVideoListener listener = new RemoteVideoListener();
     listener.onTestStart(result);
     listener.onTestFailure(result);
-    File file = MonteRecorder.getLastRecording();
+    File file = MonteRecorder.getLastVideo();
     assertTrue(file.exists(), "File " + file.getName());
     assertThat(file.getName(), startsWith("custom_name"));
   }
@@ -96,7 +96,7 @@ public class TestNGRemoteListenerTest extends BaseTest {
     RemoteVideoListener listener = new RemoteVideoListener();
     listener.onTestStart(result);
     listener.onTestFailure(result);
-    File file = MonteRecorder.getLastRecording();
+    File file = MonteRecorder.getLastVideo();
     assertTrue(file.exists(), "File " + file.getName());
     assertThat(file.getName(), startsWith("shouldPassIfGridConfiguredWithCustomPorts"));
   }
@@ -108,7 +108,7 @@ public class TestNGRemoteListenerTest extends BaseTest {
     RemoteVideoListener listener = new RemoteVideoListener();
     listener.onTestStart(result);
     listener.onTestFailure(result);
-    File file = MonteRecorder.getLastRecording();
+    File file = MonteRecorder.getLastVideo();
     assertTrue(file.exists(), "File " + file.getName());
   }
 
@@ -119,7 +119,7 @@ public class TestNGRemoteListenerTest extends BaseTest {
     RemoteVideoListener listener = new RemoteVideoListener();
     listener.onTestStart(result);
     listener.onTestFailure(result);
-    File file = MonteRecorder.getLastRecording();
+    File file = MonteRecorder.getLastVideo();
     assertThat(file.getParentFile().getName(), equalTo("video"));
   }
 
@@ -131,7 +131,7 @@ public class TestNGRemoteListenerTest extends BaseTest {
     RemoteVideoListener listener = new RemoteVideoListener();
     listener.onTestStart(result);
     listener.onTestFailure(result);
-    File file = MonteRecorder.getLastRecording();
+    File file = MonteRecorder.getLastVideo();
     assertThat(file.getParentFile().getName(), equalTo("custom_folder"));
   }
 }

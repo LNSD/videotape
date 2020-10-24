@@ -5,11 +5,10 @@ import com.automation.remarks.video.exception.RecordingException;
 import com.automation.remarks.video.recorder.VideoRecorder;
 import java.awt.*;
 import java.io.File;
+import lombok.extern.slf4j.Slf4j;
 import org.monte.media.Format;
 import org.monte.media.FormatKeys;
 import org.monte.media.math.Rational;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static org.monte.media.FormatKeys.EncodingKey;
 import static org.monte.media.FormatKeys.FrameRateKey;
@@ -25,70 +24,76 @@ import static org.monte.media.VideoFormatKeys.QualityKey;
 /**
  * Created by sergey on 13.04.16.
  */
+@Slf4j
 public class MonteRecorder extends VideoRecorder {
 
-    private static final Logger log = LoggerFactory.getLogger(MonteRecorder.class);
+  private final MonteScreenRecorder screenRecorder;
+  private final VideoConfiguration videoConfiguration;
 
-    private final MonteScreenRecorder screenRecorder;
-    private final VideoConfiguration videoConfiguration;
+  public MonteRecorder() {
+    this.videoConfiguration = conf();
+    this.screenRecorder = getScreenRecorder();
+  }
 
-    public MonteRecorder() {
-        this.videoConfiguration = conf();
-        this.screenRecorder = getScreenRecorder();
+  public void start() {
+    screenRecorder.start();
+    log.info("Recording started");
+  }
+
+  public File stopAndSave(String filename) {
+    File video = writeVideo(filename);
+    setLastVideo(video);
+    log.info("Recording finished to {}", video.getAbsolutePath());
+    return video;
+  }
+
+  private File writeVideo(String filename) {
+    try {
+      return screenRecorder.saveAs(filename);
+    } catch (IndexOutOfBoundsException ex) {
+      throw new RecordingException("Video recording was not started");
     }
+  }
 
-    public void start() {
-        screenRecorder.start();
-        log.info("Recording started");
-    }
+  private GraphicsConfiguration getGraphicConfig() {
+    return GraphicsEnvironment
+        .getLocalGraphicsEnvironment()
+        .getDefaultScreenDevice()
+        .getDefaultConfiguration();
+  }
 
-    public File stopAndSave(String filename) {
-        File video = writeVideo(filename);
-        setLastVideo(video);
-        log.info("Recording finished to " + video.getAbsolutePath());
-        return video;
-    }
+  private MonteScreenRecorder getScreenRecorder() {
+    int frameRate = videoConfiguration.frameRate();
 
-    private File writeVideo(String filename) {
-        try {
-            return screenRecorder.saveAs(filename);
-        } catch (IndexOutOfBoundsException ex) {
-            throw new RecordingException("Video recording wasn't started");
-        }
-    }
+    Format fileFormat = new Format(
+        MediaTypeKey, MediaType.VIDEO,
+        MimeTypeKey, FormatKeys.MIME_AVI
+    );
+    Format screenFormat = new Format(
+        MediaTypeKey, MediaType.VIDEO,
+        EncodingKey, ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE,
+        CompressorNameKey, ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE,
+        DepthKey, 24,
+        FrameRateKey, Rational.valueOf(frameRate),
+        QualityKey, 1.0f,
+        KeyFrameIntervalKey, 15 * 60
+    );
+    Format mouseFormat = new Format(
+        MediaTypeKey, MediaType.VIDEO,
+        EncodingKey, "black",
+        FrameRateKey, Rational.valueOf(frameRate)
+    );
 
-    private GraphicsConfiguration getGraphicConfig() {
-        return GraphicsEnvironment
-            .getLocalGraphicsEnvironment().getDefaultScreenDevice()
-            .getDefaultConfiguration();
-    }
+    Dimension screenSize = videoConfiguration.screenSize();
+    Rectangle captureSize = new Rectangle(0, 0, screenSize.width, screenSize.height);
 
-    private MonteScreenRecorder getScreenRecorder() {
-        int frameRate = videoConfiguration.frameRate();
-
-        Format fileFormat = new Format(MediaTypeKey, MediaType.VIDEO, MimeTypeKey, FormatKeys.MIME_AVI);
-        Format screenFormat = new Format(MediaTypeKey, MediaType.VIDEO, EncodingKey,
-            ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE,
-            CompressorNameKey, ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE,
-            DepthKey, 24, FrameRateKey, Rational.valueOf(frameRate),
-            QualityKey, 1.0f,
-            KeyFrameIntervalKey, 15 * 60);
-        Format mouseFormat = new Format(MediaTypeKey, MediaType.VIDEO, EncodingKey, "black",
-            FrameRateKey, Rational.valueOf(frameRate));
-
-        Dimension screenSize = videoConfiguration.screenSize();
-        int width = screenSize.width;
-        int height = screenSize.height;
-
-        Rectangle captureSize = new Rectangle(0, 0, width, height);
-
-        return MonteScreenRecorderBuilder
-            .builder()
-            .setGraphicConfig(getGraphicConfig())
-            .setRectangle(captureSize)
-            .setFileFormat(fileFormat)
-            .setScreenFormat(screenFormat)
-            .setFolder(new File(videoConfiguration.folder()))
-            .setMouseFormat(mouseFormat).build();
-    }
+    return MonteScreenRecorderBuilder
+        .builder()
+        .setGraphicConfig(getGraphicConfig())
+        .setRectangle(captureSize)
+        .setFileFormat(fileFormat)
+        .setScreenFormat(screenFormat)
+        .setFolder(new File(videoConfiguration.folder()))
+        .setMouseFormat(mouseFormat).build();
+  }
 }

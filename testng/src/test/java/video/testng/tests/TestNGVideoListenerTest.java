@@ -32,7 +32,7 @@ public class TestNGVideoListenerTest extends BaseTest {
     VideoListener listener = new VideoListener();
     listener.onTestStart(result);
     listener.onTestFailure(result);
-    File file = MonteRecorder.getLastRecording();
+    File file = MonteRecorder.getLastVideo();
     assertTrue(file.exists());
   }
 
@@ -43,7 +43,7 @@ public class TestNGVideoListenerTest extends BaseTest {
     VideoListener listener = new VideoListener();
     listener.onTestStart(result);
     listener.onTestSuccess(result);
-    File file = MonteRecorder.getLastRecording();
+    File file = MonteRecorder.getLastVideo();
     assertFalse(file.exists());
   }
 
@@ -54,7 +54,7 @@ public class TestNGVideoListenerTest extends BaseTest {
     VideoListener listener = new VideoListener();
     listener.onTestStart(result);
     listener.onTestFailure(result);
-    File file = MonteRecorder.getLastRecording();
+    File file = MonteRecorder.getLastVideo();
     assertTrue(file.exists());
     assertTrue(file.getName().contains("new_recording"));
   }
@@ -67,7 +67,7 @@ public class TestNGVideoListenerTest extends BaseTest {
     VideoListener listener = new VideoListener();
     listener.onTestStart(result);
     listener.onTestSuccess(result);
-    File file = MonteRecorder.getLastRecording();
+    File file = MonteRecorder.getLastVideo();
     assertTrue(file.exists());
     assertTrue(file.getName().contains("shouldBeRecordingForSuccessfulTest"), "Wrong file name");
   }
@@ -80,7 +80,7 @@ public class TestNGVideoListenerTest extends BaseTest {
     VideoListener listener = new VideoListener();
     listener.onTestStart(result);
     listener.onTestFailure(result);
-    File file = MonteRecorder.getLastRecording();
+    File file = MonteRecorder.getLastVideo();
     assertTrue(file.exists());
     assertTrue(file.getName().contains("shouldBeRecordingForFailedTestAndSaveModeFailOnly"), "Wrong file name");
   }
@@ -93,7 +93,7 @@ public class TestNGVideoListenerTest extends BaseTest {
     VideoListener listener = new VideoListener();
     listener.onTestStart(result);
     listener.onTestSuccess(result);
-    File file = MonteRecorder.getLastRecording();
+    File file = MonteRecorder.getLastVideo();
     assertFalse(file.exists());
   }
 
@@ -107,7 +107,7 @@ public class TestNGVideoListenerTest extends BaseTest {
     VideoListener listener = new VideoListener();
     listener.onTestStart(result);
     listener.onTestFailure(result);
-    File file = MonteRecorder.getLastRecording();
+    File file = MonteRecorder.getLastVideo();
     assertNotEquals(file.getName(), "shouldNotBeVideoIfDisabledAndRecordModeAll.avi");
   }
 
@@ -122,7 +122,7 @@ public class TestNGVideoListenerTest extends BaseTest {
     listener.onTestStart(result);
     Thread.sleep(5000);
     listener.onTestSuccess(result);
-    File file = MonteRecorder.getLastRecording();
+    File file = MonteRecorder.getLastVideo();
     assertFalse(file.exists());
   }
 
@@ -138,7 +138,7 @@ public class TestNGVideoListenerTest extends BaseTest {
     listener.onTestStart(result);
     Thread.sleep(5000);
     listener.onTestFailure(result);
-    File file = MonteRecorder.getLastRecording();
+    File file = MonteRecorder.getLastVideo();
     assertTrue(file.exists());
   }
 
@@ -153,7 +153,7 @@ public class TestNGVideoListenerTest extends BaseTest {
     listener.onTestStart(result);
     sleep(5);
     listener.onTestFailure(result);
-    File file = MonteRecorder.getLastRecording();
+    File file = MonteRecorder.getLastVideo();
     assertTrue(file.exists());
   }
 }
