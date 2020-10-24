@@ -4,6 +4,7 @@ import com.automation.remarks.video.exception.RecordingException;
 import com.automation.remarks.video.recorder.VideoRecorder;
 import java.io.File;
 import java.util.concurrent.TimeUnit;
+import lombok.Getter;
 import org.awaitility.core.ConditionTimeoutException;
 
 import static org.awaitility.Awaitility.await;
@@ -13,19 +14,17 @@ import static org.awaitility.Awaitility.await;
  */
 public abstract class FFMpegRecorder extends VideoRecorder {
 
-  private final FFmpegWrapper ffmpegWrapper;
+  @Getter
+  private final FFmpegWrapper wrapper;
 
   public FFMpegRecorder() {
-    this.ffmpegWrapper = new FFmpegWrapper();
-  }
-
-  public FFmpegWrapper getFfmpegWrapper() {
-    return ffmpegWrapper;
+    this.wrapper = new FFmpegWrapper();
   }
 
   @Override
   public File stopAndSave(final String filename) {
-    File file = getFfmpegWrapper().stopFFmpegAndSave(filename);
+    File file = getWrapper().stopFFmpegAndSave(filename);
+
     waitForVideoCompleted(file);
     setLastVideo(file);
     return file;

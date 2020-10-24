@@ -7,6 +7,6 @@ public class WindowsFFmpegRecorder extends FFMpegRecorder {
 
   @Override
   public void start() {
-    getFfmpegWrapper().startFFmpeg();
+    getWrapper().startFFmpeg();
   }
 }
