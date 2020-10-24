@@ -1,13 +1,12 @@
 package com.automation.remarks.remote.node;
 
 import com.automation.remarks.video.recorder.monte.MonteRecorder;
-import org.apache.http.HttpStatus;
-
+import java.io.File;
+import java.io.IOException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
+import org.apache.http.HttpStatus;
 
 import static com.automation.remarks.remote.utils.RestUtils.updateResponse;
 import static com.automation.remarks.video.RecordingUtils.doVideoProcessing;
@@ -20,7 +19,7 @@ public class Video extends HttpServlet {
   private MonteRecorder videoRecorder;
 
   @Override
-  protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws  IOException {
+  protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     doPost(req, resp);
   }
 
@@ -53,9 +52,9 @@ public class Video extends HttpServlet {
           String filePath = doVideoProcessing(isSuccess(req), video);
           updateResponse(resp, HttpStatus.SC_OK, "recording stopped " + filePath);
           break;
-          default:
-            updateResponse(resp, HttpStatus.SC_NOT_FOUND,
-                "Wrong Action! Method doesn't support");
+        default:
+          updateResponse(resp, HttpStatus.SC_NOT_FOUND,
+              "Wrong Action! Method doesn't support");
       }
     } catch (Exception ex) {
       updateResponse(resp, HttpStatus.SC_INTERNAL_SERVER_ERROR,

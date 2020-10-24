@@ -17,6 +17,14 @@ import static org.testng.Assert.assertTrue;
  */
 public class TestNGVideoListenerTest extends BaseTest {
 
+  static void sleep(int seconds) {
+    try {
+      Thread.sleep(seconds * 1000);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+  }
+
   @Test
   @Video
   public void shouldBeOneRecordingOnTestFail() {
@@ -147,14 +155,6 @@ public class TestNGVideoListenerTest extends BaseTest {
     listener.onTestFailure(result);
     File file = MonteRecorder.getLastRecording();
     assertTrue(file.exists());
-  }
-
-  static void sleep(int seconds) {
-    try {
-      Thread.sleep(seconds * 1000);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
   }
 }
 

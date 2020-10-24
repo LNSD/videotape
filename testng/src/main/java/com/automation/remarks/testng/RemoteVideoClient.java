@@ -1,7 +1,6 @@
 package com.automation.remarks.testng;
 
 import com.automation.remarks.video.recorder.VideoRecorder;
-
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -13,7 +12,7 @@ import static com.automation.remarks.testng.utils.RestUtils.sendRecordingRequest
  */
 public class RemoteVideoClient {
 
-  private String servletUrl;
+  private final String servletUrl;
 
   public RemoteVideoClient(String nodeUrl) {
     String servletPath = "/extra/Video";

@@ -5,8 +5,8 @@ package com.automation.remarks.video.recorder.ffmpeg;
  */
 public class WindowsFFmpegRecorder extends FFMpegRecorder {
 
-    @Override
-    public void start() {
-        getFfmpegWrapper().startFFmpeg();
-    }
+  @Override
+  public void start() {
+    getFfmpegWrapper().startFFmpeg();
+  }
 }
