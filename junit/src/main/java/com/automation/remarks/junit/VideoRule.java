@@ -63,9 +63,9 @@ public class VideoRule extends TestWatcher {
   }
 
   private File stopRecording(String filename) {
-    if (recorder != null) {
-      return recorder.stopAndSave(filename);
+    if (recorder == null) {
+      return null;
     }
-    return null;
+    return recorder.stopAndSave(filename);
   }
 }

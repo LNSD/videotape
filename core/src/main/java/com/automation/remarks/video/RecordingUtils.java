@@ -5,32 +5,30 @@ import com.automation.remarks.video.enums.RecordingMode;
 import com.automation.remarks.video.enums.VideoSaveMode;
 import com.automation.remarks.video.recorder.VideoRecorder;
 import java.io.File;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 /**
  * Created by sergey on 4/21/16.
  */
+@Slf4j
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RecordingUtils {
-
-  private static final Logger logger = LoggerFactory.getLogger(RecordingUtils.class);
-
-  private RecordingUtils() {
-  }
 
   public static String doVideoProcessing(boolean successfulTest, File video) {
     String filePath = formatVideoFilePath(video);
     if (!successfulTest || isSaveAllModeEnable()) {
-      logger.info("Video recording: " + filePath);
+      log.info("Video recording: {}", filePath);
       return filePath;
     } else if (video != null && video.isFile()) {
       if (!video.delete()) {
-        logger.info("Video didn't deleted");
+        log.info("Video didn't deleted");
         return "Video didn't deleted";
       }
-      logger.info("No video on success test");
+      log.info("No video on success test");
     }
     return "";
   }
@@ -62,6 +60,7 @@ public class RecordingUtils {
     return annotation == null || annotation.name().isEmpty();
   }
 
+  // TODO Review this
   private static String formatVideoFilePath(File video) {
     if (video == null) {
       return "";
@@ -73,12 +72,13 @@ public class RecordingUtils {
     return video.getAbsolutePath();
   }
 
+  // TODO Review this
   private static String getJenkinsReportsUrl() {
     String jenkinsUrl = System.getProperty("jenkinsUrl");
     if (!isBlank(jenkinsUrl)) {
       return jenkinsUrl;
     } else {
-      logger.info("No jenkinsUrl variable found.");
+      log.info("No jenkinsUrl variable found.");
       return "";
     }
   }

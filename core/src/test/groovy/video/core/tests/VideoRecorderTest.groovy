@@ -15,6 +15,7 @@ class VideoRecorderTest extends BaseSpec {
 
   def "should be video file in folder with #type"() {
     given:
+    System.setProperty("user.dir", System.getProperty("test.output"))
     System.getProperty("video.recorder.type", type.toString())
 
     when:
@@ -28,8 +29,8 @@ class VideoRecorderTest extends BaseSpec {
 
   def "should be video in #name folder with #type"() {
     given:
+    System.setProperty("user.dir", System.getProperty("test.output"))
     System.setProperty("video.recorder.type", type.toString())
-    System.setProperty("video.folder", name)
 
     when:
     File video = recordVideo()
@@ -43,6 +44,7 @@ class VideoRecorderTest extends BaseSpec {
 
   def "should be absolute recording path with #type"() {
     given:
+    System.setProperty("user.dir", System.getProperty("test.output"))
     System.setProperty("video.recorder.type", type.toString())
 
     when:
@@ -56,6 +58,7 @@ class VideoRecorderTest extends BaseSpec {
 
   def "should be exact video file name for #type"() {
     given:
+    System.setProperty("user.dir", System.getProperty("test.output"))
     System.setProperty("video.recorder.type", type.toString())
 
     when:
@@ -80,6 +83,7 @@ class VideoRecorderTest extends BaseSpec {
 
   def "should record video with custom pixel format for #type"() {
     given:
+    System.setProperty("user.dir", System.getProperty("test.output"))
     System.setProperty("video.recorder.type", type.toString())
     System.setProperty("video.ffmpeg.pixelFormat", "yuv444p")
 

@@ -30,6 +30,7 @@ public interface VideoConfiguration extends Config {
   Boolean videoEnabled();
 
   @Key("video.mode")
+  @ConverterClass(RecordingMode.Converter.class)
   @DefaultValue("ANNOTATED")
   RecordingMode mode();
 
@@ -45,10 +46,12 @@ public interface VideoConfiguration extends Config {
   String fileName();
 
   @Key("video.recorder.type")
+  @ConverterClass(RecorderType.Converter.class)
   @DefaultValue("MONTE")
   RecorderType recorderType();
 
   @Key("video.save.mode")
+  @ConverterClass(VideoSaveMode.Converter.class)
   @DefaultValue("FAILED_ONLY")
   VideoSaveMode saveMode();
 

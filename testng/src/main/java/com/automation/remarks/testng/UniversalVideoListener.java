@@ -20,12 +20,14 @@ public class UniversalVideoListener extends TestNgListener {
     if (videoDisabled(result) || shouldNotIntercept(result)) {
       return;
     }
+
     if (VideoRecorder.conf().isRemote()) {
       String nodeUrl = VideoRecorder.conf().remoteUrl();
       videoRecordClient = new RemoteVideoRecordClient(nodeUrl);
     } else {
       videoRecordClient = new LocalVideoRecordClient();
     }
+
     videoRecordClient.start();
   }
 

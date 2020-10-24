@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DateUtils {
 
-    public static String formatDate(Date date, String format) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(format);
-        return dateFormat.format(date);
-    }
+  public static String formatDate(Date date, String format) {
+    SimpleDateFormat dateFormat = new SimpleDateFormat(format);
+    return dateFormat.format(date);
+  }
 }

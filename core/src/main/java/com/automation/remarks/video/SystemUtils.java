@@ -19,7 +19,7 @@ public class SystemUtils {
   private static final Logger log = LoggerFactory.getLogger(FFMpegRecorder.class);
 
   public static String runCommand(final List<String> args) {
-    log.info("Trying to execute the following command: " + args);
+    log.info("Trying to execute the following command: {}", args);
     try {
       return new ProcessExecutor()
           .command(args)
@@ -27,13 +27,13 @@ public class SystemUtils {
           .execute()
           .outputUTF8();
     } catch (IOException | InterruptedException | TimeoutException e) {
-      log.warn("Unable to execute command: " + e);
+      log.warn("Unable to execute command", e);
       throw new RecordingException(e);
     }
   }
 
   public static String runCommand(final String... args) {
-    log.info("Trying to execute the following command: " + Arrays.asList(args));
+    log.info("Trying to execute the following command: {}", Arrays.asList(args));
     try {
       return new ProcessExecutor()
           .command(args)
@@ -41,7 +41,7 @@ public class SystemUtils {
           .execute()
           .outputUTF8();
     } catch (IOException | InterruptedException | TimeoutException e) {
-      log.warn("Unable to execute command: " + e);
+      log.warn("Unable to execute command", e);
       throw new RecordingException(e);
     }
   }
@@ -54,5 +54,4 @@ public class SystemUtils {
   public static Dimension getSystemScreenDimension() {
     return Toolkit.getDefaultToolkit().getScreenSize();
   }
-
 }
