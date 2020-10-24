@@ -12,19 +12,17 @@ import static java.util.Arrays.asList;
  * Created by sepi on 05.10.16.
  */
 public class TestNgListener implements ITestListener {
+
   @Override
   public void onTestStart(ITestResult result) {
-
   }
 
   @Override
   public void onTestSuccess(ITestResult result) {
-
   }
 
   @Override
   public void onTestFailure(ITestResult result) {
-
   }
 
   @Override
@@ -39,12 +37,10 @@ public class TestNgListener implements ITestListener {
 
   @Override
   public void onStart(ITestContext context) {
-
   }
 
   @Override
   public void onFinish(ITestContext context) {
-
   }
 
   public boolean shouldIntercept(Class testClass, Class annotation) {

@@ -1,12 +1,12 @@
 package com.automation.remarks.video.exception;
 
+import lombok.NoArgsConstructor;
+
 /**
  * Created by sergey on 4/13/16.
  */
+@NoArgsConstructor
 public class RecordingException extends RuntimeException {
-
-  public RecordingException() {
-  }
 
   public RecordingException(String message) {
     super(message);

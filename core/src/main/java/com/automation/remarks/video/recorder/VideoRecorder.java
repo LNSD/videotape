@@ -18,7 +18,7 @@ public abstract class VideoRecorder implements IVideoRecorder {
   private static File lastVideo;
 
   public static VideoConfiguration conf() {
-    ConfigFactory.setProperty("os.type", OperatingSystem.getOS());
+    ConfigFactory.setProperty("os.type", OperatingSystem.get());
     return ConfigFactory.create(VideoConfiguration.class);
   }
 }

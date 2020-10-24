@@ -6,6 +6,6 @@ package com.automation.remarks.video.recorder.ffmpeg;
 public class LinuxFFmpegRecorder extends FFMpegRecorder {
   @Override
   public void start() {
-    getWrapper().startFFmpeg();
+    wrapper().startFFmpeg();
   }
 }

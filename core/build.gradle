@@ -1,8 +1,8 @@
 apply plugin: 'groovy'
 
 dependencies {
-  implementation 'org.projectlombok:lombok:1.18.16'
-  annotationProcessor 'org.projectlombok:lombok:1.18.16'
+  implementation group: 'org.projectlombok', name: 'lombok', version: '1.18.16'
+  annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.16'
 
   api group: 'org.aeonbits.owner', name: 'owner-java8', version: '1.0.10'
   implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.8.1'
@@ -26,6 +26,6 @@ processResources {
   exclude 'SendSignalCtrlC.exe'
 }
 
-clean {
-  delete "${projectDir}/video"
+test {
+  systemProperty 'test.output', "${buildDir}/test-results/"
 }

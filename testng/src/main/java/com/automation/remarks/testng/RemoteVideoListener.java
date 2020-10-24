@@ -19,7 +19,6 @@ public class RemoteVideoListener implements ITestListener {
 
   @Override
   public void onStart(ITestContext context) {
-
   }
 
   @Override
@@ -63,6 +62,5 @@ public class RemoteVideoListener implements ITestListener {
 
   @Override
   public void onFinish(ITestContext context) {
-
   }
 }

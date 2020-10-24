@@ -7,7 +7,7 @@ import org.apache.commons.lang3.SystemUtils;
 public enum OperatingSystem {
   WINDOWS, MAC, LINUX;
 
-  public static String getOS() {
+  public static String get() {
     if (SystemUtils.IS_OS_WINDOWS) {
       return WINDOWS.name().toLowerCase();
     }
