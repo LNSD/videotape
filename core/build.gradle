@@ -31,7 +31,7 @@ dependencies {
   annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.16'
 
   api group: 'org.aeonbits.owner', name: 'owner-java8', version: '1.0.10'
-  implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.8.1'
+  implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.11'
   implementation group: 'org.zeroturnaround', name: 'zt-exec', version: '1.10'
   implementation group: 'com.github.stephenc.monte', name: 'monte-screen-recorder', version: '0.7.7.0'
   implementation group: 'org.awaitility', name: 'awaitility', version: '3.1.6'
