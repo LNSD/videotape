@@ -27,7 +27,7 @@
 package es.lnsd.videotape.core.recorder.ffmpeg;
 
 import es.lnsd.videotape.core.exception.RecordingException;
-import es.lnsd.videotape.core.recorder.VideoRecorder;
+import es.lnsd.videotape.core.recorder.Recorder;
 import java.io.File;
 import java.util.concurrent.TimeUnit;
 import lombok.Getter;
@@ -37,13 +37,18 @@ import org.awaitility.core.ConditionTimeoutException;
 import static org.awaitility.Awaitility.await;
 
 @Accessors(fluent = true)
-public abstract class FFMpegRecorder extends VideoRecorder {
+public class FFMpegRecorder extends Recorder {
 
   @Getter
   private final FFmpegWrapper wrapper;
 
   public FFMpegRecorder() {
     this.wrapper = new FFmpegWrapper();
+  }
+
+  @Override
+  public void start() {
+    wrapper().startFFmpeg();
   }
 
   @Override

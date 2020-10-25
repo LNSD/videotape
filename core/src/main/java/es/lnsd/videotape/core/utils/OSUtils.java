@@ -24,25 +24,28 @@
  *
  */
 
-package es.lnsd.videotape.core.enums;
+package es.lnsd.videotape.core.utils;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.SystemUtils;
 
 
-public enum OperatingSystem {
-  WINDOWS, MAC, LINUX;
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class OSUtils {
 
-  public static String get() {
+  public static String getOsType() {
     if (SystemUtils.IS_OS_WINDOWS) {
-      return WINDOWS.name().toLowerCase();
+      return "windows";
     }
+
     if (SystemUtils.IS_OS_MAC) {
-      return MAC.name().toLowerCase();
+      return "mac";
     }
 
     if (SystemUtils.IS_OS_LINUX) {
-      return LINUX.name().toLowerCase();
+      return "linux";
     }
 
     String os = System.getProperty("os.name", "unknown");

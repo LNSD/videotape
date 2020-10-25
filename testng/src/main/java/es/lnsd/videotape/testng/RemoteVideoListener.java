@@ -27,7 +27,7 @@
 package es.lnsd.videotape.testng;
 
 import es.lnsd.videotape.core.annotations.Video;
-import es.lnsd.videotape.core.recorder.VideoRecorder;
+import es.lnsd.videotape.core.recorder.Recorder;
 import es.lnsd.videotape.testng.utils.MethodUtils;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
@@ -47,7 +47,7 @@ public class RemoteVideoListener implements ITestListener {
 
   @Override
   public void onTestStart(ITestResult result) {
-    final String nodeUrl = VideoRecorder.conf().remoteUrl();
+    final String nodeUrl = Recorder.conf().remoteUrl();
     videoClient = new RemoteVideoClient(nodeUrl);
     Video video = MethodUtils.getVideoAnnotation(result);
     if (videoEnabled(video)) {

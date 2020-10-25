@@ -24,17 +24,35 @@
  *
  */
 
-package es.lnsd.videotape.core.enums;
+package es.lnsd.videotape.core.recorder;
 
-import java.lang.reflect.Method;
+import es.lnsd.videotape.core.config.RecorderType;
+import es.lnsd.videotape.core.recorder.ffmpeg.FFMpegRecorder;
+import es.lnsd.videotape.core.recorder.ffmpeg.MacFFmpegRecorder;
+import es.lnsd.videotape.core.recorder.monte.MonteRecorder;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.NotImplementedException;
+import org.apache.commons.lang3.SystemUtils;
 
-public enum RecorderType {
-  MONTE, FFMPEG;
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class RecorderFactory {
 
-  public static class Converter implements org.aeonbits.owner.Converter<RecorderType> {
-    @Override
-    public RecorderType convert(Method method, String input) {
-      return valueOf(input.toUpperCase());
+  public static IRecorder getRecorder(RecorderType recorderType) {
+
+    if (recorderType == RecorderType.FFMPEG) {
+      if (SystemUtils.IS_OS_WINDOWS || SystemUtils.IS_OS_LINUX) {
+        return new FFMpegRecorder();
+      }
+
+      if (SystemUtils.IS_OS_MAC) {
+        return new MacFFmpegRecorder();
+      }
+
+      String os = System.getProperty("os.name", "unknown");
+      throw new NotImplementedException(String.format("OS '%s' not supported", os));
     }
+
+    return new MonteRecorder();
   }
 }

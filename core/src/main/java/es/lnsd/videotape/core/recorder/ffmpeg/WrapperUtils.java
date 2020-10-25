@@ -24,22 +24,21 @@
  *
  */
 
-package es.lnsd.videotape.core;
+package es.lnsd.videotape.core.recorder.ffmpeg;
 
 import es.lnsd.videotape.core.exception.RecordingException;
-import es.lnsd.videotape.core.recorder.ffmpeg.FFMpegRecorder;
-import java.awt.*;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.zeroturnaround.exec.ProcessExecutor;
 
-public class SystemUtils {
-
-  private static final Logger log = LoggerFactory.getLogger(FFMpegRecorder.class);
+@Slf4j
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class WrapperUtils {
 
   public static String runCommand(final List<String> args) {
     log.info("Trying to execute the following command: {}", args);
@@ -50,8 +49,7 @@ public class SystemUtils {
           .execute()
           .outputUTF8();
     } catch (IOException | InterruptedException | TimeoutException e) {
-      log.warn("Unable to execute command", e);
-      throw new RecordingException(e);
+      throw new RecordingException("Unable to execute command", e);
     }
   }
 
@@ -64,17 +62,12 @@ public class SystemUtils {
           .execute()
           .outputUTF8();
     } catch (IOException | InterruptedException | TimeoutException e) {
-      log.warn("Unable to execute command", e);
-      throw new RecordingException(e);
+      throw new RecordingException("Unable to execute command", e);
     }
   }
 
   public static String getPidOf(final String processName) {
     return runCommand("cmd", "/c", "for /f \"tokens=2\" %i in ('tasklist ^| findstr \"" + processName +
         "\"') do @echo %i").trim();
-  }
-
-  public static Dimension getSystemScreenDimension() {
-    return Toolkit.getDefaultToolkit().getScreenSize();
   }
 }

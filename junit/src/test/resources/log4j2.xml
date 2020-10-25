@@ -30,7 +30,7 @@
     <Console name="CA" target="SYSTEM_OUT">
       <PatternLayout pattern="%-4r [%t] %-5p %c %x - %m%n"/>
     </Console>
-    <File name="FA" fileName="build/test-results/ffmpeg.log" append="false">
+    <File name="FA" fileName="build/test-results/videotape.log" append="false">
       <PatternLayout pattern="[%-5p] %d %c - %m%n"/>
     </File>
   </Appenders>

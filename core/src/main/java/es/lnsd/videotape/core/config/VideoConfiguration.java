@@ -24,12 +24,10 @@
  *
  */
 
-package es.lnsd.videotape.core;
+package es.lnsd.videotape.core.config;
 
-import es.lnsd.videotape.core.enums.RecorderType;
-import es.lnsd.videotape.core.enums.RecordingMode;
-import es.lnsd.videotape.core.enums.VideoSaveMode;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.io.File;
 import org.aeonbits.owner.Config;
 import org.aeonbits.owner.Config.LoadPolicy;
@@ -74,18 +72,20 @@ public interface VideoConfiguration extends Config {
   RecorderType recorderType();
 
   @Key("video.save.mode")
-  @ConverterClass(VideoSaveMode.Converter.class)
+  @ConverterClass(SavingStrategy.Converter.class)
   @DefaultValue("FAILED_ONLY")
-  VideoSaveMode saveMode();
+  SavingStrategy saveMode();
 
   @Key("video.frame.rate")
   @DefaultValue("24")
   int frameRate();
 
-  @Key("video.screen.size")
   default Dimension screenSize() {
-    return SystemUtils.getSystemScreenDimension();
+    return Toolkit.getDefaultToolkit().getScreenSize();
   }
+
+  @Key("video.ffmpeg.binary")
+  String ffmpegBinary();
 
   @Key("video.ffmpeg.format")
   String ffmpegFormat();

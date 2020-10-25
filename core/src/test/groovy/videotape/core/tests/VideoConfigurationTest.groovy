@@ -26,13 +26,14 @@
 
 package videotape.core.tests
 
-import es.lnsd.videotape.core.SystemUtils
-import es.lnsd.videotape.core.enums.RecorderType
-import es.lnsd.videotape.core.enums.RecordingMode
-import es.lnsd.videotape.core.enums.VideoSaveMode
-import es.lnsd.videotape.core.recorder.VideoRecorder
+import es.lnsd.videotape.core.config.RecorderType
+import es.lnsd.videotape.core.config.RecordingMode
+import es.lnsd.videotape.core.config.SavingStrategy
+import es.lnsd.videotape.core.recorder.Recorder
 import spock.lang.Unroll
 import spock.util.environment.RestoreSystemProperties
+
+import java.awt.*
 
 @Unroll
 class VideoConfigurationTest extends BaseSpec {
@@ -43,16 +44,16 @@ class VideoConfigurationTest extends BaseSpec {
     System.setProperty('user.dir', '.')
 
     when:
-    def conf = VideoRecorder.conf()
+    def conf = Recorder.conf()
 
     then:
     conf.folder() == new File("./video")
     conf.frameRate() == 24
     conf.mode() == RecordingMode.ANNOTATED
     conf.recorderType() == RecorderType.MONTE
-    conf.saveMode() == VideoSaveMode.FAILED_ONLY
+    conf.saveMode() == SavingStrategy.FAILED_ONLY
     conf.videoEnabled()
-    conf.screenSize() == SystemUtils.systemScreenDimension
+    conf.screenSize() == Toolkit.defaultToolkit.screenSize
     !conf.isRemote()
     conf.fileName() == null
   }

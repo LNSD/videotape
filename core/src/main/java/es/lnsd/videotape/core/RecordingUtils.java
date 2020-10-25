@@ -27,9 +27,9 @@
 package es.lnsd.videotape.core;
 
 import es.lnsd.videotape.core.annotations.Video;
-import es.lnsd.videotape.core.enums.RecordingMode;
-import es.lnsd.videotape.core.enums.VideoSaveMode;
-import es.lnsd.videotape.core.recorder.VideoRecorder;
+import es.lnsd.videotape.core.config.RecordingMode;
+import es.lnsd.videotape.core.config.SavingStrategy;
+import es.lnsd.videotape.core.recorder.Recorder;
 import java.io.File;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -57,21 +57,21 @@ public class RecordingUtils {
   }
 
   private static boolean isSaveAllModeEnable() {
-    return VideoRecorder.conf().saveMode().equals(VideoSaveMode.ALL);
+    return Recorder.conf().saveMode().equals(SavingStrategy.ALL);
   }
 
   public static boolean videoEnabled(Video video) {
-    return VideoRecorder.conf().videoEnabled()
+    return Recorder.conf().videoEnabled()
         && (isRecordingAllModeEnable() || video != null);
   }
 
   private static boolean isRecordingAllModeEnable() {
-    return VideoRecorder.conf().mode().equals(RecordingMode.ALL);
+    return Recorder.conf().mode().equals(RecordingMode.ALL);
   }
 
   public static String getVideoFileName(Video annotation, String methodName) {
-    if (useNameFromVideoAnnotation(annotation) && VideoRecorder.conf().fileName() != null) {
-      return VideoRecorder.conf().fileName();
+    if (useNameFromVideoAnnotation(annotation) && Recorder.conf().fileName() != null) {
+      return Recorder.conf().fileName();
     } else if (annotation == null) {
       return methodName;
     }

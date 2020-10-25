@@ -26,7 +26,7 @@
 
 package es.lnsd.videotape.testng;
 
-import es.lnsd.videotape.core.recorder.VideoRecorder;
+import es.lnsd.videotape.core.recorder.Recorder;
 import es.lnsd.videotape.testng.utils.MethodUtils;
 import java.util.List;
 import org.testng.ITestResult;
@@ -44,8 +44,8 @@ public class UniversalVideoListener extends TestNgListener {
       return;
     }
 
-    if (VideoRecorder.conf().isRemote()) {
-      String nodeUrl = VideoRecorder.conf().remoteUrl();
+    if (Recorder.conf().isRemote()) {
+      String nodeUrl = Recorder.conf().remoteUrl();
       videoRecordClient = new RemoteVideoRecordClient(nodeUrl);
     } else {
       videoRecordClient = new LocalVideoRecordClient();

@@ -24,13 +24,17 @@
  *
  */
 
-package es.lnsd.videotape.core.recorder;
+package es.lnsd.videotape.core.config;
 
-import java.io.File;
+import java.lang.reflect.Method;
 
-public interface IVideoRecorder {
+public enum RecorderType {
+  MONTE, FFMPEG;
 
-  void start();
-
-  File stopAndSave(String filename);
+  public static class Converter implements org.aeonbits.owner.Converter<RecorderType> {
+    @Override
+    public RecorderType convert(Method method, String input) {
+      return valueOf(input.toUpperCase());
+    }
+  }
 }

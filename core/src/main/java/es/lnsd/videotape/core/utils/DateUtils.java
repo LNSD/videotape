@@ -24,11 +24,18 @@
  *
  */
 
-package es.lnsd.videotape.core.recorder.ffmpeg;
+package es.lnsd.videotape.core.utils;
 
-public class LinuxFFmpegRecorder extends FFMpegRecorder {
-  @Override
-  public void start() {
-    wrapper().startFFmpeg();
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class DateUtils {
+
+  public static String formatDate(Date date, String format) {
+    SimpleDateFormat dateFormat = new SimpleDateFormat(format);
+    return dateFormat.format(date);
   }
 }

@@ -26,8 +26,8 @@
 
 package videotape.testng.tests;
 
-import es.lnsd.videotape.core.enums.RecorderType;
-import es.lnsd.videotape.core.enums.RecordingMode;
+import es.lnsd.videotape.core.config.RecorderType;
+import es.lnsd.videotape.core.config.RecordingMode;
 import es.lnsd.videotape.core.recorder.monte.MonteRecorder;
 import es.lnsd.videotape.testng.VideoListener;
 import java.io.IOException;

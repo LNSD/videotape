@@ -24,23 +24,17 @@
  *
  */
 
-package es.lnsd.videotape.core.recorder;
+package es.lnsd.videotape.core.config;
 
-import es.lnsd.videotape.core.VideoConfiguration;
-import es.lnsd.videotape.core.enums.OperatingSystem;
-import java.io.File;
-import lombok.Getter;
-import lombok.Setter;
-import org.aeonbits.owner.ConfigFactory;
+import java.lang.reflect.Method;
 
-public abstract class VideoRecorder implements IVideoRecorder {
+public enum SavingStrategy {
+  FAILED_ONLY, ALL;
 
-  @Getter
-  @Setter
-  private static File lastVideo;
-
-  public static VideoConfiguration conf() {
-    ConfigFactory.setProperty("os.type", OperatingSystem.get());
-    return ConfigFactory.create(VideoConfiguration.class);
+  public static class Converter implements org.aeonbits.owner.Converter<SavingStrategy> {
+    @Override
+    public SavingStrategy convert(Method method, String input) {
+      return valueOf(input.toUpperCase());
+    }
   }
 }

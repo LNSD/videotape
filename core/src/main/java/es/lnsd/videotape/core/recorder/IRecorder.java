@@ -24,18 +24,13 @@
  *
  */
 
-package es.lnsd.videotape.core;
+package es.lnsd.videotape.core.recorder;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import java.io.File;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class DateUtils {
+public interface IRecorder {
 
-  public static String formatDate(Date date, String format) {
-    SimpleDateFormat dateFormat = new SimpleDateFormat(format);
-    return dateFormat.format(date);
-  }
+  void start();
+
+  File stopAndSave(String filename);
 }

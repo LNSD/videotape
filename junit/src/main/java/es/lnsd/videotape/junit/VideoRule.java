@@ -26,11 +26,11 @@
 
 package es.lnsd.videotape.junit;
 
-import es.lnsd.videotape.core.RecorderFactory;
 import es.lnsd.videotape.core.RecordingUtils;
 import es.lnsd.videotape.core.annotations.Video;
-import es.lnsd.videotape.core.recorder.IVideoRecorder;
-import es.lnsd.videotape.core.recorder.VideoRecorder;
+import es.lnsd.videotape.core.recorder.IRecorder;
+import es.lnsd.videotape.core.recorder.Recorder;
+import es.lnsd.videotape.core.recorder.RecorderFactory;
 import java.io.File;
 import org.junit.AssumptionViolatedException;
 import org.junit.rules.TestWatcher;
@@ -41,14 +41,14 @@ import static es.lnsd.videotape.core.RecordingUtils.videoEnabled;
 
 public class VideoRule extends TestWatcher {
 
-  private IVideoRecorder recorder;
+  private IRecorder recorder;
 
   @Override
   protected void starting(Description description) {
     if (videoDisabled(description)) {
       return;
     }
-    recorder = RecorderFactory.getRecorder(VideoRecorder.conf().recorderType());
+    recorder = RecorderFactory.getRecorder(Recorder.conf().recorderType());
     recorder.start();
   }
 

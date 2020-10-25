@@ -26,9 +26,11 @@
 
 package es.lnsd.videotape.core.recorder.monte;
 
-import es.lnsd.videotape.core.DateUtils;
 import es.lnsd.videotape.core.exception.RecordingException;
-import java.awt.*;
+import es.lnsd.videotape.core.utils.DateUtils;
+import java.awt.AWTException;
+import java.awt.GraphicsConfiguration;
+import java.awt.Rectangle;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
