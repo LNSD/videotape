@@ -26,9 +26,9 @@
 
 package videotape.core.tests
 
-import es.lnsd.videotape.core.RecorderFactory
-import es.lnsd.videotape.core.recorder.IVideoRecorder
-import es.lnsd.videotape.core.recorder.VideoRecorder
+import es.lnsd.videotape.core.recorder.IRecorder
+import es.lnsd.videotape.core.recorder.Recorder
+import es.lnsd.videotape.core.recorder.RecorderFactory
 import spock.lang.Specification
 
 class BaseSpec extends Specification {
@@ -36,7 +36,7 @@ class BaseSpec extends Specification {
   public static final String VIDEO_FILE_NAME = "video_test"
 
   protected static File recordVideo() {
-    IVideoRecorder recorder = RecorderFactory.getRecorder(VideoRecorder.conf().recorderType())
+    IRecorder recorder = RecorderFactory.getRecorder(Recorder.conf().recorderType())
     recorder.start()
     sleep(5)
     return recorder.stopAndSave(VIDEO_FILE_NAME)

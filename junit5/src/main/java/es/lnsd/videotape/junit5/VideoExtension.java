@@ -26,9 +26,9 @@
 
 package es.lnsd.videotape.junit5;
 
-import es.lnsd.videotape.core.RecorderFactory;
-import es.lnsd.videotape.core.recorder.IVideoRecorder;
-import es.lnsd.videotape.core.recorder.VideoRecorder;
+import es.lnsd.videotape.core.recorder.IRecorder;
+import es.lnsd.videotape.core.recorder.Recorder;
+import es.lnsd.videotape.core.recorder.RecorderFactory;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.util.Optional;
@@ -42,7 +42,7 @@ import static es.lnsd.videotape.core.RecordingUtils.videoEnabled;
 
 public class VideoExtension implements BeforeTestExecutionCallback, AfterTestExecutionCallback {
 
-  private IVideoRecorder recorder;
+  private IRecorder recorder;
 
   private static String getVideoFileName(Video annotation, String methodName) {
     if (annotation == null) {
@@ -57,7 +57,7 @@ public class VideoExtension implements BeforeTestExecutionCallback, AfterTestExe
     if (videoDisabled(context.getTestMethod().get())) {
       return;
     }
-    recorder = RecorderFactory.getRecorder(VideoRecorder.conf().recorderType());
+    recorder = RecorderFactory.getRecorder(Recorder.conf().recorderType());
     recorder.start();
   }
 

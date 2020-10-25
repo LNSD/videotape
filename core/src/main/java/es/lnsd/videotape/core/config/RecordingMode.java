@@ -24,7 +24,7 @@
  *
  */
 
-package es.lnsd.videotape.core.enums;
+package es.lnsd.videotape.core.config;
 
 import java.lang.reflect.Method;
 

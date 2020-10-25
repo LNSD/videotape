@@ -26,10 +26,13 @@
 
 package es.lnsd.videotape.core.recorder.monte;
 
-import es.lnsd.videotape.core.VideoConfiguration;
+import es.lnsd.videotape.core.config.VideoConfiguration;
 import es.lnsd.videotape.core.exception.RecordingException;
-import es.lnsd.videotape.core.recorder.VideoRecorder;
-import java.awt.*;
+import es.lnsd.videotape.core.recorder.Recorder;
+import java.awt.Dimension;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
 import java.io.File;
 import lombok.extern.slf4j.Slf4j;
 import org.monte.media.Format;
@@ -48,7 +51,7 @@ import static org.monte.media.VideoFormatKeys.ENCODING_AVI_TECHSMITH_SCREEN_CAPT
 import static org.monte.media.VideoFormatKeys.QualityKey;
 
 @Slf4j
-public class MonteRecorder extends VideoRecorder {
+public class MonteRecorder extends Recorder {
 
   private final MonteScreenRecorder screenRecorder;
   private final VideoConfiguration videoConfiguration;

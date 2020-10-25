@@ -26,19 +26,19 @@
 
 package es.lnsd.videotape.testng;
 
-import es.lnsd.videotape.core.RecorderFactory;
-import es.lnsd.videotape.core.recorder.IVideoRecorder;
-import es.lnsd.videotape.core.recorder.VideoRecorder;
+import es.lnsd.videotape.core.recorder.IRecorder;
+import es.lnsd.videotape.core.recorder.Recorder;
+import es.lnsd.videotape.core.recorder.RecorderFactory;
 
 import static es.lnsd.videotape.core.RecordingUtils.doVideoProcessing;
 
 public class LocalVideoRecordClient implements IVideoRecordClient {
 
-  private IVideoRecorder recorder;
+  private IRecorder recorder;
 
   @Override
   public void start() {
-    recorder = RecorderFactory.getRecorder(VideoRecorder.conf().recorderType());
+    recorder = RecorderFactory.getRecorder(Recorder.conf().recorderType());
     recorder.start();
   }
 

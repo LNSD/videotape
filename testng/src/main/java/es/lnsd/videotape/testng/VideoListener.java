@@ -26,9 +26,9 @@
 
 package es.lnsd.videotape.testng;
 
-import es.lnsd.videotape.core.RecorderFactory;
-import es.lnsd.videotape.core.recorder.IVideoRecorder;
-import es.lnsd.videotape.core.recorder.VideoRecorder;
+import es.lnsd.videotape.core.recorder.IRecorder;
+import es.lnsd.videotape.core.recorder.Recorder;
+import es.lnsd.videotape.core.recorder.RecorderFactory;
 import es.lnsd.videotape.testng.utils.MethodUtils;
 import java.io.File;
 import java.util.List;
@@ -41,14 +41,14 @@ import static es.lnsd.videotape.testng.utils.ListenerUtils.getFileName;
 
 public class VideoListener extends TestNgListener {
 
-  private IVideoRecorder recorder;
+  private IRecorder recorder;
 
   @Override
   public void onTestStart(ITestResult result) {
     if (videoDisabled(result) || !shouldIntercept(result)) {
       return;
     }
-    recorder = RecorderFactory.getRecorder(VideoRecorder.conf().recorderType());
+    recorder = RecorderFactory.getRecorder(Recorder.conf().recorderType());
     recorder.start();
   }
 
