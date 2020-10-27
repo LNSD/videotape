@@ -29,7 +29,9 @@ package es.lnsd.videotape.core.config;
 import java.lang.reflect.Method;
 
 public enum RecorderType {
-  MONTE, FFMPEG, FFMPEG_LEGACY, FFMPEG_WRAPPER;
+  MONTE,
+  FFMPEG, FFMPEG_LEGACY, FFMPEG_WRAPPER,
+  VLCJ;
 
   public static class Converter implements org.aeonbits.owner.Converter<RecorderType> {
     @Override
