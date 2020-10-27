@@ -1,0 +1,12 @@
+version: 2
+updates:
+- package-ecosystem: gradle
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "00:00"
+    timezone: UCT
+  open-pull-requests-limit: 99
+  target-branch: main
+  reviewers:
+  - LNSD
