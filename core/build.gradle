@@ -39,7 +39,7 @@ dependencies {
   api group: 'org.aeonbits.owner', name: 'owner-java8', version: '1.0.12'
   implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.11'
   implementation group: 'org.zeroturnaround', name: 'zt-exec', version: '1.10'
-  implementation group: 'org.awaitility', name: 'awaitility', version: '3.1.6'
+  implementation group: 'org.awaitility', name: 'awaitility', version: '4.0.3'
 
   // Video backend
   implementation group: 'com.github.stephenc.monte', name: 'monte-screen-recorder', version: '0.7.7.0'
