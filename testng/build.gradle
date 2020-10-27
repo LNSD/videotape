@@ -39,7 +39,7 @@ dependencies {
   testImplementation group: 'junit', name: 'junit', version: '4.12'
   testImplementation group: 'com.codeborne', name: 'selenide', version: '4.14.2'
   testImplementation group: 'com.google.inject', name: 'guice', version: '4.2.2'
-  testImplementation group: 'io.github.bonigarcia', name: 'webdrivermanager', version: '3.3.0'
+  testImplementation group: 'io.github.bonigarcia', name: 'webdrivermanager', version: '4.2.2'
 
   testRuntimeOnly group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.13.3'
   testRuntimeOnly group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.13.3'
