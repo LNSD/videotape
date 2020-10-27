@@ -26,8 +26,8 @@
 
 package es.lnsd.videotape.testng;
 
+import es.lnsd.videotape.core.config.ConfigLoader;
 import es.lnsd.videotape.core.recorder.IRecorder;
-import es.lnsd.videotape.core.recorder.Recorder;
 import es.lnsd.videotape.core.recorder.RecorderFactory;
 
 import static es.lnsd.videotape.core.RecordingUtils.doVideoProcessing;
@@ -38,7 +38,7 @@ public class LocalVideoRecordClient implements IVideoRecordClient {
 
   @Override
   public void start() {
-    recorder = RecorderFactory.getRecorder(Recorder.conf().recorderType());
+    recorder = RecorderFactory.getRecorder(ConfigLoader.load());
     recorder.start();
   }
 

@@ -26,21 +26,21 @@
 
 package es.lnsd.videotape.core.recorder;
 
-import es.lnsd.videotape.core.config.VideoConfiguration;
-import es.lnsd.videotape.core.utils.OSUtils;
+import es.lnsd.videotape.core.config.VideotapeConfiguration;
 import java.io.File;
 import lombok.Getter;
 import lombok.Setter;
-import org.aeonbits.owner.ConfigFactory;
+import lombok.experimental.Accessors;
 
+@Accessors(fluent = true)
 public abstract class Recorder implements IRecorder {
 
   @Getter
   @Setter
   private static File lastVideo;
+  protected final VideotapeConfiguration conf;
 
-  public static VideoConfiguration conf() {
-    ConfigFactory.setProperty("os.type", OSUtils.getOsType());
-    return ConfigFactory.create(VideoConfiguration.class);
+  public Recorder(VideotapeConfiguration conf) {
+    this.conf = conf;
   }
 }

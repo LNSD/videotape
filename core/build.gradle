@@ -63,5 +63,6 @@ processResources {
 }
 
 test {
-  systemProperty 'test.output', "${buildDir}/test-results/"
+  systemProperty 'root.path', rootProject.projectDir.absolutePath
+  systemProperty 'project.test.output', "${buildDir}/test-results/"
 }

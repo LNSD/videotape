@@ -26,9 +26,9 @@
 
 package videotape.testng.tests;
 
+import es.lnsd.videotape.core.config.ConfigLoader;
 import es.lnsd.videotape.core.config.RecorderType;
 import es.lnsd.videotape.core.config.RecordingMode;
-import es.lnsd.videotape.core.recorder.monte.MonteRecorder;
 import es.lnsd.videotape.testng.VideoListener;
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -58,7 +58,7 @@ public class BaseTest {
   }
 
   private static void deleteVideoDir() throws IOException {
-    FileUtils.deleteDirectory(MonteRecorder.conf().folder());
+    FileUtils.deleteDirectory(ConfigLoader.load().folder());
   }
 
   @BeforeMethod

@@ -26,13 +26,12 @@
 
 package videotape.remote.tests
 
-import es.lnsd.videotape.core.recorder.monte.MonteRecorder
+import es.lnsd.videotape.core.config.ConfigLoader
 import spock.lang.IgnoreIf
 import spock.lang.Shared
 import spock.lang.Stepwise
 
 import static es.lnsd.videotape.remote.utils.RestUtils.sendRecordingRequest
-
 
 @Stepwise
 class NodeServletTest extends BaseSpec {
@@ -41,11 +40,7 @@ class NodeServletTest extends BaseSpec {
   String VIDEO_FOLDER = System.getProperty('user.dir')
 
   def setup() {
-    MonteRecorder.conf().folder().deleteDir()
-  }
-
-  private static boolean isOsWindows() {
-    System.properties['os.name'] == 'windows'
+    ConfigLoader.load().folder().deleteDir()
   }
 
   def "shouldBeOkMessageOnStartWithoutParameters"() {

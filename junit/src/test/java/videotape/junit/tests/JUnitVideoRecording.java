@@ -27,6 +27,7 @@
 package videotape.junit.tests;
 
 import es.lnsd.videotape.core.annotations.Video;
+import es.lnsd.videotape.core.config.ConfigLoader;
 import es.lnsd.videotape.core.recorder.monte.MonteRecorder;
 import es.lnsd.videotape.junit.VideoRule;
 import java.io.File;
@@ -98,7 +99,7 @@ public class JUnitVideoRecording {
 
   @Before
   public void setUp() throws IOException {
-    FileUtils.deleteDirectory(MonteRecorder.conf().folder());
+    FileUtils.deleteDirectory(ConfigLoader.load().folder());
   }
 
   @After
@@ -107,14 +108,12 @@ public class JUnitVideoRecording {
   }
 
   private void verifyVideoFileExistsWithName(String fileName) {
-    File file = MonteRecorder.getLastVideo();
+    File file = MonteRecorder.lastVideo();
     assertTrue(file.exists());
     assertThat(file.getName(), startsWith(fileName));
   }
 
   private void verifyVideoFileNotExists() {
-    assertFalse(MonteRecorder.getLastVideo().exists());
+    assertFalse(MonteRecorder.lastVideo().exists());
   }
-
-
 }

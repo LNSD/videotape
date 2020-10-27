@@ -26,8 +26,8 @@
 
 package es.lnsd.videotape.junit5;
 
+import es.lnsd.videotape.core.config.ConfigLoader;
 import es.lnsd.videotape.core.recorder.IRecorder;
-import es.lnsd.videotape.core.recorder.Recorder;
 import es.lnsd.videotape.core.recorder.RecorderFactory;
 import java.io.File;
 import java.lang.reflect.Method;
@@ -57,7 +57,8 @@ public class VideoExtension implements BeforeTestExecutionCallback, AfterTestExe
     if (videoDisabled(context.getTestMethod().get())) {
       return;
     }
-    recorder = RecorderFactory.getRecorder(Recorder.conf().recorderType());
+
+    recorder = RecorderFactory.getRecorder(ConfigLoader.load());
     recorder.start();
   }
 

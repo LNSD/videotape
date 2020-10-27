@@ -24,18 +24,15 @@
  *
  */
 
-package es.lnsd.videotape.core.recorder.ffmpeg;
+package es.lnsd.videotape.core.exception;
 
-import es.lnsd.videotape.core.config.VideotapeConfiguration;
+import lombok.NoArgsConstructor;
 
-public class MacFFmpegRecorder extends FFMpegRecorder {
+@NoArgsConstructor
+public class ConfigurationException extends RuntimeException {
 
-  public MacFFmpegRecorder(VideotapeConfiguration conf) {
-    super(conf);
+  public ConfigurationException(String message) {
+    super(message);
   }
 
-  @Override
-  public void start() {
-    wrapper().startFFmpeg("-vsync", "2");
-  }
 }

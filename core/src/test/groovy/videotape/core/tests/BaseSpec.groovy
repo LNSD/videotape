@@ -26,17 +26,19 @@
 
 package videotape.core.tests
 
+import es.lnsd.videotape.core.config.ConfigLoader
 import es.lnsd.videotape.core.recorder.IRecorder
-import es.lnsd.videotape.core.recorder.Recorder
 import es.lnsd.videotape.core.recorder.RecorderFactory
+import java.nio.file.Paths
 import spock.lang.Specification
 
 class BaseSpec extends Specification {
 
   public static final String VIDEO_FILE_NAME = "video_test"
 
-  protected static File recordVideo() {
-    IRecorder recorder = RecorderFactory.getRecorder(Recorder.conf().recorderType())
+  protected static File recordVideo(type) {
+    IRecorder recorder = RecorderFactory.getRecorder(type, ConfigLoader.load())
+
     recorder.start()
     sleep(5)
     return recorder.stopAndSave(VIDEO_FILE_NAME)
@@ -49,5 +51,10 @@ class BaseSpec extends Specification {
       e.printStackTrace()
     }
   }
+
+  def getProjFilePath(path) {
+    return Paths.get(System.getProperty('root.path'), path).toAbsolutePath().toString()
+  }
+
 }
 

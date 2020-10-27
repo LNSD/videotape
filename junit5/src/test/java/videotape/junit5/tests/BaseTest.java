@@ -38,13 +38,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class BaseTest {
 
   protected void verifyVideoFileExistsWithName(String fileName) {
-    File file = MonteRecorder.getLastVideo();
+    File file = MonteRecorder.lastVideo();
     assertTrue(file.exists());
     assertThat(file.getName(), startsWith(fileName));
   }
 
   protected void verifyVideoFileNotExists() {
-    assertFalse(MonteRecorder.getLastVideo().exists());
+    assertFalse(MonteRecorder.lastVideo().exists());
   }
 
 }

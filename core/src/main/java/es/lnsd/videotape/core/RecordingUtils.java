@@ -27,9 +27,9 @@
 package es.lnsd.videotape.core;
 
 import es.lnsd.videotape.core.annotations.Video;
+import es.lnsd.videotape.core.config.ConfigLoader;
 import es.lnsd.videotape.core.config.RecordingMode;
 import es.lnsd.videotape.core.config.SavingStrategy;
-import es.lnsd.videotape.core.recorder.Recorder;
 import java.io.File;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -57,21 +57,21 @@ public class RecordingUtils {
   }
 
   private static boolean isSaveAllModeEnable() {
-    return Recorder.conf().saveMode().equals(SavingStrategy.ALL);
+    return ConfigLoader.load().saveStrategy().equals(SavingStrategy.ALL);
   }
 
   public static boolean videoEnabled(Video video) {
-    return Recorder.conf().videoEnabled()
+    return ConfigLoader.load().videoEnabled()
         && (isRecordingAllModeEnable() || video != null);
   }
 
   private static boolean isRecordingAllModeEnable() {
-    return Recorder.conf().mode().equals(RecordingMode.ALL);
+    return ConfigLoader.load().mode().equals(RecordingMode.ALL);
   }
 
   public static String getVideoFileName(Video annotation, String methodName) {
-    if (useNameFromVideoAnnotation(annotation) && Recorder.conf().fileName() != null) {
-      return Recorder.conf().fileName();
+    if (useNameFromVideoAnnotation(annotation) && ConfigLoader.load().fileName() != null) {
+      return ConfigLoader.load().fileName();
     } else if (annotation == null) {
       return methodName;
     }

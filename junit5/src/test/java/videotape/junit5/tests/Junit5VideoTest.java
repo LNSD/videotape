@@ -26,7 +26,7 @@
 
 package videotape.junit5.tests;
 
-import es.lnsd.videotape.core.recorder.monte.MonteRecorder;
+import es.lnsd.videotape.core.config.ConfigLoader;
 import es.lnsd.videotape.junit5.Video;
 import es.lnsd.videotape.junit5.VideoExtension;
 import java.io.IOException;
@@ -46,7 +46,7 @@ public class Junit5VideoTest extends BaseTest {
 
   @BeforeEach
   public void setUp() throws IOException {
-    FileUtils.deleteDirectory(MonteRecorder.conf().folder());
+    FileUtils.deleteDirectory(ConfigLoader.load().folder());
   }
 
   @Video

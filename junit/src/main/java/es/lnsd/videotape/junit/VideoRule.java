@@ -28,8 +28,8 @@ package es.lnsd.videotape.junit;
 
 import es.lnsd.videotape.core.RecordingUtils;
 import es.lnsd.videotape.core.annotations.Video;
+import es.lnsd.videotape.core.config.ConfigLoader;
 import es.lnsd.videotape.core.recorder.IRecorder;
-import es.lnsd.videotape.core.recorder.Recorder;
 import es.lnsd.videotape.core.recorder.RecorderFactory;
 import java.io.File;
 import org.junit.AssumptionViolatedException;
@@ -48,7 +48,8 @@ public class VideoRule extends TestWatcher {
     if (videoDisabled(description)) {
       return;
     }
-    recorder = RecorderFactory.getRecorder(Recorder.conf().recorderType());
+
+    recorder = RecorderFactory.getRecorder(ConfigLoader.load());
     recorder.start();
   }
 

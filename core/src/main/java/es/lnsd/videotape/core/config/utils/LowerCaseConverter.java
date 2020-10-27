@@ -24,18 +24,15 @@
  *
  */
 
-package es.lnsd.videotape.core.recorder.ffmpeg;
+package es.lnsd.videotape.core.config.utils;
 
-import es.lnsd.videotape.core.config.VideotapeConfiguration;
+import java.lang.reflect.Method;
+import java.util.Optional;
+import org.aeonbits.owner.Converter;
 
-public class MacFFmpegRecorder extends FFMpegRecorder {
-
-  public MacFFmpegRecorder(VideotapeConfiguration conf) {
-    super(conf);
-  }
-
+public class LowerCaseConverter implements Converter<String> {
   @Override
-  public void start() {
-    wrapper().startFFmpeg("-vsync", "2");
+  public String convert(Method method, String input) {
+    return Optional.ofNullable(input).map(String::toLowerCase).orElse("");
   }
 }
