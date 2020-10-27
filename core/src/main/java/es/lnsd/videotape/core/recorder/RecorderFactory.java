@@ -28,8 +28,8 @@ package es.lnsd.videotape.core.recorder;
 
 import es.lnsd.videotape.core.config.RecorderType;
 import es.lnsd.videotape.core.config.VideotapeConfiguration;
-import es.lnsd.videotape.core.recorder.ffmpeg.FFMpegRecorder;
-import es.lnsd.videotape.core.recorder.ffmpeg.MacFFmpegRecorder;
+import es.lnsd.videotape.core.recorder.ffmpeg.legacy.FFMpegRecorder;
+import es.lnsd.videotape.core.recorder.ffmpeg.legacy.MacFFmpegRecorder;
 import es.lnsd.videotape.core.recorder.monte.MonteRecorder;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -45,7 +45,7 @@ public class RecorderFactory {
 
   public static IRecorder getRecorder(RecorderType recorderType, VideotapeConfiguration conf) {
 
-    if (recorderType == RecorderType.FFMPEG) {
+    if (recorderType == RecorderType.FFMPEG || recorderType == RecorderType.FFMPEG_LEGACY) {
       if (SystemUtils.IS_OS_WINDOWS || SystemUtils.IS_OS_LINUX) {
         return new FFMpegRecorder(conf);
       }
