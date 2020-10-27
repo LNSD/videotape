@@ -24,7 +24,7 @@
  *
  */
 
-package es.lnsd.videotape.core.recorder.ffmpeg;
+package es.lnsd.videotape.core.recorder.ffmpeg.legacy;
 
 import es.lnsd.videotape.core.utils.DateUtils;
 import java.awt.Dimension;

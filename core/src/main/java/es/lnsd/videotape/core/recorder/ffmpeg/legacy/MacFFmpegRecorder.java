@@ -24,52 +24,18 @@
  *
  */
 
-package es.lnsd.videotape.core.recorder.ffmpeg;
+package es.lnsd.videotape.core.recorder.ffmpeg.legacy;
 
 import es.lnsd.videotape.core.config.VideotapeConfiguration;
-import es.lnsd.videotape.core.exception.RecordingException;
-import es.lnsd.videotape.core.recorder.Recorder;
-import java.io.File;
-import java.util.concurrent.TimeUnit;
-import lombok.Getter;
-import lombok.experimental.Accessors;
-import org.awaitility.core.ConditionTimeoutException;
 
-import static org.awaitility.Awaitility.await;
+public class MacFFmpegRecorder extends FFMpegRecorder {
 
-@Accessors(fluent = true)
-public class FFMpegRecorder extends Recorder {
-
-  @Getter
-  private final FFmpegWrapper wrapper;
-
-  public FFMpegRecorder(VideotapeConfiguration conf) {
+  public MacFFmpegRecorder(VideotapeConfiguration conf) {
     super(conf);
-    this.wrapper = new FFmpegWrapper();
   }
 
   @Override
   public void start() {
-    wrapper().startFFmpeg();
-  }
-
-  @Override
-  public File stopAndSave(final String filename) {
-    File file = wrapper().stopFFmpegAndSave(filename);
-
-    waitForVideoCompleted(file);
-    lastVideo(file);
-    return file;
-  }
-
-  private void waitForVideoCompleted(File video) {
-    try {
-      await().atMost(5, TimeUnit.SECONDS)
-          .pollDelay(1, TimeUnit.SECONDS)
-          .ignoreExceptions()
-          .until(video::exists);
-    } catch (ConditionTimeoutException ex) {
-      throw new RecordingException(ex.getMessage());
-    }
+    wrapper().startFFmpeg("-vsync", "2");
   }
 }
