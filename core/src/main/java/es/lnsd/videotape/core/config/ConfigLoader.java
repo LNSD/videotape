@@ -24,37 +24,23 @@
  *
  */
 
-package videotape.core.tests
+package es.lnsd.videotape.core.config;
 
-import es.lnsd.videotape.core.config.RecorderType
-import es.lnsd.videotape.core.config.RecordingMode
-import es.lnsd.videotape.core.config.SavingStrategy
-import es.lnsd.videotape.core.recorder.Recorder
-import spock.lang.Unroll
-import spock.util.environment.RestoreSystemProperties
+import es.lnsd.videotape.core.utils.OSUtils;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import org.aeonbits.owner.ConfigFactory;
 
-import java.awt.*
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class ConfigLoader {
 
-@Unroll
-class VideoConfigurationTest extends BaseSpec {
+  public static VideotapeConfiguration load() {
+    ConfigFactory.setProperty("os.type", OSUtils.getOsType());
+    ConfigFactory.setProperty("conf.file", System.getProperty(
+        "video.configurationFile",
+        "classpath:video.properties"
+    ));
 
-  @RestoreSystemProperties
-  def "default config should be loaded"() {
-    given:
-    System.setProperty('user.dir', '.')
-
-    when:
-    def conf = Recorder.conf()
-
-    then:
-    conf.folder() == new File("./video")
-    conf.frameRate() == 24
-    conf.mode() == RecordingMode.ANNOTATED
-    conf.recorderType() == RecorderType.MONTE
-    conf.saveMode() == SavingStrategy.FAILED_ONLY
-    conf.videoEnabled()
-    conf.screenSize() == Toolkit.defaultToolkit.screenSize
-    !conf.isRemote()
-    conf.fileName() == null
+    return ConfigFactory.create(VideotapeConfiguration.class);
   }
 }

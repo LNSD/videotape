@@ -26,6 +26,7 @@
 
 package es.lnsd.videotape.core.recorder.ffmpeg;
 
+import es.lnsd.videotape.core.config.VideotapeConfiguration;
 import es.lnsd.videotape.core.exception.RecordingException;
 import es.lnsd.videotape.core.recorder.Recorder;
 import java.io.File;
@@ -42,7 +43,8 @@ public class FFMpegRecorder extends Recorder {
   @Getter
   private final FFmpegWrapper wrapper;
 
-  public FFMpegRecorder() {
+  public FFMpegRecorder(VideotapeConfiguration conf) {
+    super(conf);
     this.wrapper = new FFmpegWrapper();
   }
 
@@ -56,7 +58,7 @@ public class FFMpegRecorder extends Recorder {
     File file = wrapper().stopFFmpegAndSave(filename);
 
     waitForVideoCompleted(file);
-    setLastVideo(file);
+    lastVideo(file);
     return file;
   }
 

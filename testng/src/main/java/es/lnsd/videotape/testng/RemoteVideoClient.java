@@ -26,7 +26,7 @@
 
 package es.lnsd.videotape.testng;
 
-import es.lnsd.videotape.core.recorder.Recorder;
+import es.lnsd.videotape.core.config.ConfigLoader;
 import es.lnsd.videotape.testng.utils.RestUtils;
 import java.io.File;
 import java.net.MalformedURLException;
@@ -43,7 +43,7 @@ public class RemoteVideoClient {
   }
 
   public void videoStart() {
-    String folderUrl = encodeFilePath(Recorder.conf().folder());
+    String folderUrl = encodeFilePath(ConfigLoader.load().folder());
     String url = servletUrl + "/start?&folder=" + folderUrl;
     RestUtils.sendRecordingRequest(url);
   }

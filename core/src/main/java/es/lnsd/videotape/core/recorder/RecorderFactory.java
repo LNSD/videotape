@@ -27,6 +27,7 @@
 package es.lnsd.videotape.core.recorder;
 
 import es.lnsd.videotape.core.config.RecorderType;
+import es.lnsd.videotape.core.config.VideotapeConfiguration;
 import es.lnsd.videotape.core.recorder.ffmpeg.FFMpegRecorder;
 import es.lnsd.videotape.core.recorder.ffmpeg.MacFFmpegRecorder;
 import es.lnsd.videotape.core.recorder.monte.MonteRecorder;
@@ -38,21 +39,25 @@ import org.apache.commons.lang3.SystemUtils;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RecorderFactory {
 
-  public static IRecorder getRecorder(RecorderType recorderType) {
+  public static IRecorder getRecorder(VideotapeConfiguration conf) {
+    return getRecorder(conf.recorderType(), conf);
+  }
+
+  public static IRecorder getRecorder(RecorderType recorderType, VideotapeConfiguration conf) {
 
     if (recorderType == RecorderType.FFMPEG) {
       if (SystemUtils.IS_OS_WINDOWS || SystemUtils.IS_OS_LINUX) {
-        return new FFMpegRecorder();
+        return new FFMpegRecorder(conf);
       }
 
       if (SystemUtils.IS_OS_MAC) {
-        return new MacFFmpegRecorder();
+        return new MacFFmpegRecorder(conf);
       }
 
       String os = System.getProperty("os.name", "unknown");
       throw new NotImplementedException(String.format("OS '%s' not supported", os));
     }
 
-    return new MonteRecorder();
+    return new MonteRecorder(conf);
   }
 }

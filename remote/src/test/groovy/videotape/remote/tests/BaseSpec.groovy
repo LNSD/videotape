@@ -26,7 +26,7 @@
 
 package videotape.remote.tests
 
-import es.lnsd.videotape.core.recorder.monte.MonteRecorder
+import es.lnsd.videotape.core.config.ConfigLoader
 import es.lnsd.videotape.remote.StartGrid
 import spock.lang.Specification
 
@@ -47,7 +47,7 @@ abstract class BaseSpec extends Specification {
   }
 
   def getVideoFiles() {
-    MonteRecorder.conf().folder().listFiles()
+    ConfigLoader.load().folder().listFiles()
   }
 
 }

@@ -26,6 +26,7 @@
 
 package es.lnsd.videotape.core.config;
 
+import es.lnsd.videotape.core.config.utils.LowerCaseConverter;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.File;
@@ -37,10 +38,15 @@ import org.aeonbits.owner.Config.Sources;
 @LoadPolicy(LoadType.MERGE)
 @Sources({
     "system:properties",
+    "${conf.file}",
     "classpath:video.properties",
-    "classpath:ffmpeg-${os.type}.properties"
+    "classpath:presets/ffmpeg-${os.type}.properties"
 })
-public interface VideoConfiguration extends Config {
+public interface VideotapeConfiguration extends Config {
+
+  /*
+   * Common
+   */
 
   @Key("video.folder")
   @DefaultValue("${user.dir}/video")
@@ -55,6 +61,24 @@ public interface VideoConfiguration extends Config {
   @DefaultValue("ANNOTATED")
   RecordingMode mode();
 
+  @Key("video.save.mode")
+  @ConverterClass(SavingStrategy.Converter.class)
+  @DefaultValue("FAILED_ONLY")
+  SavingStrategy saveStrategy();
+
+  @Key("video.name")
+  String fileName();
+
+  @Key("video.format")
+  @ConverterClass(LowerCaseConverter.class)
+  @DefaultValue("mp4")
+  String fileFormat();
+
+  @Key("video.recorder.type")
+  @ConverterClass(RecorderType.Converter.class)
+  @DefaultValue("MONTE")
+  RecorderType recorderType();
+
   @Key("video.remote.hub")
   @DefaultValue("http://localhost:4444")
   String remoteUrl();
@@ -63,26 +87,19 @@ public interface VideoConfiguration extends Config {
   @DefaultValue("false")
   Boolean isRemote();
 
-  @Key("video.name")
-  String fileName();
-
-  @Key("video.recorder.type")
-  @ConverterClass(RecorderType.Converter.class)
-  @DefaultValue("MONTE")
-  RecorderType recorderType();
-
-  @Key("video.save.mode")
-  @ConverterClass(SavingStrategy.Converter.class)
-  @DefaultValue("FAILED_ONLY")
-  SavingStrategy saveMode();
-
   @Key("video.frame.rate")
   @DefaultValue("24")
   int frameRate();
 
+  // Dynamic configuration value
   default Dimension screenSize() {
     return Toolkit.getDefaultToolkit().getScreenSize();
   }
+
+
+  /*
+   * FFMPEG specific
+   */
 
   @Key("video.ffmpeg.binary")
   String ffmpegBinary();

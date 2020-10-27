@@ -26,7 +26,10 @@
 
 package es.lnsd.videotape.remote.node;
 
-import es.lnsd.videotape.core.recorder.monte.MonteRecorder;
+import es.lnsd.videotape.core.config.ConfigLoader;
+import es.lnsd.videotape.core.config.RecorderType;
+import es.lnsd.videotape.core.recorder.IRecorder;
+import es.lnsd.videotape.core.recorder.RecorderFactory;
 import es.lnsd.videotape.remote.utils.RestUtils;
 import java.io.File;
 import java.io.IOException;
@@ -39,7 +42,7 @@ import static es.lnsd.videotape.core.RecordingUtils.doVideoProcessing;
 
 public class Video extends HttpServlet {
 
-  private MonteRecorder videoRecorder;
+  private IRecorder videoRecorder;
 
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -61,7 +64,7 @@ public class Video extends HttpServlet {
           if (folder != null) {
             System.setProperty("video.folder", folder);
           }
-          videoRecorder = new MonteRecorder();
+          videoRecorder = RecorderFactory.getRecorder(RecorderType.MONTE, ConfigLoader.load());
           videoRecorder.start();
           RestUtils.updateResponse(resp, HttpStatus.SC_OK, "recording started");
           break;
@@ -98,6 +101,6 @@ public class Video extends HttpServlet {
     if (result == null) {
       return false;
     }
-    return Boolean.valueOf(result);
+    return Boolean.parseBoolean(result);
   }
 }

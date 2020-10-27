@@ -26,29 +26,26 @@
 
 package videotape.core.tests
 
+import es.lnsd.videotape.core.config.ConfigLoader
 import es.lnsd.videotape.core.config.RecorderType
 import es.lnsd.videotape.core.exception.RecordingException
-import es.lnsd.videotape.core.recorder.monte.MonteRecorder
+import es.lnsd.videotape.core.recorder.RecorderFactory
 import spock.lang.Unroll
 import spock.util.environment.RestoreSystemProperties
 
-import static es.lnsd.videotape.core.recorder.Recorder.conf
 import static org.apache.commons.io.FileUtils.ONE_KB
 
 @Unroll
 @RestoreSystemProperties
-class VideoRecorderTest extends BaseSpec {
+class RecorderTest extends BaseSpec {
 
   def setup() {
-    System.setProperty("user.dir", System.getProperty("test.output"))
+    System.setProperty("user.dir", System.getProperty("project.test.output"))
   }
 
   def "should be video file in folder with #type"() {
-    given:
-    System.setProperty("video.recorder.type", type.toString())
-
     when:
-    File video = recordVideo()
+    File video = recordVideo(type)
     then:
     video.exists()
     video.length() >= 10 * ONE_KB
@@ -58,11 +55,8 @@ class VideoRecorderTest extends BaseSpec {
   }
 
   def "should be video in #name folder with #type"() {
-    given:
-    System.setProperty("video.recorder.type", type.toString())
-
     when:
-    File video = recordVideo()
+    File video = recordVideo(type)
     then:
     video.parentFile.name == name
 
@@ -73,23 +67,20 @@ class VideoRecorderTest extends BaseSpec {
 
   def "should be absolute recording path with #type"() {
     given:
-    System.setProperty("video.recorder.type", type.toString())
+    def conf = ConfigLoader.load()
 
     when:
-    File video = recordVideo()
+    File video = recordVideo(type)
     then:
-    video.absolutePath.startsWith(conf().folder().getAbsolutePath() + File.separator + VIDEO_FILE_NAME)
+    video.absolutePath.startsWith(conf.folder().getAbsolutePath() + File.separator + VIDEO_FILE_NAME)
 
     where:
     type << RecorderType.values()
   }
 
   def "should be exact video file name for #type"() {
-    given:
-    System.setProperty("video.recorder.type", type.toString())
-
     when:
-    File video = recordVideo()
+    File video = recordVideo(type)
     then:
     video.exists()
     video.getName().startsWith(VIDEO_FILE_NAME)
@@ -98,9 +89,13 @@ class VideoRecorderTest extends BaseSpec {
     type << RecorderType.values()
   }
 
+  // TODO Improve test case
   def "should be recording exception for Monte if recording was not started"() {
+    given:
+    def conf = ConfigLoader.load()
+
     when:
-    new MonteRecorder().stopAndSave(VIDEO_FILE_NAME)
+    RecorderFactory.getRecorder(RecorderType.MONTE, conf).stopAndSave(VIDEO_FILE_NAME)
     then:
     RecordingException ex = thrown()
     // Alternative syntax: def ex = thrown(InvalidDeviceException)
@@ -109,11 +104,10 @@ class VideoRecorderTest extends BaseSpec {
 
   def "should record video with custom pixel format for #type"() {
     given:
-    System.setProperty("video.recorder.type", type.toString())
     System.setProperty("video.ffmpeg.pixelFormat", "yuv444p")
 
     when:
-    File video = recordVideo()
+    File video = recordVideo(type)
     then:
     video.exists()
 

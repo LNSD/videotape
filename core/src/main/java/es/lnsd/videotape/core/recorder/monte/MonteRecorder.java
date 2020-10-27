@@ -26,7 +26,7 @@
 
 package es.lnsd.videotape.core.recorder.monte;
 
-import es.lnsd.videotape.core.config.VideoConfiguration;
+import es.lnsd.videotape.core.config.VideotapeConfiguration;
 import es.lnsd.videotape.core.exception.RecordingException;
 import es.lnsd.videotape.core.recorder.Recorder;
 import java.awt.Dimension;
@@ -54,10 +54,9 @@ import static org.monte.media.VideoFormatKeys.QualityKey;
 public class MonteRecorder extends Recorder {
 
   private final MonteScreenRecorder screenRecorder;
-  private final VideoConfiguration videoConfiguration;
 
-  public MonteRecorder() {
-    this.videoConfiguration = conf();
+  public MonteRecorder(VideotapeConfiguration conf) {
+    super(conf);
     this.screenRecorder = getScreenRecorder();
   }
 
@@ -68,7 +67,7 @@ public class MonteRecorder extends Recorder {
 
   public File stopAndSave(String filename) {
     File video = writeVideo(filename);
-    setLastVideo(video);
+    lastVideo(video);
     log.info("Recording finished to {}", video.getAbsolutePath());
     return video;
   }
@@ -89,7 +88,7 @@ public class MonteRecorder extends Recorder {
   }
 
   private MonteScreenRecorder getScreenRecorder() {
-    int frameRate = videoConfiguration.frameRate();
+    int frameRate = conf.frameRate();
 
     Format fileFormat = new Format(
         MediaTypeKey, MediaType.VIDEO,
@@ -110,7 +109,7 @@ public class MonteRecorder extends Recorder {
         FrameRateKey, Rational.valueOf(frameRate)
     );
 
-    Dimension screenSize = videoConfiguration.screenSize();
+    Dimension screenSize = conf.screenSize();
     Rectangle captureSize = new Rectangle(0, 0, screenSize.width, screenSize.height);
 
     return MonteScreenRecorderBuilder
@@ -119,7 +118,7 @@ public class MonteRecorder extends Recorder {
         .setRectangle(captureSize)
         .setFileFormat(fileFormat)
         .setScreenFormat(screenFormat)
-        .setFolder(videoConfiguration.folder())
+        .setFolder(conf.folder())
         .setMouseFormat(mouseFormat).build();
   }
 }

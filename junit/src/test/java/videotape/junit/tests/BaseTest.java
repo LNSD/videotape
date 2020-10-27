@@ -37,13 +37,13 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class BaseTest {
 
   protected void verifyVideoFileExistsWithName(String fileName) {
-    File file = MonteRecorder.getLastVideo();
+    File file = MonteRecorder.lastVideo();
     assertTrue(file.exists());
     assertThat(file.getName(), startsWith(fileName));
   }
 
   protected void verifyVideoFileNotExists() {
-    assertFalse(MonteRecorder.getLastVideo().exists());
+    assertFalse(MonteRecorder.lastVideo().exists());
   }
 
 }

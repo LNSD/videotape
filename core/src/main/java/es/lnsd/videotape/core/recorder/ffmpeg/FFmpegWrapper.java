@@ -37,7 +37,7 @@ import java.util.concurrent.CompletableFuture;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.SystemUtils;
 
-import static es.lnsd.videotape.core.recorder.Recorder.conf;
+import static es.lnsd.videotape.core.config.ConfigLoader.load;
 
 @Slf4j
 public class FFmpegWrapper {
@@ -49,7 +49,7 @@ public class FFmpegWrapper {
   private File temporaryFile;
 
   public void startFFmpeg(String... args) {
-    File videoFolder = conf().folder();
+    File videoFolder = load().folder();
     if (!videoFolder.exists()) {
       videoFolder.mkdirs();
     }
@@ -59,11 +59,11 @@ public class FFmpegWrapper {
         FFmpegWrapper.RECORDING_TOOL,
         "-y",
         "-video_size", getScreenSize(),
-        "-f", conf().ffmpegFormat(),
-        "-i", conf().ffmpegDisplay(),
+        "-f", load().ffmpegFormat(),
+        "-i", load().ffmpegDisplay(),
         "-an",
-        "-framerate", String.valueOf(conf().frameRate()),
-        "-pix_fmt", conf().ffmpegPixelFormat(),
+        "-framerate", String.valueOf(load().frameRate()),
+        "-pix_fmt", load().ffmpegPixelFormat(),
         temporaryFile.getAbsolutePath()
     };
 
@@ -102,13 +102,13 @@ public class FFmpegWrapper {
   }
 
   private File getFile(final String filename) {
-    File outputFolder = conf().folder();
+    File outputFolder = load().folder();
     final String name = filename + "_recording_" + DateUtils.formatDate(new Date(), "yyyy_dd_MM_HH_mm_ss");
     return new File(outputFolder, name + EXTENSION);
   }
 
   private String getScreenSize() {
-    Dimension dimension = conf().screenSize();
+    Dimension dimension = load().screenSize();
     return dimension.width + "x" + dimension.height;
   }
 }
