@@ -29,11 +29,13 @@ package es.lnsd.videotape.core.recorder.monte;
 import es.lnsd.videotape.core.config.VideotapeConfiguration;
 import es.lnsd.videotape.core.exception.RecordingException;
 import es.lnsd.videotape.core.recorder.Recorder;
+import java.awt.AWTException;
 import java.awt.Dimension;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.io.File;
+import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
 import org.monte.media.Format;
 import org.monte.media.FormatKeys;
@@ -112,13 +114,17 @@ public class MonteRecorder extends Recorder {
     Dimension screenSize = conf.screenSize();
     Rectangle captureSize = new Rectangle(0, 0, screenSize.width, screenSize.height);
 
-    return MonteScreenRecorderBuilder
-        .builder()
-        .setGraphicConfig(getGraphicConfig())
-        .setRectangle(captureSize)
-        .setFileFormat(fileFormat)
-        .setScreenFormat(screenFormat)
-        .setFolder(conf.folder())
-        .setMouseFormat(mouseFormat).build();
+    try {
+      return MonteScreenRecorder.builder()
+          .graphicsConfiguration(getGraphicConfig())
+          .captureArea(captureSize)
+          .fileFormat(fileFormat)
+          .screenFormat(screenFormat)
+          .mouseFormat(mouseFormat)
+          .outputFolder(conf.folder())
+          .build();
+    } catch (IOException | AWTException e) {
+      throw new RecordingException(e);
+    }
   }
 }

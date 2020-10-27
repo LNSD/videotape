@@ -34,6 +34,7 @@ import java.awt.Rectangle;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import lombok.Builder;
 import org.monte.media.Format;
 import org.monte.media.Registry;
 import org.monte.screenrecorder.ScreenRecorder;
@@ -42,25 +43,26 @@ public class MonteScreenRecorder extends ScreenRecorder {
 
   private String currentTempExtension;
 
-  MonteScreenRecorder(GraphicsConfiguration cfg,
-                      Format fileFormat,
-                      Format screenFormat,
-                      Format mouseFormat,
-                      Format audioFormat,
-                      File folder) throws IOException, AWTException {
+  public MonteScreenRecorder(GraphicsConfiguration cfg,
+                             Format fileFormat,
+                             Format screenFormat,
+                             Format mouseFormat,
+                             Format audioFormat,
+                             File folder) throws IOException, AWTException {
     super(cfg, fileFormat, screenFormat, mouseFormat, audioFormat);
     super.movieFolder = folder;
   }
 
-  MonteScreenRecorder(GraphicsConfiguration cfg,
-                      Rectangle rectangle,
-                      Format fileFormat,
-                      Format screenFormat,
-                      Format mouseFormat,
-                      Format audioFormat,
-                      File folder) throws IOException, AWTException {
-    super(cfg, rectangle, fileFormat, screenFormat, mouseFormat, audioFormat);
-    super.movieFolder = folder;
+  @Builder
+  public MonteScreenRecorder(GraphicsConfiguration graphicsConfiguration,
+                             Rectangle captureArea,
+                             Format fileFormat,
+                             Format screenFormat,
+                             Format mouseFormat,
+                             Format audioFormat,
+                             File outputFolder) throws IOException, AWTException {
+    super(graphicsConfiguration, captureArea, fileFormat, screenFormat, mouseFormat, audioFormat);
+    super.movieFolder = outputFolder;
   }
 
   @Override
@@ -72,11 +74,11 @@ public class MonteScreenRecorder extends ScreenRecorder {
   public File saveAs(String filename) {
     this.stop();
 
-    File tempFile = this.getCreatedMovieFiles().get(0);
-    File destFile = getDestinationFile(filename);
+    File tmpFile = this.getCreatedMovieFiles().get(0);
+    File dstFile = getDestinationFile(filename);
 
-    tempFile.renameTo(destFile);
-    return destFile;
+    tmpFile.renameTo(dstFile);
+    return dstFile;
   }
 
   private File getDestinationFile(String filename) {
