@@ -102,7 +102,7 @@ class RecorderTest extends BaseSpec {
     ex.message == "Video recording was not started"
   }
 
-  def "should record video with custom pixel format for #type"() {
+  def "ffmpeg should record video with custom pixel format for #type"() {
     given:
     System.setProperty("video.ffmpeg.pixelFormat", "yuv444p")
 
@@ -112,6 +112,6 @@ class RecorderTest extends BaseSpec {
     video.exists()
 
     where:
-    type << RecorderType.values()
+    type << [RecorderType.FFMPEG, RecorderType.FFMPEG_LEGACY, RecorderType.FFMPEG_WRAPPER]
   }
 }

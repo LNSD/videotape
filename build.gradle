@@ -53,7 +53,7 @@ subprojects {
 
 testlogger {
   theme 'mocha'
-  slowThreshold 5000
+  slowThreshold 6000
   showFullStackTraces true
 }
 
