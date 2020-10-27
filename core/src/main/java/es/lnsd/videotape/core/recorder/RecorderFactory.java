@@ -28,13 +28,11 @@ package es.lnsd.videotape.core.recorder;
 
 import es.lnsd.videotape.core.config.RecorderType;
 import es.lnsd.videotape.core.config.VideotapeConfiguration;
-import es.lnsd.videotape.core.recorder.ffmpeg.legacy.FFMpegRecorder;
-import es.lnsd.videotape.core.recorder.ffmpeg.legacy.MacFFmpegRecorder;
+import es.lnsd.videotape.core.recorder.ffmpeg.wrapper.FFMpegRecorder;
 import es.lnsd.videotape.core.recorder.monte.MonteRecorder;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.NotImplementedException;
-import org.apache.commons.lang3.SystemUtils;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RecorderFactory {
@@ -45,19 +43,19 @@ public class RecorderFactory {
 
   public static IRecorder getRecorder(RecorderType recorderType, VideotapeConfiguration conf) {
 
-    if (recorderType == RecorderType.FFMPEG || recorderType == RecorderType.FFMPEG_LEGACY) {
-      if (SystemUtils.IS_OS_WINDOWS || SystemUtils.IS_OS_LINUX) {
-        return new FFMpegRecorder(conf);
-      }
-
-      if (SystemUtils.IS_OS_MAC) {
-        return new MacFFmpegRecorder(conf);
-      }
-
-      String os = System.getProperty("os.name", "unknown");
-      throw new NotImplementedException(String.format("OS '%s' not supported", os));
+    if (recorderType == RecorderType.FFMPEG || recorderType == RecorderType.FFMPEG_WRAPPER) {
+      return new FFMpegRecorder(conf);
     }
 
-    return new MonteRecorder(conf);
+    if (recorderType == RecorderType.FFMPEG_LEGACY) {
+      return new es.lnsd.videotape.core.recorder.ffmpeg.legacy.FFMpegRecorder(conf);
+    }
+
+    if (recorderType == RecorderType.MONTE) {
+      return new MonteRecorder(conf);
+    }
+
+    String err = String.format("Recorder '%s' not available", recorderType);
+    throw new NotImplementedException(err);
   }
 }
