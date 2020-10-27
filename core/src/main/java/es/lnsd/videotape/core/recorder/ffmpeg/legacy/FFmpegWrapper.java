@@ -70,6 +70,12 @@ public class FFmpegWrapper {
     List<String> command = new ArrayList<>();
     command.addAll(Arrays.asList(commandsSequence));
     command.addAll(Arrays.asList(args));
+
+    // macOS specific
+    if (SystemUtils.IS_OS_MAC) {
+      command.addAll(Arrays.asList("-vsync", "2"));
+    }
+
     this.future = CompletableFuture.supplyAsync(() -> WrapperUtils.runCommand(command));
   }
 

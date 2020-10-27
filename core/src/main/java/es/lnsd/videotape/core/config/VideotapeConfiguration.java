@@ -30,6 +30,7 @@ import es.lnsd.videotape.core.config.utils.LowerCaseConverter;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.File;
+import java.nio.file.Path;
 import org.aeonbits.owner.Config;
 import org.aeonbits.owner.Config.LoadPolicy;
 import org.aeonbits.owner.Config.LoadType;
@@ -102,7 +103,7 @@ public interface VideotapeConfiguration extends Config {
    */
 
   @Key("video.ffmpeg.binary")
-  String ffmpegBinary();
+  Path ffmpegBinary();
 
   @Key("video.ffmpeg.format")
   String ffmpegFormat();
