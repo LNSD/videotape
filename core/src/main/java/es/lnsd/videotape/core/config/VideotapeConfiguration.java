@@ -53,7 +53,7 @@ public interface VideotapeConfiguration extends Config {
   @DefaultValue("${user.dir}/video")
   File folder();
 
-  @Key("video.enabled")
+  @Key("video.enable")
   @DefaultValue("true")
   Boolean videoEnabled();
 

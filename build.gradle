@@ -28,6 +28,7 @@ plugins {
   id 'idea'
   id 'java'
   id 'com.adarshr.test-logger' version '2.1.1'
+  id 'org.asciidoctor.jvm.convert' version '3.1.0'
 }
 
 allprojects {
@@ -67,3 +68,18 @@ task testReport(type: TestReport) {
 }
 
 test.finalizedBy 'testReport'
+
+asciidoctor {
+  sourceDir file('docs')
+  baseDirFollowsSourceDir()
+  attributes 'endpoint-url': 'http://example.org',
+          'imagesdir': 'images',
+          'source-highlighter': 'highlight.js',
+          'gitrepourl': 'https://github.com/LNSD/videotape',
+          'toc': 'left',
+          'icons': 'font',
+          'setanchors': '',
+          'idprefix': '',
+          'idseparator': '-',
+          'docinfo': 'shared'
+}

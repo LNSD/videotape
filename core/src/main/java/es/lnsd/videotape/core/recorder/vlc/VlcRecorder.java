@@ -24,7 +24,7 @@
  *
  */
 
-package es.lnsd.videotape.core.recorder.vlcj;
+package es.lnsd.videotape.core.recorder.vlc;
 
 import es.lnsd.videotape.core.config.VideotapeConfiguration;
 import es.lnsd.videotape.core.recorder.Recorder;
@@ -39,7 +39,7 @@ import java.util.Date;
 import uk.co.caprica.vlcj.factory.MediaPlayerFactory;
 import uk.co.caprica.vlcj.player.base.MediaPlayer;
 
-public class VlcjRecorder extends Recorder {
+public class VlcRecorder extends Recorder {
 
   private static final String[] OPTIONS = {
       "--quiet",
@@ -60,7 +60,7 @@ public class VlcjRecorder extends Recorder {
   private final MediaPlayer mediaPlayer;
   private Path temporaryFile;
 
-  public VlcjRecorder(VideotapeConfiguration conf) {
+  public VlcRecorder(VideotapeConfiguration conf) {
     super(conf);
     mediaPlayerFactory = new MediaPlayerFactory(OPTIONS);
     mediaPlayer = mediaPlayerFactory.mediaPlayers().newMediaPlayer();

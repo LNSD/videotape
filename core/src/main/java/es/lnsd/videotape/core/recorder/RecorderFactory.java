@@ -30,7 +30,7 @@ import es.lnsd.videotape.core.config.RecorderType;
 import es.lnsd.videotape.core.config.VideotapeConfiguration;
 import es.lnsd.videotape.core.recorder.ffmpeg.wrapper.FFMpegRecorder;
 import es.lnsd.videotape.core.recorder.monte.MonteRecorder;
-import es.lnsd.videotape.core.recorder.vlcj.VlcjRecorder;
+import es.lnsd.videotape.core.recorder.vlc.VlcRecorder;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.NotImplementedException;
@@ -52,8 +52,8 @@ public class RecorderFactory {
       return new es.lnsd.videotape.core.recorder.ffmpeg.legacy.FFMpegRecorder(conf);
     }
 
-    if (recorderType == RecorderType.VLCJ) {
-      return new VlcjRecorder(conf);
+    if (recorderType == RecorderType.VLC) {
+      return new VlcRecorder(conf);
     }
 
     if (recorderType == RecorderType.MONTE) {

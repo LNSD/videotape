@@ -1,0 +1,180 @@
+= Recording backends
+
+The video recording backend to be used by videotape library is specified by the `video.recorder`
+configuration option. Valid values are:
+
+* `MONTE`: Use _Monte Screen Recorder_ java library.
+* `FFMPEG_LEGACY`: Use _FFMPEG_ with the legacy custom command-line wrapper.
+* `FFMPEG_WRAPPER`: Use _FFMPEG_ with the link:https://github.com/kokorin/Jaffree[Jaffree] command-line wrapper.
+* `FFMPEG`: Use _FFPMEG_ as recording backend. Alias to `FFMPEG_LEGACY`.
+* `VLC`: Use _VLC_ (via link:https://github.com/caprica/vlcj[vlcj]]) as recording backend.
+
+
+== Monte screen recorder
+
+[%autowidth, options="header"]
+|===
+|Configuration option | Value
+|_video.recorder_ | `MONTE`
+|===
+
+Recorder based on the link:http://www.randelshofer.ch/monte/[Monte Media Library]. A java library for processing
+media files based on Java Media Framework (JMF).
+
+
+== FFMPEG wrappers
+
+[%autowidth, options="header"]
+|===
+|Configuration option | Value
+|_video.recorder_ | `FFMPEG`
+|===
+
+Recorder backend based on a wrapper around FFMPEG command line interface. This requires the
+ffmpeg command line executable to be available in the system.
+
+=== Dependencies
+
+==== Debian
+
+    sudo apt-get update
+    sudo apt-get install ffmpeg
+
+==== MacOS
+
+    brew install ffmpeg
+
+==== Windows
+
+* Chocolatey:
+
+    choco install ffmpeg
+
+* Scoop:
+
+    scoop install ffmpeg
+
+==== Manual install
+
+Binaries can be found at FFMPEG's project link:https://ffmpeg.org/download.html[downloads page].
+
+=== Configuration options
+
+|===
+|Name |Default value |Description
+
+|_video.ffmpeg.binary_
+|`-`
+|Command line interface binary path. If not set, the wrapper will use the `ffmpeg` binary available in the `PATH`.
+
+|video.ffmpeg.format
+|_OS dependent value (e.g. for MacOS is `avfoundation`)_
+|Input format for input device (see link:https://ffmpeg.org/ffmpeg-devices.html#Input-Devices[ffmpeg's `-f` option]).
+
+|video.ffmpeg.display
+|_OS dependent value (e.g. for MacOS is `1:`)_
+|Input device index (See: link:https://ffmpeg.org/ffmpeg-devices.html#Input-Devices[ffmpeg's `-i` option]).
+
+|video.ffmpeg.pixelFormat
+|`yuv420p`
+|Specific pixel format (See: link:https://ffmpeg.org/ffmpeg-devices.html#Input-Devices[ffmpeg's `-pixel_format` option]). MacOS specific option.
+|===
+
+
+=== FFMPEG wrapper
+
+[%autowidth, options="header"]
+|===
+|Configuration option | Value
+|_video.recorder_ | `FFMPEG_WRAPPER`
+|===
+
+link:https://github.com/kokorin/Jaffree[Jaffree] based FFPMEG command-line interface wrapper.
+
+=== FFMPEG Legacy wrapper
+
+[%autowidth, options="header"]
+|===
+|Configuration option | Value
+|_video.recorder_ | `FFMPEG_LEGACY`
+|===
+
+Custom wrapper around FFMPEG command line interface.
+
+WARNING: The `FFMPEG_LEGACY` recorder will be replaced by `FFMPEG_WRAPPER` in future releases as the
+default FFMPEG recorder.
+
+==== Windows
+
+Added to the FFMPEG installation, the link:{gitrepourl}/raw/main/core/src/main/resources/SendSignalCtrlC.exe[SendSignalCtrlC.exe]
+utility should be downloaded and added to the PATH.
+
+To be check that everything works properly:
+
+* Open `cmd.exe` and perform this command:
+
+  C:\Users\Admin> ffmpeg
+
+  ffmpeg version N-81234-ge1be80a Copyright (c) 2000-2016 the FFmpeg developers
+    built with gcc 5.4.0 (GCC)
+    configuration: --enable-gpl --enable-version3 --disable-w32threads --enable-dxva2 --enable-libmfx --enable-nvenc --enable-avisynth --enable-bzlib --enable-libebur128 --enable-fontconfig --enable-frei0r --enable-gnutls --enable-iconv --enable-libass --enable-libbluray --enable-libbs2b --enable-libcaca --enable-libfreetype --enable-libgme --enable-libgsm --enable-libilbc --enable-libmodplug --enable-libmp3lame --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenjpeg --enable-libopus --enable-librtmp --enable-libschroedinger --enable-libsnappy --enable-libsoxr --enable-libspeex --enable-libtheora --enable-libtwolame --enable-libvidstab --enable-libvo-amrwbenc --enable-libvorbis --enable-libvpx --enable-libwavpack --enable-libwebp --enable-libx264 --enable-libx265 --enable-libxavs --enable-libxvid --enable-libzimg --enable-lzma --enable-decklink --enable-zlib
+    libavutil      55. 28.100 / 55. 28.100
+    libavcodec     57. 51.100 / 57. 51.100
+    libavformat    57. 44.100 / 57. 44.100
+    libavdevice    57.  0.102 / 57.  0.102
+    libavfilter     6. 49.100 /  6. 49.100
+    libswscale      4.  1.100 /  4.  1.100
+    libswresample   2.  1.100 /  2.  1.100
+    libpostproc    54.  0.100 / 54.  0.100
+  Hyper fast Audio and Video encoder
+  usage: ffmpeg [options] [[infile options] -i infile]... {[outfile options] outfile}...
+
+  Use -h to get full help or, even better, run 'man ffmpeg'
+
+* On `cmd.exe` window execute the following command:
+
+  C:\Users\Admin> SendSignalCtrlC
+
+  SendSignalCtrlC <pid>
+    <pid> - send ctrl-c to process <pid> (hex ok)
+
+
+== VLC
+
+[%autowidth, options="header"]
+|===
+|Configuration option | Value
+|_video.recorder_ | `VLC`
+|===
+
+VLC recorder backend is based on link:https://github.com/caprica/vlcj[vlcj], a Java framework that
+hides a lot of the complexities of working with LibVLC.
+
+=== Requirements
+
+VLC backend requires VLC 4.0.0+ (LibVLC) to be available in the system.
+
+=== Dependencies
+
+==== Debian
+
+    sudo apt-get update
+    sudo apt-get install vlc
+
+==== MacOS
+
+    brew cask install vlc
+
+==== Windows
+
+* Chocolatey:
+
+    choco install vlc
+
+* Scoop:
+
+    scoop install vlc
+
+==== Manual install
+
+Follow instructions at VLC's link:https://www.videolan.org/vlc/index.html[official website].

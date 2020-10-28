@@ -36,17 +36,24 @@ And supports the following video recording backends:
 * FFMPEG
 * VLC
 
-== Fork and renaming
+include::_include/integration.adoc[leveloffset=+1]
+
+include::_include/configuration.adoc[leveloffset=+1]
+
+include::_include/backend.adoc[leveloffset=+1]
+
+== Project fork and renaming
 
 This library is a fork of the work of link:https://github.com/SergeyPirogov[Serhii Pirohov] and the differet contributors of the link:https://github.com/SergeyPirogov/video-recorder-java[video-recorder-java]
 project.
 
 == Copyright and license
 
-Copyright (c) 2020 Lorenzo Delgado
-
-Copyright (c) 2016-2019 Serhii Pyrohov and the individual contributors to the original project
+Copyright (C) {localyear} Lorenzo Delgado
 
 Use of this software is granted under the terms of the MIT License.
 
-See the link:LICENSE[LICENSE] file for the full text.
+----
+include::../LICENSE[]
+----
+

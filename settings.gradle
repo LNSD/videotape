@@ -30,4 +30,3 @@ include 'testng'
 include 'junit'
 include 'remote'
 include 'junit5'
-
