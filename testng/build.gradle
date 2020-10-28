@@ -31,7 +31,7 @@ dependencies {
   implementation project(':core')
   implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
   implementation group: 'org.testng', name: 'testng', version: '6.9.9'
-  implementation group: 'org.json', name: 'json', version: '20180813'
+  implementation group: 'org.json', name: 'json', version: '20200518'
   implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
 
   testImplementation project(':remote')
