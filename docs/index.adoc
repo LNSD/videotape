@@ -12,9 +12,9 @@ Currently, supports the following Java test frameworks:
 
 And the following video recording backends:
 
-* Pure java (http://www.randelshofer.ch/monte/[Monte screen recorder])
 * FFMPEG
 * VLC
+* http://www.randelshofer.ch/monte/[Monte screen recorder]
 
 == Test framework integration
 
@@ -30,6 +30,8 @@ This library is a fork of the work of link:https://github.com/SergeyPirogov[Serh
 project.
 
 == Copyright and license
+
+Copyright (c) {localyear} Lorenzo Delgado
 
 Use of this software is granted under the terms of the MIT License.
 
