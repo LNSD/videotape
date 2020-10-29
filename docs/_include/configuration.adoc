@@ -1,17 +1,63 @@
 = Configuration
 
-Some aspects of how videotape library operates can be modified by configuration parameters. This
-configuration can be accomplished by different mechanisms:
+Some aspects of videotape operation can be modified by configuration parameters. And these
+configuration options can be passed through by any of the following mechanisms:
 
-* Declaring some JVM properties at startup (e.g. using java/maven `-Doption.name=value` )
-* Through a configuration file written in XML or properties format.
+* Declaring some JVM properties (e.g. using java/maven `-Doption.name=value` )
+* Through a configuration file written in properties or XML format.
 
 == Options
 
-,===
-Option name, Default value, Description
-,===
+The following options apply to any of the different test framework integrations:
 
+|===
+|Name |Default value |Description
+
+|_video.folder_
+|`${user.dir}/video`
+| Recorded videos output directory.
+
+|_video.enable_
+|`true`
+|Enable/disable video recording.
+
+|_video.mode_
+|`ANNOTATED`
+a|Test cases to be recorded.
+
+* `ANNOTATED`: Record only the execution of test case methods annotated with `@Video`.
+* `ALL`: Record all test cases execution.
+
+|_video.save.mode_
+|`FAILED_ONLY`
+a|Recorded videos keeping strategy.
+
+* `FAILED_ONLY`: Keep only failed test cases videos.
+* `ALL`: Keep all videos.
+
+|_video.name_
+| `-`
+|Fallback video filename. If not set, videos are named after the test method name. This option
+takes effect when `video.mode` option is set to `ALL` or annotation name is not set.
+
+|_video.format_
+|`mp4`
+|Recorded video format.
+
+|_video.recorder.type_
+|`MONTE`
+a|Recorder backend.
+
+ * `MONTE`,
+ * `FFMPEG`, `FFMPEG_LEGACY`, `FFMPEG_WRAPPER`
+ * `VLCJ`
+
+|_video.frame.rate_
+|`24`
+|Video recording frame rate.
+|===
+
+For recorder backend specific options see the _Recording Backends_ section.
 
 == Specifying a configuration file
 
@@ -22,7 +68,7 @@ java runtime at start up, just before starting the tests' execution.
 [source,xml]
 ----
 <systemPropertyVariables>
-  <video.configurationFile>file:${project.basedir}/example-video-conf.properties</video.configurationFile>
+  <video.configurationFile>file:${project.basedir}/example.properties</video.configurationFile>
 </systemPropertyVariables>
 ----
 
@@ -30,37 +76,24 @@ java runtime at start up, just before starting the tests' execution.
 [source,groovy]
 ----
 test {
-  systemProperty 'video.configurationFile', "file:${projectDir}/example-video-conf.properties"
+  systemProperty 'video.configurationFile', "file:${projectDir}/example.properties"
 }
 ----
 
 Library's configuration management is based on link:http://owner.aeonbits.org/docs/welcome/[owner]
-library. This allows to load configuration from different sources:
+library. This allows videotape library to load configuration from different sources:
 
   * From filesystem: `file:${user.dir}/example-conf.properties`
   * From classpath: `classpath:example-conf.properties`
   * From a URL: `http://example.com/example-conf.properties`
 
-== Lookup sequence
+== Options lookup sequence
 
-Configuration loader looks up for parameters following this order:
+Configuration loader looks up for option values following this order:
 
 . First, _ConfigurationLoader_ looks up JVM's system properties for the configuration entry.
 . If no JVM's system property is set, it will inspect the `video.configurationFile` system property
 and it will load the configuration entry.
-. If entry is not set in `video.configurationFile` the _ConfigurationLoader_ will look for
+. If entry is not set in `video.configurationFile`, the _ConfigurationLoader_ will look for
 `video.properties` file in the classpath.
-. If no `video.properties` file could be located the _ConfigurationLoader_ will use default values.
-
-----
-video.folder=${user home}/video
-video.enabled=false               // default true
-video.mode=ALL                    // default ANNOTATED
-recorder.type=FFMPEG              // default MONTE
-video.save.mode=ALL               // default FAILED_ONLY
-video.frame.rate=1                // default 24
-ffmpeg.format=x11grab             // default value depends on OS platform
-ffmpeg.display=:0.0               // default value depends on OS platform
-ffmpeg.pixelFormat=yuv444p        // default yuv420p (for Apple QuickTime player compatibility)
-----
-
+. If no `video.properties` file could be located, the _ConfigurationLoader_ will use default values.
