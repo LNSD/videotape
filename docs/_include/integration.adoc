@@ -1,29 +1,34 @@
+= Test framework integration
+
 Videotape library integrates with some of the most popular JVM test frameworks:
 
-* JUnit (4 and 5)
+* JUnit
+* JUnit 5
 * TestNG
-* Spock
-* Selenium Grid
 
-== JUnit Rule
+== JUnit
 
-=== Junit
+Videotape basically integrates with JUnit test framework as a rule:
+
+=== Dependencies
 
 .pom.xml
-[source,xml]
+[source,xml,subs="attributes,verbatim"]
 ----
 <dependency>
   <groupId>es.lnsd.videotape</groupId>
   <artifactId>videotape-junit</artifactId>
-  <version>LATEST</version>
+  <version>{revnumber}</version>
 </dependency>
 ----
 
 .build.gradle
-[source,groovy]
+[source,groovy,subs="attributes,verbatim"]
 ----
-testImplementation group: 'es.lnsd.videotape', name: 'videotape-junit', version: '1.+'
+testImplementation group: 'es.lnsd.videotape', name: 'videotape-junit', version: '{revnumber}'
 ----
+
+=== Example code
 
 .JUnitVideoTest.java
 [source,java]
@@ -56,20 +61,34 @@ public class JUnitVideoTest {
 }
 ----
 
-=== JUnit 5
+== JUnit 5
+
+=== Dependencies
+
+.pom.xml
+[source,xml,subs="attributes,verbatim"]
+----
+<dependency>
+  <groupId>es.lnsd.videotape</groupId>
+  <artifactId>videotape-junit5</artifactId>
+  <version>{revnumber}</version>
+</dependency>
+----
 
 .build.gradle
-[source,groovy]
+[source,groovy,subs="attributes,verbatim"]
 ----
-testImplementation group: 'es.lnsd.videotape', name: 'videotape-junit5', version: '1.+'
+testImplementation group: 'es.lnsd.videotape', name: 'videotape-junit5', version: '{revnumber}'
 ----
 
-.JUnitVideoTest.java
+=== Example code
+
+.JUnit5VideoTest.java
 [source,java]
 ----
 import es.lnsd.videotape.junit5.Video;
 
-public class JUnitVideoTest {
+public class JUnit5VideoTest {
 
     @Test
     @Video
@@ -87,27 +106,27 @@ public class JUnitVideoTest {
 }
 ----
 
-== Spock
-
-TODO
-
 == TestNG
 
+=== Dependencies
+
 .pom.xml
-[source,xml]
+[source,xml,subs="attributes,verbatim"]
 ----
 <dependency>
   <groupId>es.lnsd.videotape</groupId>
   <artifactId>videotape-testng</artifactId>
-  <version>LATEST</version>
+  <version>{revnumber}</version>
 </dependency>
 ----
 
 .build.gradle
-[source,groovy]
+[source,groovy,subs="attributes,verbatim"]
 ----
-testImplementation group: 'es.lnsd.videotape', name: 'videotape-testng', version: '1.+'
+testImplementation group: 'es.lnsd.videotape', name: 'videotape-testng', version: '{revnumber}'
 ----
+
+=== Example code
 
 .TestNgVideoTest.java
 [source,java]
@@ -137,7 +156,3 @@ public class TestNgVideoTest {
     }
 }
 ----
-
-== Selenium Grid
-
-TODO

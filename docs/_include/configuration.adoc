@@ -1,0 +1,66 @@
+= Configuration
+
+Some aspects of how videotape library operates can be modified by configuration parameters. This
+configuration can be accomplished by different mechanisms:
+
+* Declaring some JVM properties at startup (e.g. using java/maven `-Doption.name=value` )
+* Through a configuration file written in XML or properties format.
+
+== Options
+
+,===
+Option name, Default value, Description
+,===
+
+
+== Specifying a configuration file
+
+In order to specify a custom configuration file the `video.configurationFile` should be provided to
+java runtime at start up, just before starting the tests' execution.
+
+.pom.xml
+[source,xml]
+----
+<systemPropertyVariables>
+  <video.configurationFile>file:${project.basedir}/example-video-conf.properties</video.configurationFile>
+</systemPropertyVariables>
+----
+
+.gradle.build
+[source,groovy]
+----
+test {
+  systemProperty 'video.configurationFile', "file:${projectDir}/example-video-conf.properties"
+}
+----
+
+Library's configuration management is based on link:http://owner.aeonbits.org/docs/welcome/[owner]
+library. This allows to load configuration from different sources:
+
+  * From filesystem: `file:${user.dir}/example-conf.properties`
+  * From classpath: `classpath:example-conf.properties`
+  * From a URL: `http://example.com/example-conf.properties`
+
+== Lookup sequence
+
+Configuration loader looks up for parameters following this order:
+
+. First, _ConfigurationLoader_ looks up JVM's system properties for the configuration entry.
+. If no JVM's system property is set, it will inspect the `video.configurationFile` system property
+and it will load the configuration entry.
+. If entry is not set in `video.configurationFile` the _ConfigurationLoader_ will look for
+`video.properties` file in the classpath.
+. If no `video.properties` file could be located the _ConfigurationLoader_ will use default values.
+
+----
+video.folder=${user home}/video
+video.enabled=false               // default true
+video.mode=ALL                    // default ANNOTATED
+recorder.type=FFMPEG              // default MONTE
+video.save.mode=ALL               // default FAILED_ONLY
+video.frame.rate=1                // default 24
+ffmpeg.format=x11grab             // default value depends on OS platform
+ffmpeg.display=:0.0               // default value depends on OS platform
+ffmpeg.pixelFormat=yuv444p        // default yuv420p (for Apple QuickTime player compatibility)
+----
+

@@ -1,14 +1,12 @@
-= Videotape 📼
-:includedir: _include
+= 📼 Videotape
 
 A library that allows you to record videos of your UI tests by just putting a couple of annotations.
 
 Currently, supports the following Java test frameworks:
 
 * JUnit
+* JUnit 5
 * TestNG
-* Spock
-* Selenium Grid
 
 And the following video recording backends:
 
@@ -16,13 +14,11 @@ And the following video recording backends:
 * VLC
 * http://www.randelshofer.ch/monte/[Monte screen recorder]
 
-== Test framework integration
+include::_include/integration.adoc[leveloffset=+1]
 
-include::{includedir}/integration.adoc
+include::_include/configuration.adoc[leveloffset=+1]
 
-== Recording backends
-
-include::{includedir}/backends.adoc
+include::_include/backends.adoc[leveloffset=+1]
 
 == Project fork and renaming
 
@@ -31,7 +27,7 @@ project.
 
 == Copyright and license
 
-Copyright (c) {localyear} Lorenzo Delgado
+Copyright (C) {localyear} Lorenzo Delgado
 
 Use of this software is granted under the terms of the MIT License.
 
