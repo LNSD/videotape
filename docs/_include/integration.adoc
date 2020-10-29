@@ -1,4 +1,4 @@
-= Test framework integration
+= Test frameworks
 
 Videotape library integrates with some of the most popular JVM test frameworks:
 
