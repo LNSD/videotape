@@ -24,21 +24,25 @@
  *
  */
 
-package videotape.junit5.tests;
+package videotape.junit.tests;
 
-import es.lnsd.videotape.junit5.Video;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import es.lnsd.videotape.core.recorder.monte.MonteRecorder;
+import java.io.File;
 
+import static junit.framework.TestCase.assertFalse;
+import static junit.framework.TestCase.assertTrue;
+import static org.hamcrest.CoreMatchers.startsWith;
+import static org.hamcrest.MatcherAssert.assertThat;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-@Video
-@Tag("Flaky")
-@Test
-public @interface FlakyTest {
+public class BaseTestSuite {
+
+  protected void verifyVideoFileExistsWithName(String fileName) {
+    File file = MonteRecorder.lastVideo();
+    assertTrue(file.exists());
+    assertThat(file.getName(), startsWith(fileName));
+  }
+
+  protected void verifyVideoFileNotExists() {
+    assertFalse(MonteRecorder.lastVideo().exists());
+  }
 }

@@ -61,8 +61,3 @@ dependencies {
 processResources {
   exclude 'SendSignalCtrlC.exe'
 }
-
-test {
-  systemProperty 'root.path', rootProject.projectDir.absolutePath
-  systemProperty 'project.test.output', "${buildDir}/test-results/"
-}

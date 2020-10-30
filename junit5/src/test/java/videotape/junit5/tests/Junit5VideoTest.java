@@ -31,6 +31,8 @@ import es.lnsd.videotape.junit5.Video;
 import es.lnsd.videotape.junit5.VideoExtension;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,12 +42,12 @@ import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
-
-public class Junit5VideoTest extends BaseTest {
-
+class Junit5VideoTest extends BaseTest {
 
   @BeforeEach
   public void setUp() throws IOException {
+    Path outputDir = Paths.get(System.getProperty("project.test.resultsdir"), "video");
+    System.setProperty("video.folder", outputDir.toString());
     FileUtils.deleteDirectory(ConfigLoader.load().folder());
   }
 

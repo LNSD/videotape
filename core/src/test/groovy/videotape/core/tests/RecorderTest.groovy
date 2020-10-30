@@ -40,7 +40,7 @@ import static org.apache.commons.io.FileUtils.ONE_KB
 class RecorderTest extends BaseSpec {
 
   def setup() {
-    System.setProperty("user.dir", System.getProperty("project.test.output"))
+    System.setProperty("user.dir", System.getProperty("project.test.resultsdir"))
   }
 
   def "should be video file in folder with #type"() {

@@ -28,23 +28,40 @@ package videotape.junit.tests;
 
 import es.lnsd.videotape.core.annotations.Video;
 import es.lnsd.videotape.core.config.ConfigLoader;
-import es.lnsd.videotape.core.recorder.monte.MonteRecorder;
 import es.lnsd.videotape.junit.VideoRule;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.contrib.java.lang.system.RestoreSystemProperties;
+import org.junit.rules.TestRule;
 import videotape.junit.tests.util.TestUtils;
 
 import static junit.framework.Assert.fail;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
-import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class JUnitVideoRecording {
+public class JUnitVideoRecordingTest extends BaseTestSuite {
+
+  @Rule
+  public final TestRule restoreSystemProperties = new RestoreSystemProperties();
+
+  @Before
+  public void setUp() throws IOException {
+    Path outputDir = Paths.get(System.getProperty("project.test.resultsdir"), "video");
+    System.setProperty("video.folder", outputDir.toString());
+    FileUtils.deleteDirectory(ConfigLoader.load().folder());
+  }
+
+  @After
+  public void tearDown() throws Exception {
+    setUp();
+  }
 
   @Video
   public void failWithVideo() throws Exception {
@@ -95,25 +112,5 @@ public class JUnitVideoRecording {
     VideoRule videoRule = new VideoRule();
     TestUtils.runRule(videoRule, this, methodName);
     verifyVideoFileNotExists();
-  }
-
-  @Before
-  public void setUp() throws IOException {
-    FileUtils.deleteDirectory(ConfigLoader.load().folder());
-  }
-
-  @After
-  public void tearDown() throws Exception {
-    setUp();
-  }
-
-  private void verifyVideoFileExistsWithName(String fileName) {
-    File file = MonteRecorder.lastVideo();
-    assertTrue(file.exists());
-    assertThat(file.getName(), startsWith(fileName));
-  }
-
-  private void verifyVideoFileNotExists() {
-    assertFalse(MonteRecorder.lastVideo().exists());
   }
 }

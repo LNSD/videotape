@@ -49,6 +49,10 @@ subprojects {
   test {
     // Disable the test report for the individual test task
     reports.html.enabled = false
+
+    // Provide project paths to tests
+    systemProperty 'root.path', rootProject.projectDir.absolutePath
+    systemProperty 'project.test.resultsdir', "${buildDir}/test-results/"
   }
 }
 

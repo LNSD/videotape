@@ -35,6 +35,7 @@ dependencies {
   testImplementation group: 'org.projectlombok', name: 'lombok', version: '1.18.16'
   testAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.16'
 
+  testImplementation group: 'com.github.stefanbirkner', name: 'system-rules', version: '1.19.0'
   testImplementation group: 'org.mockito', name: 'mockito-core', version: '2.25.1', transitive: false
   testImplementation group: 'org.hamcrest', name: 'hamcrest-all', version: '1.3'
   testImplementation group: 'commons-io', name: 'commons-io', version: '2.8.0'
@@ -43,8 +44,4 @@ dependencies {
   testRuntimeOnly group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.13.3'
   testRuntimeOnly group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.13.3'
   testRuntimeOnly group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.13.3'
-}
-
-test {
-  ignoreFailures = true
 }
