@@ -27,93 +27,115 @@
 package videotape.remote.tests
 
 import es.lnsd.videotape.core.config.ConfigLoader
+import es.lnsd.videotape.core.recorder.AbstractRecorder
+import es.lnsd.videotape.remote.StartGrid
+import es.lnsd.videotape.remote.client.Client
 import spock.lang.IgnoreIf
 import spock.lang.Shared
-import spock.lang.Stepwise
+import spock.lang.Specification
+import spock.util.environment.RestoreSystemProperties
 
-import static es.lnsd.videotape.remote.utils.RestUtils.sendRecordingRequest
+@RestoreSystemProperties
+class NodeServletTest extends Specification {
 
-@Stepwise
-class NodeServletTest extends BaseSpec {
+  def setupSpec() {
+    System.setProperty("user.dir", System.getProperty('project.test.resultsdir'))
+    StartGrid.main([] as String[])
+  }
 
   @Shared
-  String VIDEO_FOLDER = System.getProperty('user.dir')
-
-  def setup() {
-    ConfigLoader.load().folder().deleteDir()
-  }
+  def client = Client.get("http://localhost:5555/extra/Video")
+  @Shared
+  def OUTPUT_DIR = System.getProperty('project.test.resultsdir')
 
   def "shouldBeOkMessageOnStartWithoutParameters"() {
     when:
-    def message = sendRecordingRequest(NODE_SERVLET_URL + "/start")
+    def message = client.start()
     then:
     message == "recording started"
+
+    cleanup:
+    client.stop()
   }
 
-  def "shouldBeOkMessageOnStartWitParameters"() {
+  def "shouldBeOkMessageOnStartWithParameters"() {
     when:
-    def message = sendRecordingRequest(NODE_SERVLET_URL + "/start?name=video")
+    def message = client.sendRequest("/start?name=video")
     then:
     message == "recording started"
+
+    cleanup:
+    client.stop()
   }
 
   def "shouldBeFileNameInMessageOnStop"() {
+    given:
+    client.sendRequest("/start?name=video")
+
     when:
-    def message = sendRecordingRequest(NODE_SERVLET_URL + "/stop")
+    def message = client.stop()
     then:
-    message.startsWith "recording stopped ${VIDEO_FOLDER}${File.separator}video${File.separator}video_recording"
+    message.startsWith "recording stopped"
+    message.contains "${OUTPUT_DIR}/video/video"
   }
 
   def "shouldBeDefaultFileName"() {
     given:
-    sendRecordingRequest(NODE_SERVLET_URL + "/start")
+    client.start()
+
     when:
-    def message = sendRecordingRequest(NODE_SERVLET_URL + "/stop")
+    def message = client.stop()
     then:
-    message.startsWith "recording stopped ${VIDEO_FOLDER}${File.separator}video${File.separator}video_recording"
+    message.startsWith "recording stopped"
+    message.contains "${OUTPUT_DIR}/video/video"
   }
 
   @IgnoreIf({ os.windows })
   def "shouldBeFileNameAsNameRequestParameter"() {
-    def name = "video"
     given:
-    sendRecordingRequest(NODE_SERVLET_URL + "/start?name=$name")
+    def name = "video"
+    client.sendRequest("/start?name=$name")
+
     when:
-    def message = sendRecordingRequest(NODE_SERVLET_URL + "/stop")
+    def message = client.stop()
     then:
-    message.startsWith "recording stopped ${VIDEO_FOLDER}${File.separator}video${File.separator}video_recording"
-    getVideoFiles().first().name =~ name
+    message.startsWith "recording stopped"
+    message.contains "${OUTPUT_DIR}/video/video"
+    ConfigLoader.load().folder().toFile().listFiles().first().name =~ name
   }
 
   @IgnoreIf({ os.windows })
   def "shouldNotCreateVideoFileIfSuccessTestKeyPassed"() {
     given:
-    sendRecordingRequest(NODE_SERVLET_URL + "/start")
+    client.start()
+
     when:
-    sendRecordingRequest(NODE_SERVLET_URL + "/stop?result=true")
+    client.sendRequest("/stop?result=true")
     then:
-    getVideoFiles().size() == 0
+    !AbstractRecorder.lastVideo().exists()
   }
 
   @IgnoreIf({ os.windows })
   def "shouldCreateVideoFileIfFailTestKeyPassed"() {
     given:
-    sendRecordingRequest(NODE_SERVLET_URL + "/start")
+    client.start()
+
     when:
-    sendRecordingRequest(NODE_SERVLET_URL + "/stop?result=false")
+    client.sendRequest("/stop?result=false")
     then:
-    getVideoFiles().size() == 1
+    AbstractRecorder.lastVideo().exists()
   }
 
-
   def "shouldBeCustomFolderForVideo"() {
-    def folderName = "video"
     given:
-    sendRecordingRequest(NODE_SERVLET_URL + "/start?name=video&folder=${folderName}")
+    def folderName = "${OUTPUT_DIR}/recordings"
+    client.sendRequest("/start?name=video&folder=${folderName}")
+
     when:
-    def message = sendRecordingRequest(NODE_SERVLET_URL + "/stop?result=false")
+    def message = client.sendRequest("/stop?result=false")
     then:
-    message.startsWith "recording stopped ${VIDEO_FOLDER}${File.separator}${folderName}${File.separator}video_recording"
+    message.startsWith "recording stopped"
+    message.contains "${OUTPUT_DIR}/recordings/video"
   }
 }
 

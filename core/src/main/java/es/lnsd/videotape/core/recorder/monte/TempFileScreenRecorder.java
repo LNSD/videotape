@@ -24,52 +24,51 @@
  *
  */
 
-package es.lnsd.videotape.core.recorder.ffmpeg.legacy;
+package es.lnsd.videotape.core.recorder.monte;
 
-import es.lnsd.videotape.core.config.VideotapeConfiguration;
 import es.lnsd.videotape.core.exception.RecordingException;
-import es.lnsd.videotape.core.recorder.Recorder;
+import java.awt.AWTException;
+import java.awt.GraphicsConfiguration;
+import java.awt.Rectangle;
 import java.io.File;
-import java.util.concurrent.TimeUnit;
-import lombok.Getter;
-import lombok.experimental.Accessors;
-import org.awaitility.core.ConditionTimeoutException;
+import java.io.IOException;
+import lombok.Builder;
+import org.monte.media.Format;
+import org.monte.screenrecorder.ScreenRecorder;
 
-import static org.awaitility.Awaitility.await;
+public class TempFileScreenRecorder extends ScreenRecorder {
 
-@Accessors(fluent = true)
-public class FFMpegRecorder extends Recorder {
+  private File tempFile;
 
-  @Getter
-  private final FFmpegWrapper wrapper;
-
-  public FFMpegRecorder(VideotapeConfiguration conf) {
-    super(conf);
-    this.wrapper = new FFmpegWrapper();
+  @Builder
+  public TempFileScreenRecorder(GraphicsConfiguration graphicsConfiguration,
+                                Rectangle captureArea,
+                                Format fileFormat,
+                                Format screenFormat,
+                                Format mouseFormat,
+                                Format audioFormat) throws IOException, AWTException {
+    super(graphicsConfiguration, captureArea, fileFormat, screenFormat, mouseFormat, audioFormat, null);
   }
 
   @Override
-  public void start() {
-    wrapper().startFFmpeg();
+  protected File createMovieFile(Format fileFormat) {
+    return tempFile;
   }
 
-  @Override
-  public File stopAndSave(final String filename) {
-    File file = wrapper().stopFFmpegAndSave(filename);
-
-    waitForVideoCompleted(file);
-    lastVideo(file);
-    return file;
-  }
-
-  private void waitForVideoCompleted(File video) {
+  public void startRecording(File tempFile) {
+    this.tempFile = tempFile;
     try {
-      await().atMost(5, TimeUnit.SECONDS)
-          .pollDelay(1, TimeUnit.SECONDS)
-          .ignoreExceptions()
-          .until(video::exists);
-    } catch (ConditionTimeoutException ex) {
-      throw new RecordingException(ex.getMessage());
+      super.start();
+    } catch (IOException e) {
+      throw new RecordingException(e);
+    }
+  }
+
+  public void stopRecording() {
+    try {
+      super.stop();
+    } catch (IOException e) {
+      throw new RecordingException(e);
     }
   }
 }

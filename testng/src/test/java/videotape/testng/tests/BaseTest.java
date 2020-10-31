@@ -58,7 +58,7 @@ public class BaseTest {
   }
 
   private static void deleteVideoDir() throws IOException {
-    FileUtils.deleteDirectory(ConfigLoader.load().folder());
+    FileUtils.deleteDirectory(ConfigLoader.load().folder().toFile());
   }
 
   @BeforeMethod

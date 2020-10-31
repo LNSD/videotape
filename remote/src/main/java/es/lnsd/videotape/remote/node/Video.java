@@ -28,11 +28,15 @@ package es.lnsd.videotape.remote.node;
 
 import es.lnsd.videotape.core.config.ConfigLoader;
 import es.lnsd.videotape.core.config.RecorderType;
-import es.lnsd.videotape.core.recorder.IRecorder;
+import es.lnsd.videotape.core.config.VConfig;
+import es.lnsd.videotape.core.recorder.Recorder;
 import es.lnsd.videotape.core.recorder.RecorderFactory;
 import es.lnsd.videotape.remote.utils.RestUtils;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,7 +46,7 @@ import static es.lnsd.videotape.core.RecordingUtils.doVideoProcessing;
 
 public class Video extends HttpServlet {
 
-  private IRecorder videoRecorder;
+  private Recorder videoRecorder;
 
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -60,47 +64,53 @@ public class Video extends HttpServlet {
     try {
       switch (path) {
         case "/start":
+          Map<String, String> conf = new HashMap<>();
+
+          // Set recording folder
           String folder = req.getParameter("folder");
           if (folder != null) {
-            System.setProperty("video.folder", folder);
+            conf.put("video.folder", folder);
           }
-          videoRecorder = RecorderFactory.getRecorder(RecorderType.MONTE, ConfigLoader.load());
+
+          VConfig vConf = ConfigLoader.load(conf);
+
+          // Start recording
+          videoRecorder = RecorderFactory.getRecorder(RecorderType.MONTE, vConf);
           videoRecorder.start();
+
           RestUtils.updateResponse(resp, HttpStatus.SC_OK, "recording started");
-          break;
+          return;
+
         case "/stop":
           if (videoRecorder == null) {
             RestUtils.updateResponse(resp, HttpStatus.SC_METHOD_NOT_ALLOWED, "Wrong Action! First, start recording");
-            break;
+            return;
           }
+
           String fileName = getFileName(req);
           File video = videoRecorder.stopAndSave(fileName);
           String filePath = doVideoProcessing(isSuccess(req), video);
           RestUtils.updateResponse(resp, HttpStatus.SC_OK, "recording stopped " + filePath);
-          break;
+          return;
+
         default:
-          RestUtils.updateResponse(resp, HttpStatus.SC_NOT_FOUND,
-              "Wrong Action! Method not supported");
+          RestUtils.updateResponse(resp, HttpStatus.SC_NOT_FOUND, "Wrong Action! Method not supported");
       }
     } catch (Exception ex) {
       RestUtils.updateResponse(resp, HttpStatus.SC_INTERNAL_SERVER_ERROR,
-          "Internal server error occurred while trying to start / stop recording: " + ex);
+          "Internal server error occurred while trying to start/stop recording: " + ex);
     }
   }
 
   private String getFileName(HttpServletRequest req) {
-    String name = req.getParameter("name");
-    if (name == null || "null".equalsIgnoreCase(name)) {
-      return "video";
-    }
-    return name;
+    return Optional.ofNullable(req.getParameter("name"))
+        .filter(name -> !name.equalsIgnoreCase("null"))
+        .orElse("video");
   }
 
   private boolean isSuccess(HttpServletRequest req) {
-    String result = req.getParameter("result");
-    if (result == null) {
-      return false;
-    }
-    return Boolean.parseBoolean(result);
+    return Optional.ofNullable(req.getParameter("result"))
+        .map(Boolean::parseBoolean)
+        .orElse(false);
   }
 }

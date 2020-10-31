@@ -28,8 +28,11 @@ package videotape.core.tests
 
 import es.lnsd.videotape.core.config.ConfigLoader
 import es.lnsd.videotape.core.config.RecorderType
+import es.lnsd.videotape.core.config.VConfig
 import es.lnsd.videotape.core.exception.RecordingException
+import es.lnsd.videotape.core.recorder.Recorder
 import es.lnsd.videotape.core.recorder.RecorderFactory
+import spock.lang.Shared
 import spock.lang.Unroll
 import spock.util.environment.RestoreSystemProperties
 
@@ -39,67 +42,44 @@ import static org.apache.commons.io.FileUtils.ONE_KB
 @RestoreSystemProperties
 class RecorderTest extends BaseSpec {
 
+  @Shared
+  String VIDEO_FOLDER = System.getProperty("project.test.resultsdir") + "/video"
+
   def setup() {
     System.setProperty("user.dir", System.getProperty("project.test.resultsdir"))
-  }
-
-  def "should be video file in folder with #type"() {
-    when:
-    File video = recordVideo(type)
-    then:
-    video.exists()
-    video.length() >= 10 * ONE_KB
-
-    where:
-    type << RecorderType.values()
   }
 
   def "should be video in #name folder with #type"() {
     when:
     File video = recordVideo(type)
     then:
-    video.parentFile.name == name
+    verifyAll {
+      video.exists()
+      video.parentFile.absolutePath == VIDEO_FOLDER
+      video.name.startsWith(VIDEO_FILE_NAME)
+      video.length() >= 10 * ONE_KB
+    }
 
     where:
     name = "video"
     type << RecorderType.values()
   }
 
-  def "should be absolute recording path with #type"() {
+  def "should be RecordingException if recording was not started for #type"() {
     given:
-    def conf = ConfigLoader.load()
+    VConfig conf = ConfigLoader.load()
+    Recorder recorder = RecorderFactory.getRecorder(type as RecorderType, conf)
 
     when:
-    File video = recordVideo(type)
-    then:
-    video.absolutePath.startsWith(conf.folder().getAbsolutePath() + File.separator + VIDEO_FILE_NAME)
-
-    where:
-    type << RecorderType.values()
-  }
-
-  def "should be exact video file name for #type"() {
-    when:
-    File video = recordVideo(type)
-    then:
-    video.exists()
-    video.getName().startsWith(VIDEO_FILE_NAME)
-
-    where:
-    type << RecorderType.values()
-  }
-
-  // TODO Improve test case
-  def "should be recording exception for Monte if recording was not started"() {
-    given:
-    def conf = ConfigLoader.load()
-
-    when:
-    RecorderFactory.getRecorder(RecorderType.MONTE, conf).stopAndSave(VIDEO_FILE_NAME)
+    recordVideo(type)
+    recorder.stopAndSave(VIDEO_FILE_NAME)
     then:
     RecordingException ex = thrown()
     // Alternative syntax: def ex = thrown(InvalidDeviceException)
     ex.message == "Video recording was not started"
+
+    where:
+    type << RecorderType.values()
   }
 
   def "ffmpeg should record video with custom pixel format for #type"() {
@@ -109,9 +89,13 @@ class RecorderTest extends BaseSpec {
     when:
     File video = recordVideo(type)
     then:
-    video.exists()
-
+    verifyAll {
+      video.exists()
+      video.parent == VIDEO_FOLDER
+      video.name.startsWith(VIDEO_FILE_NAME)
+      video.length() >= 10 * ONE_KB
+    }
     where:
-    type << [RecorderType.FFMPEG, RecorderType.FFMPEG_LEGACY, RecorderType.FFMPEG_WRAPPER]
+    type << [RecorderType.FFMPEG, RecorderType.FFMPEG_WRAPPER]
   }
 }

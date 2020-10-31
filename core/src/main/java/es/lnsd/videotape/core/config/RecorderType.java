@@ -30,7 +30,7 @@ import java.lang.reflect.Method;
 
 public enum RecorderType {
   MONTE,
-  FFMPEG, FFMPEG_LEGACY, FFMPEG_WRAPPER,
+  FFMPEG, FFMPEG_WRAPPER,
   VLC;
 
   public static class Converter implements org.aeonbits.owner.Converter<RecorderType> {

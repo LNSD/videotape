@@ -27,14 +27,14 @@
 package es.lnsd.videotape.testng;
 
 import es.lnsd.videotape.core.config.ConfigLoader;
-import es.lnsd.videotape.core.recorder.IRecorder;
+import es.lnsd.videotape.core.recorder.Recorder;
 import es.lnsd.videotape.core.recorder.RecorderFactory;
 
 import static es.lnsd.videotape.core.RecordingUtils.doVideoProcessing;
 
 public class LocalVideoRecordClient implements IVideoRecordClient {
 
-  private IRecorder recorder;
+  private Recorder recorder;
 
   @Override
   public void start() {

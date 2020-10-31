@@ -27,7 +27,7 @@
 package es.lnsd.videotape.testng;
 
 import es.lnsd.videotape.core.config.ConfigLoader;
-import es.lnsd.videotape.core.recorder.IRecorder;
+import es.lnsd.videotape.core.recorder.Recorder;
 import es.lnsd.videotape.core.recorder.RecorderFactory;
 import es.lnsd.videotape.testng.utils.MethodUtils;
 import java.io.File;
@@ -41,7 +41,7 @@ import static es.lnsd.videotape.testng.utils.ListenerUtils.getFileName;
 
 public class VideoListener extends TestNgListener {
 
-  private IRecorder recorder;
+  private Recorder recorder;
 
   @Override
   public void onTestStart(ITestResult result) {

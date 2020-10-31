@@ -27,7 +27,7 @@
 package es.lnsd.videotape.junit5;
 
 import es.lnsd.videotape.core.config.ConfigLoader;
-import es.lnsd.videotape.core.recorder.IRecorder;
+import es.lnsd.videotape.core.recorder.Recorder;
 import es.lnsd.videotape.core.recorder.RecorderFactory;
 import java.io.File;
 import java.lang.reflect.Method;
@@ -42,7 +42,7 @@ import static es.lnsd.videotape.core.RecordingUtils.videoEnabled;
 
 public class VideoExtension implements BeforeTestExecutionCallback, AfterTestExecutionCallback {
 
-  private IRecorder recorder;
+  private Recorder recorder;
 
   private static String getVideoFileName(Video annotation, String methodName) {
     if (annotation == null) {

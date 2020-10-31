@@ -43,7 +43,7 @@ public class RemoteVideoClient {
   }
 
   public void videoStart() {
-    String folderUrl = encodeFilePath(ConfigLoader.load().folder());
+    String folderUrl = encodeFilePath(ConfigLoader.load().folder().toFile());
     String url = servletUrl + "/start?&folder=" + folderUrl;
     RestUtils.sendRecordingRequest(url);
   }

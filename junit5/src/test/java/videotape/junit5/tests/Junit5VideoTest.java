@@ -48,7 +48,7 @@ class Junit5VideoTest extends BaseTest {
   public void setUp() throws IOException {
     Path outputDir = Paths.get(System.getProperty("project.test.resultsdir"), "video");
     System.setProperty("video.folder", outputDir.toString());
-    FileUtils.deleteDirectory(ConfigLoader.load().folder());
+    FileUtils.deleteDirectory(ConfigLoader.load().folder().toFile());
   }
 
   @Video

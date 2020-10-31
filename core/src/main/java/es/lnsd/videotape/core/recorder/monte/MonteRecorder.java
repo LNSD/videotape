@@ -26,17 +26,21 @@
 
 package es.lnsd.videotape.core.recorder.monte;
 
-import es.lnsd.videotape.core.config.VideotapeConfiguration;
+import es.lnsd.videotape.core.config.VConfig;
 import es.lnsd.videotape.core.exception.RecordingException;
-import es.lnsd.videotape.core.recorder.Recorder;
+import es.lnsd.videotape.core.recorder.AbstractRecorder;
 import java.awt.AWTException;
 import java.awt.Dimension;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import lombok.Getter;
+import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FilenameUtils;
 import org.monte.media.Format;
 import org.monte.media.FormatKeys;
 import org.monte.media.math.Rational;
@@ -53,33 +57,33 @@ import static org.monte.media.VideoFormatKeys.ENCODING_AVI_TECHSMITH_SCREEN_CAPT
 import static org.monte.media.VideoFormatKeys.QualityKey;
 
 @Slf4j
-public class MonteRecorder extends Recorder {
+@Accessors(fluent = true)
+public class MonteRecorder extends AbstractRecorder {
 
-  private final MonteScreenRecorder screenRecorder;
+  @Getter(lazy = true)
+  private final TempFileScreenRecorder screenRecorder = getWrapperInstance(conf);
 
-  public MonteRecorder(VideotapeConfiguration conf) {
+  public MonteRecorder(VConfig conf) {
     super(conf);
-    this.screenRecorder = getScreenRecorder();
   }
 
-  public void start() {
-    screenRecorder.start();
-    log.info("Recording started");
-  }
-
-  public File stopAndSave(String filename) {
-    File video = writeVideo(filename);
-    lastVideo(video);
-    log.info("Recording finished to {}", video.getAbsolutePath());
-    return video;
-  }
-
-  private File writeVideo(String filename) {
-    try {
-      return screenRecorder.saveAs(filename);
-    } catch (IndexOutOfBoundsException ex) {
-      throw new RecordingException("Video recording was not started");
+  @Override
+  public void startRecording(Path tempFile) {
+    if (!conf.fileFormat().equalsIgnoreCase("avi")) {
+      String format = conf.fileFormat();
+      log.warn("Format '{}' not supported by Monte Recorder. Using 'avi' format.", format);
     }
+
+    // Monte Screen recorder only supports AVi recoding format
+    String file = FilenameUtils.removeExtension(tempFile.getFileName().toString()) + ".avi";
+    this.tempFile = Paths.get(tempFile.getParent().toAbsolutePath().toString(), file);
+
+    screenRecorder().startRecording(this.tempFile.toFile());
+  }
+
+  @Override
+  protected void stopRecording() {
+    screenRecorder().stopRecording();
   }
 
   private GraphicsConfiguration getGraphicConfig() {
@@ -89,7 +93,7 @@ public class MonteRecorder extends Recorder {
         .getDefaultConfiguration();
   }
 
-  private MonteScreenRecorder getScreenRecorder() {
+  private TempFileScreenRecorder getWrapperInstance(VConfig conf) {
     int frameRate = conf.frameRate();
 
     Format fileFormat = new Format(
@@ -115,13 +119,12 @@ public class MonteRecorder extends Recorder {
     Rectangle captureSize = new Rectangle(0, 0, screenSize.width, screenSize.height);
 
     try {
-      return MonteScreenRecorder.builder()
+      return TempFileScreenRecorder.builder()
           .graphicsConfiguration(getGraphicConfig())
           .captureArea(captureSize)
           .fileFormat(fileFormat)
           .screenFormat(screenFormat)
           .mouseFormat(mouseFormat)
-          .outputFolder(conf.folder())
           .build();
     } catch (IOException | AWTException e) {
       throw new RecordingException(e);

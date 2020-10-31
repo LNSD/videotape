@@ -52,7 +52,7 @@ subprojects {
 
     // Provide project paths to tests
     systemProperty 'root.path', rootProject.projectDir.absolutePath
-    systemProperty 'project.test.resultsdir', "${buildDir}/test-results/"
+    systemProperty 'project.test.resultsdir', "${buildDir}/test-results"
   }
 }
 

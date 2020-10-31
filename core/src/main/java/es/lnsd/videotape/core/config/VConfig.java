@@ -26,10 +26,10 @@
 
 package es.lnsd.videotape.core.config;
 
+import es.lnsd.videotape.core.config.utils.DirectoryValidatorConverter;
 import es.lnsd.videotape.core.config.utils.LowerCaseConverter;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.io.File;
 import java.nio.file.Path;
 import org.aeonbits.owner.Config;
 import org.aeonbits.owner.Config.LoadPolicy;
@@ -43,15 +43,16 @@ import org.aeonbits.owner.Config.Sources;
     "classpath:video.properties",
     "classpath:presets/ffmpeg-${os.type}.properties"
 })
-public interface VideotapeConfiguration extends Config {
+public interface VConfig extends Config {
 
   /*
    * Common
    */
 
   @Key("video.folder")
+  @ConverterClass(DirectoryValidatorConverter.class)
   @DefaultValue("${user.dir}/video")
-  File folder();
+  Path folder();
 
   @Key("video.enable")
   @DefaultValue("true")

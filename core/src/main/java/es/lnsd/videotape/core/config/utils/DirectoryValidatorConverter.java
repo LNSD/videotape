@@ -24,34 +24,23 @@
  *
  */
 
-package es.lnsd.videotape.core.config;
+package es.lnsd.videotape.core.config.utils;
 
-import es.lnsd.videotape.core.utils.OSUtils;
-import java.util.Map;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-import org.aeonbits.owner.ConfigFactory;
+import es.lnsd.videotape.core.exception.InvalidConfigurationValueException;
+import java.lang.reflect.Method;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import org.aeonbits.owner.Converter;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ConfigLoader {
+public class DirectoryValidatorConverter implements Converter<Path> {
+  @Override
+  public Path convert(Method method, String input) {
+    Path dir = Paths.get(input);
 
-  public static VConfig load() {
-    ConfigFactory.setProperty("os.type", OSUtils.getOsType());
-    ConfigFactory.setProperty("conf.file", System.getProperty(
-        "video.configurationFile",
-        "classpath:video.properties"
-    ));
+    if (dir.toFile().exists() && !dir.toFile().isDirectory()) {
+      throw new InvalidConfigurationValueException(method, input);
+    }
 
-    return ConfigFactory.create(VConfig.class);
-  }
-
-  public static VConfig load(Map conf) {
-    ConfigFactory.setProperty("os.type", OSUtils.getOsType());
-    ConfigFactory.setProperty("conf.file", System.getProperty(
-        "video.configurationFile",
-        "classpath:video.properties"
-    ));
-
-    return ConfigFactory.create(VConfig.class, conf);
+    return dir;
   }
 }

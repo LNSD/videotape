@@ -27,7 +27,7 @@
 package es.lnsd.videotape.core.recorder;
 
 import es.lnsd.videotape.core.config.RecorderType;
-import es.lnsd.videotape.core.config.VideotapeConfiguration;
+import es.lnsd.videotape.core.config.VConfig;
 import es.lnsd.videotape.core.recorder.ffmpeg.wrapper.FFMpegRecorder;
 import es.lnsd.videotape.core.recorder.monte.MonteRecorder;
 import es.lnsd.videotape.core.recorder.vlc.VlcRecorder;
@@ -38,18 +38,14 @@ import org.apache.commons.lang3.NotImplementedException;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RecorderFactory {
 
-  public static IRecorder getRecorder(VideotapeConfiguration conf) {
+  public static Recorder getRecorder(VConfig conf) {
     return getRecorder(conf.recorderType(), conf);
   }
 
-  public static IRecorder getRecorder(RecorderType recorderType, VideotapeConfiguration conf) {
+  public static Recorder getRecorder(RecorderType recorderType, VConfig conf) {
 
     if (recorderType == RecorderType.FFMPEG || recorderType == RecorderType.FFMPEG_WRAPPER) {
       return new FFMpegRecorder(conf);
-    }
-
-    if (recorderType == RecorderType.FFMPEG_LEGACY) {
-      return new es.lnsd.videotape.core.recorder.ffmpeg.legacy.FFMpegRecorder(conf);
     }
 
     if (recorderType == RecorderType.VLC) {

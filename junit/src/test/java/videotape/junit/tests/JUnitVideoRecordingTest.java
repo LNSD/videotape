@@ -42,9 +42,6 @@ import org.junit.rules.TestRule;
 import videotape.junit.tests.util.TestUtils;
 
 import static junit.framework.Assert.fail;
-import static junit.framework.TestCase.assertFalse;
-import static junit.framework.TestCase.assertTrue;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 public class JUnitVideoRecordingTest extends BaseTestSuite {
 
@@ -55,7 +52,7 @@ public class JUnitVideoRecordingTest extends BaseTestSuite {
   public void setUp() throws IOException {
     Path outputDir = Paths.get(System.getProperty("project.test.resultsdir"), "video");
     System.setProperty("video.folder", outputDir.toString());
-    FileUtils.deleteDirectory(ConfigLoader.load().folder());
+    FileUtils.deleteDirectory(ConfigLoader.load().folder().toFile());
   }
 
   @After

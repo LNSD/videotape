@@ -24,30 +24,39 @@
  *
  */
 
-package videotape.remote.tests
+package es.lnsd.videotape.remote.client;
 
-import es.lnsd.videotape.core.config.ConfigLoader
-import es.lnsd.videotape.remote.StartGrid
-import spock.lang.Specification
+import es.lnsd.videotape.remote.utils.RestUtils;
+import java.net.MalformedURLException;
+import java.net.URL;
+import lombok.NonNull;
 
-import static java.lang.Thread.sleep
+public class Client {
 
-abstract class BaseSpec extends Specification {
+  private final URL baseUrl;
 
-  final String NODE_SERVLET_URL = "http://localhost:5555/extra/Video"
-
-  def setupSpec() {
-    runGrid()
+  private Client(URL baseUrl) {
+    this.baseUrl = baseUrl;
   }
 
-  def runGrid() {
-    String[] args = []
-    StartGrid.main(args)
-    sleep(1000)
+  public static Client get(@NonNull String baseUrl) throws MalformedURLException {
+    return new Client(new URL(baseUrl));
   }
 
-  def getVideoFiles() {
-    ConfigLoader.load().folder().listFiles()
+  public static Client get(@NonNull URL baseUrl) {
+    return new Client(baseUrl);
   }
 
+  public String sendRequest(String query) {
+    String reqUrl = baseUrl.toString() + query;
+    return RestUtils.sendRecordingRequest(reqUrl);
+  }
+
+  public String start() {
+    return sendRequest("/start");
+  }
+
+  public String stop() {
+    return sendRequest("/stop");
+  }
 }

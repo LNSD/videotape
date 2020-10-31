@@ -26,20 +26,13 @@
 
 package es.lnsd.videotape.core.recorder.vlc;
 
-import es.lnsd.videotape.core.config.VideotapeConfiguration;
-import es.lnsd.videotape.core.recorder.Recorder;
-import es.lnsd.videotape.core.utils.DateUtils;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
+import es.lnsd.videotape.core.config.VConfig;
+import es.lnsd.videotape.core.recorder.AbstractRecorder;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.Date;
 import uk.co.caprica.vlcj.factory.MediaPlayerFactory;
 import uk.co.caprica.vlcj.player.base.MediaPlayer;
 
-public class VlcRecorder extends Recorder {
+public class VlcRecorder extends AbstractRecorder {
 
   private static final String[] OPTIONS = {
       "--quiet",
@@ -55,60 +48,26 @@ public class VlcRecorder extends Recorder {
 
   private static final int caching = 500;
   private static final int bits = 4096;
-  private static final String TEM_FILE_NAME = "temporary";
-  private final MediaPlayerFactory mediaPlayerFactory;
-  private final MediaPlayer mediaPlayer;
-  private Path temporaryFile;
+  private MediaPlayerFactory mediaPlayerFactory;
+  private MediaPlayer mediaPlayer;
 
-  public VlcRecorder(VideotapeConfiguration conf) {
+  public VlcRecorder(VConfig conf) {
     super(conf);
-    mediaPlayerFactory = new MediaPlayerFactory(OPTIONS);
-    mediaPlayer = mediaPlayerFactory.mediaPlayers().newMediaPlayer();
   }
 
   @Override
-  public void start() {
-    // Create destination folder if does not exist
-    if (!conf.folder().isDirectory()) {
-      File videoFolder = conf.folder();
-      if (!videoFolder.exists()) {
-        videoFolder.mkdirs();
-      }
-    }
-    temporaryFile = getTemporaryFile();
+  public void startRecording(Path temporaryFile) {
+    mediaPlayerFactory = new MediaPlayerFactory(OPTIONS);
+    mediaPlayer = mediaPlayerFactory.mediaPlayers().newMediaPlayer();
+
     mediaPlayer.media().play(MRL, getMediaOptions(temporaryFile));
   }
 
   @Override
-  public File stopAndSave(String filename) {
+  protected void stopRecording() {
     mediaPlayer.controls().stop();
     mediaPlayer.release();
     mediaPlayerFactory.release();
-
-    Path dstFile = getResultFile(filename);
-
-    try {
-      Files.move(temporaryFile, dstFile, StandardCopyOption.REPLACE_EXISTING);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-
-    lastVideo(dstFile.toFile());
-    return dstFile.toFile();
-  }
-
-  public Path getTemporaryFile() {
-    return getFile(TEM_FILE_NAME);
-  }
-
-  public Path getResultFile(String name) {
-    return getFile(name);
-  }
-
-  private Path getFile(final String filename) {
-    String outputFolder = conf.folder().getAbsolutePath();
-    final String name = filename + "_recording_" + DateUtils.formatDate(new Date(), "yyyy_dd_MM_HH_mm_ss");
-    return Paths.get(outputFolder, name + "." + conf.fileFormat());
   }
 
   private String[] getMediaOptions(Path destination) {

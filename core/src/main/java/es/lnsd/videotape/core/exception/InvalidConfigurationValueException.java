@@ -24,13 +24,21 @@
  *
  */
 
-package es.lnsd.videotape.core.recorder;
+package es.lnsd.videotape.core.exception;
 
-import java.io.File;
+import java.lang.reflect.Method;
+import org.aeonbits.owner.Config;
 
-public interface IRecorder {
+public class InvalidConfigurationValueException extends ConfigurationException {
+  private static final String ERROR_MESSAGE = "Invalid configuration value for option '%s': %s";
 
-  void start();
+  public InvalidConfigurationValueException(Method method, String input) {
+    super(formatErrorMessage(method, input));
+  }
 
-  File stopAndSave(String filename);
+  private static String formatErrorMessage(Method method, String value) {
+    String confOptionKey = method.getAnnotation(Config.Key.class).value();
+    return String.format(ERROR_MESSAGE, confOptionKey, value);
+  }
+
 }

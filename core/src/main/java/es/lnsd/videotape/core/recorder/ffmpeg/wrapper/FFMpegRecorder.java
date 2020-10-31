@@ -29,46 +29,23 @@ package es.lnsd.videotape.core.recorder.ffmpeg.wrapper;
 import com.github.kokorin.jaffree.ffmpeg.FFmpeg;
 import com.github.kokorin.jaffree.ffmpeg.FFmpegResultFuture;
 import com.github.kokorin.jaffree.ffmpeg.UrlOutput;
-import es.lnsd.videotape.core.config.VideotapeConfiguration;
+import es.lnsd.videotape.core.config.VConfig;
 import es.lnsd.videotape.core.exception.RecordingException;
-import es.lnsd.videotape.core.recorder.Recorder;
-import es.lnsd.videotape.core.utils.DateUtils;
+import es.lnsd.videotape.core.recorder.AbstractRecorder;
 import java.awt.Dimension;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.Date;
 import java.util.concurrent.ExecutionException;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Accessors(fluent = true)
-public class FFMpegRecorder extends Recorder {
+public class FFMpegRecorder extends AbstractRecorder {
 
-  private static final String TEM_FILE_NAME = "temporary";
-  private Path temporaryFile;
   private FFmpegResultFuture future;
 
-  public FFMpegRecorder(VideotapeConfiguration conf) {
+  public FFMpegRecorder(VConfig conf) {
     super(conf);
-  }
-
-  public Path getTemporaryFile() {
-    return getFile(TEM_FILE_NAME);
-  }
-
-  public Path getResultFile(String name) {
-    return getFile(name);
-  }
-
-  private Path getFile(final String filename) {
-    String outputFolder = conf.folder().getAbsolutePath();
-    final String name = filename + "_recording_" + DateUtils.formatDate(new Date(), "yyyy_dd_MM_HH_mm_ss");
-    return Paths.get(outputFolder, name + "." + conf.fileFormat());
   }
 
   private String getScreenSize() {
@@ -77,16 +54,7 @@ public class FFMpegRecorder extends Recorder {
   }
 
   @Override
-  public void start() {
-    // Create destination folder if does not exist
-    if (!conf.folder().isDirectory()) {
-      File videoFolder = conf.folder();
-      if (!videoFolder.exists()) {
-        videoFolder.mkdirs();
-      }
-    }
-
-    temporaryFile = getTemporaryFile();
+  public void startRecording(Path temporaryFile) {
     future = FFmpeg.atPath(conf.ffmpegBinary())
         .addInput(ScreenCaptureInput
             .captureDesktop(conf.ffmpegDisplay())
@@ -105,7 +73,7 @@ public class FFMpegRecorder extends Recorder {
   }
 
   @Override
-  public File stopAndSave(final String filename) {
+  protected void stopRecording() {
     future.graceStop();
 
     try {
@@ -115,16 +83,5 @@ public class FFMpegRecorder extends Recorder {
     } catch (ExecutionException e) {
       throw new RecordingException("An error occurred during FFMPEG subprocess execution", e);
     }
-
-    Path dstFile = getResultFile(filename);
-
-    try {
-      Files.move(temporaryFile, dstFile, StandardCopyOption.REPLACE_EXISTING);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-
-    lastVideo(dstFile.toFile());
-    return dstFile.toFile();
   }
 }

@@ -26,21 +26,11 @@
 
 package es.lnsd.videotape.core.recorder;
 
-import es.lnsd.videotape.core.config.VideotapeConfiguration;
 import java.io.File;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 
-@Accessors(fluent = true)
-public abstract class Recorder implements IRecorder {
+public interface Recorder {
 
-  @Getter
-  @Setter
-  private static File lastVideo;
-  protected final VideotapeConfiguration conf;
+  void start();
 
-  public Recorder(VideotapeConfiguration conf) {
-    this.conf = conf;
-  }
+  File stopAndSave(String filename);
 }

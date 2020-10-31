@@ -2,7 +2,6 @@
 
 A library that allows you to record videos of your UI tests by just putting a couple of annotations.
 
-.ExampleTest.java
 [source,java]
 ----
 @Listeners(UniversalVideoListener.class)

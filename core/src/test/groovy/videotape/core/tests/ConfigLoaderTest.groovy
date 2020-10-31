@@ -31,6 +31,7 @@ import es.lnsd.videotape.core.config.RecorderType
 import es.lnsd.videotape.core.config.RecordingMode
 import es.lnsd.videotape.core.config.SavingStrategy
 import java.awt.Toolkit
+import java.nio.file.Paths
 import spock.util.environment.RestoreSystemProperties
 
 @RestoreSystemProperties
@@ -44,7 +45,7 @@ class ConfigLoaderTest extends BaseSpec {
     def conf = ConfigLoader.load()
 
     then:
-    conf.folder() == new File("./video")
+    conf.folder() == Paths.get("./video")
     conf.frameRate() == 24
     conf.mode() == RecordingMode.ANNOTATED
     conf.recorderType() == RecorderType.MONTE
