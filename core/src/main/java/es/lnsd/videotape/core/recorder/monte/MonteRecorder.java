@@ -26,7 +26,7 @@
 
 package es.lnsd.videotape.core.recorder.monte;
 
-import es.lnsd.videotape.core.config.VConfig;
+import es.lnsd.videotape.core.config.Configuration;
 import es.lnsd.videotape.core.exception.RecordingException;
 import es.lnsd.videotape.core.recorder.AbstractRecorder;
 import java.awt.AWTException;
@@ -63,7 +63,7 @@ public class MonteRecorder extends AbstractRecorder {
   @Getter(lazy = true)
   private final TempFileScreenRecorder screenRecorder = getWrapperInstance(conf);
 
-  public MonteRecorder(VConfig conf) {
+  public MonteRecorder(Configuration conf) {
     super(conf);
   }
 
@@ -93,7 +93,7 @@ public class MonteRecorder extends AbstractRecorder {
         .getDefaultConfiguration();
   }
 
-  private TempFileScreenRecorder getWrapperInstance(VConfig conf) {
+  private TempFileScreenRecorder getWrapperInstance(Configuration conf) {
     int frameRate = conf.frameRate();
 
     Format fileFormat = new Format(

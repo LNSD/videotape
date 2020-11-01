@@ -43,7 +43,7 @@ import org.aeonbits.owner.Config.Sources;
     "classpath:video.properties",
     "classpath:presets/ffmpeg-${os.type}.properties"
 })
-public interface VConfig extends Config {
+public interface Configuration extends Config {
 
   /*
    * Common
@@ -98,6 +98,17 @@ public interface VConfig extends Config {
     return Toolkit.getDefaultToolkit().getScreenSize();
   }
 
+  /**
+   * Derivative values
+   */
+
+  default boolean isRecordingAllModeEnabled() {
+    return mode().equals(RecordingMode.ALL);
+  }
+
+  default boolean isSaveAllStrategyEnabled() {
+    return saveStrategy().equals(SavingStrategy.ALL);
+  }
 
   /*
    * FFMPEG specific

@@ -27,8 +27,8 @@
 package videotape.core.tests
 
 import es.lnsd.videotape.core.config.ConfigLoader
+import es.lnsd.videotape.core.config.Configuration
 import es.lnsd.videotape.core.config.RecorderType
-import es.lnsd.videotape.core.config.VConfig
 import es.lnsd.videotape.core.exception.RecordingException
 import es.lnsd.videotape.core.recorder.Recorder
 import es.lnsd.videotape.core.recorder.RecorderFactory
@@ -61,13 +61,12 @@ class RecorderTest extends BaseSpec {
     }
 
     where:
-    name = "video"
     type << RecorderType.values()
   }
 
   def "should be RecordingException if recording was not started for #type"() {
     given:
-    VConfig conf = ConfigLoader.load()
+    Configuration conf = ConfigLoader.load()
     Recorder recorder = RecorderFactory.getRecorder(type as RecorderType, conf)
 
     when:

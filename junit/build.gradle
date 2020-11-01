@@ -24,6 +24,10 @@
  *
  */
 
+plugins {
+  id 'groovy'
+}
+
 dependencies {
   implementation 'org.projectlombok:lombok:1.18.16'
   annotationProcessor 'org.projectlombok:lombok:1.18.16'
@@ -32,14 +36,17 @@ dependencies {
   implementation 'junit:junit:4.13.1'
   implementation 'org.slf4j:slf4j-api:1.7.30'
 
-  testImplementation 'org.projectlombok:lombok:1.18.16'
-  testAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
-
-  testImplementation 'com.github.stefanbirkner:system-rules:1.19.0'
-  testImplementation 'org.mockito:mockito-core:2.25.1'
+  testImplementation project(':test-common')
+  testImplementation 'org.spockframework:spock-core:1.3-groovy-2.5'
+  testImplementation 'org.codehaus.groovy:groovy-all:2.5.13'
   testImplementation 'commons-io:commons-io:2.8.0'
+  testImplementation 'com.squareup:javapoet:1.13.0'
 
   testRuntimeOnly 'org.apache.logging.log4j:log4j-slf4j-impl:2.13.3'
   testRuntimeOnly 'org.apache.logging.log4j:log4j-api:2.13.3'
   testRuntimeOnly 'org.apache.logging.log4j:log4j-core:2.13.3'
+}
+
+test {
+  exclude "videotape/junit/suites/**"
 }

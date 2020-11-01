@@ -35,23 +35,23 @@ import org.aeonbits.owner.ConfigFactory;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ConfigLoader {
 
-  public static VConfig load() {
+  public static Configuration load() {
     ConfigFactory.setProperty("os.type", OSUtils.getOsType());
     ConfigFactory.setProperty("conf.file", System.getProperty(
         "video.configurationFile",
         "classpath:video.properties"
     ));
 
-    return ConfigFactory.create(VConfig.class);
+    return ConfigFactory.create(Configuration.class);
   }
 
-  public static VConfig load(Map conf) {
+  public static Configuration load(Map conf) {
     ConfigFactory.setProperty("os.type", OSUtils.getOsType());
     ConfigFactory.setProperty("conf.file", System.getProperty(
         "video.configurationFile",
         "classpath:video.properties"
     ));
 
-    return ConfigFactory.create(VConfig.class, conf);
+    return ConfigFactory.create(Configuration.class, conf);
   }
 }

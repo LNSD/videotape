@@ -24,25 +24,23 @@
  *
  */
 
-package videotape.junit.tests;
+package es.lnsd.videotape.common
 
-import es.lnsd.videotape.core.recorder.monte.MonteRecorder;
-import java.io.File;
+import com.squareup.javapoet.JavaFile
+import net.openhft.compiler.CachedCompiler
+import net.openhft.compiler.CompilerUtils
+import org.jetbrains.annotations.Nullable
 
-import static junit.framework.TestCase.assertFalse;
-import static junit.framework.TestCase.assertTrue;
-import static org.hamcrest.CoreMatchers.startsWith;
-import static org.hamcrest.MatcherAssert.assertThat;
+class JavaPoetExtension {
 
-public class BaseTestSuite {
-
-  protected void verifyVideoFileExistsWithName(String fileName) {
-    File file = MonteRecorder.lastVideo();
-    assertTrue(file.exists());
-    assertThat(file.getName(), startsWith(fileName));
+  static Class compile(final JavaFile file) {
+    String name = "${file.packageName}.${file.typeSpec.name}"
+    return CompilerUtils.CACHED_COMPILER.loadFromJava(name, file.toString())
   }
 
-  protected void verifyVideoFileNotExists() {
-    assertFalse(MonteRecorder.lastVideo().exists());
+  static Class compile(final JavaFile file, @Nullable File srcDir, @Nullable File classDir) {
+    String name = "${file.packageName}.${file.typeSpec.name}"
+    CachedCompiler compiler = new CachedCompiler(srcDir, classDir)
+    return compiler.loadFromJava(name, file.toString())
   }
 }

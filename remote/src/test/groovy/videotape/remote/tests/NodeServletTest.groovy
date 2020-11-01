@@ -39,8 +39,11 @@ import spock.util.environment.RestoreSystemProperties
 class NodeServletTest extends Specification {
 
   def setupSpec() {
-    System.setProperty("user.dir", System.getProperty('project.test.resultsdir'))
     StartGrid.main([] as String[])
+  }
+
+  def setup() {
+    System.setProperty("user.dir", System.getProperty('project.test.resultsdir'))
   }
 
   @Shared

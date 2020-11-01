@@ -26,7 +26,7 @@
 
 package es.lnsd.videotape.core.recorder;
 
-import es.lnsd.videotape.core.config.VConfig;
+import es.lnsd.videotape.core.config.Configuration;
 import es.lnsd.videotape.core.exception.RecordingException;
 import java.io.File;
 import java.io.IOException;
@@ -54,11 +54,11 @@ public abstract class AbstractRecorder implements Recorder {
   @Getter
   @Setter
   private static File lastVideo;
-  protected final VConfig conf;
+  protected final Configuration conf;
   protected Path tempFile;
   protected Date tempFileTimestamp;
 
-  public AbstractRecorder(VConfig conf) {
+  public AbstractRecorder(Configuration conf) {
     this.conf = conf;
   }
 

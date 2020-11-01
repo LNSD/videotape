@@ -27,8 +27,8 @@
 package es.lnsd.videotape.remote.node;
 
 import es.lnsd.videotape.core.config.ConfigLoader;
+import es.lnsd.videotape.core.config.Configuration;
 import es.lnsd.videotape.core.config.RecorderType;
-import es.lnsd.videotape.core.config.VConfig;
 import es.lnsd.videotape.core.recorder.Recorder;
 import es.lnsd.videotape.core.recorder.RecorderFactory;
 import es.lnsd.videotape.remote.utils.RestUtils;
@@ -72,7 +72,7 @@ public class Video extends HttpServlet {
             conf.put("video.folder", folder);
           }
 
-          VConfig vConf = ConfigLoader.load(conf);
+          Configuration vConf = ConfigLoader.load(conf);
 
           // Start recording
           videoRecorder = RecorderFactory.getRecorder(RecorderType.MONTE, vConf);

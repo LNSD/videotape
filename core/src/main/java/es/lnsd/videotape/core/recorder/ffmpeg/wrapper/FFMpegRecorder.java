@@ -29,7 +29,7 @@ package es.lnsd.videotape.core.recorder.ffmpeg.wrapper;
 import com.github.kokorin.jaffree.ffmpeg.FFmpeg;
 import com.github.kokorin.jaffree.ffmpeg.FFmpegResultFuture;
 import com.github.kokorin.jaffree.ffmpeg.UrlOutput;
-import es.lnsd.videotape.core.config.VConfig;
+import es.lnsd.videotape.core.config.Configuration;
 import es.lnsd.videotape.core.exception.RecordingException;
 import es.lnsd.videotape.core.recorder.AbstractRecorder;
 import java.awt.Dimension;
@@ -44,7 +44,7 @@ public class FFMpegRecorder extends AbstractRecorder {
 
   private FFmpegResultFuture future;
 
-  public FFMpegRecorder(VConfig conf) {
+  public FFMpegRecorder(Configuration conf) {
     super(conf);
   }
 

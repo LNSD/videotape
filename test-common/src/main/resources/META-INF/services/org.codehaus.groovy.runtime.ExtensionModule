@@ -1,0 +1,3 @@
+moduleName=javapoet-extension
+moduleVersion=1.0
+extensionClasses=es.lnsd.videotape.common.JavaPoetExtension

@@ -36,6 +36,7 @@ public enum RecorderType {
   public static class Converter implements org.aeonbits.owner.Converter<RecorderType> {
     @Override
     public RecorderType convert(Method method, String input) {
+      // TODO Catch error and improve error message
       return valueOf(input.toUpperCase());
     }
   }

@@ -26,7 +26,7 @@
 
 package es.lnsd.videotape.core.recorder.vlc;
 
-import es.lnsd.videotape.core.config.VConfig;
+import es.lnsd.videotape.core.config.Configuration;
 import es.lnsd.videotape.core.recorder.AbstractRecorder;
 import java.nio.file.Path;
 import uk.co.caprica.vlcj.factory.MediaPlayerFactory;
@@ -51,7 +51,7 @@ public class VlcRecorder extends AbstractRecorder {
   private MediaPlayerFactory mediaPlayerFactory;
   private MediaPlayer mediaPlayer;
 
-  public VlcRecorder(VConfig conf) {
+  public VlcRecorder(Configuration conf) {
     super(conf);
   }
 
