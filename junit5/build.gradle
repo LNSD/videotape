@@ -35,7 +35,7 @@ dependencies {
   testImplementation 'org.hamcrest:hamcrest-all:1.3'
   testImplementation 'commons-io:commons-io:2.8.0'
 
-  testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.4.1'
+  testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
   testRuntimeOnly 'org.apache.logging.log4j:log4j-slf4j-impl:2.13.3'
   testRuntimeOnly 'org.apache.logging.log4j:log4j-api:2.13.3'
   testRuntimeOnly 'org.apache.logging.log4j:log4j-core:2.13.3'
