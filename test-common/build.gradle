@@ -28,6 +28,8 @@ plugins {
     id 'groovy'
 }
 
+sourceCompatibility = 1.8
+
 dependencies {
     implementation 'org.codehaus.groovy:groovy-all:2.5.13'
     implementation 'com.squareup:javapoet:1.13.0'

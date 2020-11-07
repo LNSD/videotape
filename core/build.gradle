@@ -26,7 +26,12 @@
 
 plugins {
   id 'groovy'
+  id 'java-library'
+  id 'com.adarshr.test-logger'
 }
+
+archivesBaseName = "$baseArchiveName-${project.name}"
+sourceCompatibility = 1.8
 
 dependencies {
   /**
@@ -54,4 +59,11 @@ dependencies {
   testRuntimeOnly 'org.apache.logging.log4j:log4j-slf4j-impl:2.13.3'
   testRuntimeOnly 'org.apache.logging.log4j:log4j-api:2.13.3'
   testRuntimeOnly 'org.apache.logging.log4j:log4j-core:2.13.3'
+}
+
+test {
+  // Provide project paths to tests
+  systemProperty 'root.path', rootProject.projectDir.absolutePath
+  systemProperty 'project.builddir', project.buildDir.absolutePath
+  systemProperty 'project.test.resultsdir', "${buildDir}/test-results"
 }

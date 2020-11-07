@@ -26,7 +26,12 @@
 
 plugins {
   id 'groovy'
+  id 'java-library'
+  id 'com.adarshr.test-logger'
 }
+
+archivesBaseName = "$baseArchiveName-${project.name}"
+sourceCompatibility = 1.8
 
 dependencies {
   implementation project(':core')
@@ -52,4 +57,11 @@ jar {
     configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
   }
   exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
+}
+
+test {
+  // Provide project paths to tests
+  systemProperty 'root.path', rootProject.projectDir.absolutePath
+  systemProperty 'project.builddir', project.buildDir.absolutePath
+  systemProperty 'project.test.resultsdir', "${buildDir}/test-results"
 }

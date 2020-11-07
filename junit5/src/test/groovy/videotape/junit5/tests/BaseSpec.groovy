@@ -24,7 +24,7 @@
  *
  */
 
-package videotape.testng.tests
+package videotape.junit5.tests
 
 import com.squareup.javapoet.JavaFile
 import com.squareup.javapoet.MethodSpec

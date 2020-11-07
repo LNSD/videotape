@@ -26,9 +26,9 @@
 
 rootProject.name = 'videotape'
 include 'core'
-include 'testng'
+include 'docs'
 include 'junit'
-include 'remote'
 include 'junit5'
+include 'remote'
 include 'test-common'
-
+include 'testng'

@@ -49,7 +49,7 @@ class RecorderTest extends BaseSpec {
     System.setProperty("user.dir", System.getProperty("project.test.resultsdir"))
   }
 
-  def "should be video in #name folder with #type"() {
+  def "should be video in folder with #type recorder"() {
     when:
     File video = recordVideo(type)
     then:

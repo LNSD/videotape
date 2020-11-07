@@ -28,7 +28,6 @@ plugins {
   id 'idea'
   id 'java'
   id 'com.adarshr.test-logger' version '2.1.1'
-  id 'org.asciidoctor.jvm.convert' version '3.3.0'
 }
 
 allprojects {
@@ -38,53 +37,8 @@ allprojects {
   }
 }
 
-subprojects {
-  apply plugin: 'java-library'
-  apply plugin: 'com.adarshr.test-logger'
-
-  archivesBaseName = baseArchiveName + '-' + project.name
-
-  sourceCompatibility = 1.8
-
-  test {
-    // Disable the test report for the individual test task
-    reports.html.enabled = false
-
-    // Provide project paths to tests
-    systemProperty 'root.path', rootProject.projectDir.absolutePath
-    systemProperty 'project.builddir', project.buildDir.absolutePath
-    systemProperty 'project.test.resultsdir', "${buildDir}/test-results"
-  }
-}
-
 testlogger {
   theme 'mocha'
   slowThreshold 6000
   showFullStackTraces true
-}
-
-task testReport(type: TestReport) {
-  // make sure this task is run after all subproject test tasks
-  mustRunAfter subprojects*.test
-
-  destinationDir = file("${buildDir}/reports/allTests")
-  // Include the results from the `test` task in all subprojects
-  reportOn subprojects*.test
-}
-
-test.finalizedBy 'testReport'
-
-asciidoctor {
-  sourceDir file('docs')
-  baseDirFollowsSourceDir()
-  attributes 'endpoint-url': 'http://example.org',
-          'imagesdir': 'images',
-          'source-highlighter': 'highlight.js',
-          'gitrepourl': 'https://github.com/LNSD/videotape',
-          'toc': 'left',
-          'icons': 'font',
-          'setanchors': '',
-          'idprefix': '',
-          'idseparator': '-',
-          'docinfo': 'shared'
 }

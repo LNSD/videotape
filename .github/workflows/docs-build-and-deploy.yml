@@ -1,0 +1,30 @@
+name: Documentation build and deploy
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  docs-build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2
+        with:
+          # If  using actions/checkout@v2, persist-credentials must be set
+          # to false in most cases for the deployment to work correctly.
+          persist-credentials: false
+
+      - name: Set up JDK 1.8 ⚙️
+        uses: actions/setup-java@v1
+
+      - name: Build with Gradle 🔨
+        run: ./gradlew clean docs:build
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@3.7.1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: docs/build/html
+          CLEAN: true

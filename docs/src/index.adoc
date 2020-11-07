@@ -54,6 +54,6 @@ Copyright (C) {localyear} Lorenzo Delgado
 Use of this software is granted under the terms of the MIT License.
 
 ----
-include::../LICENSE[]
+include::../../LICENSE[]
 ----
 
