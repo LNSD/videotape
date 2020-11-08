@@ -32,6 +32,9 @@ import es.lnsd.videotape.core.config.RecorderType
 import es.lnsd.videotape.core.exception.RecordingException
 import es.lnsd.videotape.core.recorder.Recorder
 import es.lnsd.videotape.core.recorder.RecorderFactory
+import java.nio.file.Path
+import java.nio.file.Paths
+import spock.lang.Requires
 import spock.lang.Shared
 import spock.lang.Unroll
 import spock.util.environment.RestoreSystemProperties
@@ -42,8 +45,10 @@ import static org.apache.commons.io.FileUtils.ONE_KB
 @RestoreSystemProperties
 class RecorderTest extends BaseSpec {
 
+  static final Long TEN_KB = 10 * ONE_KB
+
   @Shared
-  String VIDEO_FOLDER = System.getProperty("project.test.resultsdir") + "/video"
+  Path VIDEO_FOLDER = Paths.get(System.getProperty("project.test.resultsdir"), "video")
 
   def setup() {
     System.setProperty("user.dir", System.getProperty("project.test.resultsdir"))
@@ -55,9 +60,9 @@ class RecorderTest extends BaseSpec {
     then:
     verifyAll {
       video.exists()
-      video.parentFile.absolutePath == VIDEO_FOLDER
+      video.parentFile.toPath() == VIDEO_FOLDER
       video.name.startsWith(VIDEO_FILE_NAME)
-      video.length() >= 10 * ONE_KB
+      video.length() >= TEN_KB
     }
 
     where:
@@ -81,6 +86,7 @@ class RecorderTest extends BaseSpec {
     type << RecorderType.values()
   }
 
+  @Requires({ os.macOs })
   def "ffmpeg should record video with custom pixel format for #type"() {
     given:
     System.setProperty("video.ffmpeg.pixelFormat", "yuv444p")
@@ -90,9 +96,9 @@ class RecorderTest extends BaseSpec {
     then:
     verifyAll {
       video.exists()
-      video.parent == VIDEO_FOLDER
+      video.parentFile.toPath() == VIDEO_FOLDER
       video.name.startsWith(VIDEO_FILE_NAME)
-      video.length() >= 10 * ONE_KB
+      video.length() >= TEN_KB
     }
     where:
     type << [RecorderType.FFMPEG, RecorderType.FFMPEG_WRAPPER]
