@@ -23,6 +23,7 @@
  * SOFTWARE.
  *
  */
+import org.apache.tools.ant.taskdefs.condition.Os
 
 plugins {
   id 'groovy'
@@ -66,4 +67,11 @@ test {
   systemProperty 'root.path', rootProject.projectDir.absolutePath
   systemProperty 'project.builddir', project.buildDir.absolutePath
   systemProperty 'project.test.resultsdir', "${buildDir}/test-results"
+
+  if (System.getenv().containsKey("CI")) {
+    if (Os.isFamily(Os.FAMILY_MAC)) {
+      systemProperty 'video.ffmpeg.display', '0:'
+    }
+  }
+
 }
