@@ -42,7 +42,7 @@ public class ScreenCaptureInput {
     CaptureInput<?> result = null;
 
     if (OS.IS_LINUX) {
-      String pattern = "^(?<host>\\w*):?(?<display>\\d+)\\.(?<screen>\\d+)$";
+      String pattern = "^(?<host>\\w*):?(?<display>\\d+)\\.?(?<screen>\\d+)$";
       Matcher matcher = Pattern.compile(pattern).matcher(display);
       if (!matcher.find()) {
         // TODO Move this one level above. Throw a standard exception, then cast it to ConfException
