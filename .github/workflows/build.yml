@@ -9,9 +9,9 @@ jobs:
     strategy:
       matrix:
         os: [ macos-latest, windows-latest ]
-        java-version: [ 11 ]
+        java-version: [ 9, 11, 14 ]
     steps:
-      - name: Checkout 🛎️
+      - name: Checkout
         uses: actions/checkout@v2
 
       - name: Install requirements
@@ -34,5 +34,5 @@ jobs:
         with:
           java-version: ${{ matrix.java-version }}
 
-      - name: Build with Gradle 🔨
+      - name: Build with Gradle
         run: ./gradlew clean core:build

@@ -73,5 +73,4 @@ test {
       systemProperty 'video.ffmpeg.display', '0:'
     }
   }
-
 }

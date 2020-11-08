@@ -8,7 +8,7 @@ jobs:
   docs-build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout 🛎️
+      - name: Checkout
         uses: actions/checkout@v2
         with:
           # If  using actions/checkout@v2, persist-credentials must be set
@@ -20,10 +20,10 @@ jobs:
         with:
           java-version: 11
 
-      - name: Build with Gradle 🔨
+      - name: Build with Gradle
         run: ./gradlew clean docs:build
 
-      - name: Deploy 🚀
+      - name: Deploy
         uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -45,6 +45,7 @@ public class ScreenCaptureInput {
       String pattern = "^(?<host>\\w*):?(?<display>\\d+)\\.(?<screen>\\d+)$";
       Matcher matcher = Pattern.compile(pattern).matcher(display);
       if (!matcher.find()) {
+        // TODO Move this one level above. Throw a standard exception, then cast it to ConfException
         String err = "Invalid value format for 'video.ffmpeg.display' configuration parameter";
         throw new ConfigurationException(err);
       }
@@ -60,6 +61,7 @@ public class ScreenCaptureInput {
       String pattern = "^(?<video>\\w+):?(?<audio>\\w+)?$";
       Matcher matcher = Pattern.compile(pattern).matcher(display);
       if (!matcher.find()) {
+        // TODO Move this one level above. Throw a standard exception, then cast it to ConfException
         String err = "Invalid value format for 'video.ffmpeg.display' configuration parameter";
         throw new ConfigurationException(err);
       }
