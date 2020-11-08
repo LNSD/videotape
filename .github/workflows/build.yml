@@ -1,0 +1,39 @@
+name: Build and test core module
+on:
+  push:
+    branches:
+      - gh-actions
+
+jobs:
+  build-core:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+        java-version: [ 1.8, 9, 11, 14 ]
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2
+
+      - name: Install requirements
+        shell: bash
+        run: |
+          if [ "$RUNNER_OS" == "Linux" ]; then
+            sudo apt-get install ffmpeg vlc
+          elif [ "$RUNNER_OS" == "Windows" ]; then
+            choco install ffmpeg vlc
+          elif [ "$RUNNER_OS" == "macOS" ]; then
+            sudo brew install ffmpeg
+            sudo brew caks install vlc
+          else
+            echo "$RUNNER_OS not supported"
+            exit 1
+          fi
+
+      - name: Set up JDK ${{ matrix.java-version }}
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java-version }}
+
+      - name: Build with Gradle 🔨
+        run: ./gradlew clean core:build
