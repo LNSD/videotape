@@ -41,7 +41,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        java-version: [ 9, 11, 14 ]
+        java-version: [ 11 ]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
