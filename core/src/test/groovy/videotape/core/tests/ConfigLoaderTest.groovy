@@ -38,14 +38,11 @@ import spock.util.environment.RestoreSystemProperties
 class ConfigLoaderTest extends BaseSpec {
 
   def "default config should be loaded"() {
-    given:
-    System.setProperty('user.dir', '.')
-
     when:
     def conf = ConfigLoader.load()
 
     then:
-    conf.folder() == Paths.get("./video")
+    conf.folder() == Paths.get(System.getProperty("user.dir"), "video")
     conf.frameRate() == 24
     conf.mode() == RecordingMode.ANNOTATED
     conf.recorderType() == RecorderType.MONTE
