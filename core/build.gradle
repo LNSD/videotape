@@ -23,7 +23,7 @@
  * SOFTWARE.
  *
  */
-import org.apache.tools.ant.taskdefs.condition.Os
+import org.gradle.internal.os.OperatingSystem
 
 plugins {
   id 'groovy'
@@ -69,8 +69,12 @@ test {
   systemProperty 'project.test.resultsdir', "${buildDir}/test-results"
 
   if (System.getenv().containsKey("CI")) {
-    if (Os.isFamily(Os.FAMILY_MAC)) {
+    if (OperatingSystem.current().isMacOsX()) {
       systemProperty 'video.ffmpeg.display', '0:'
+    }
+
+    if (OperatingSystem.current().isLinux()) {
+      systemProperty 'video.ffmpeg.display', ':99'
     }
   }
 }
