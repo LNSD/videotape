@@ -8,7 +8,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ macos-latest ]
+        os: [ macos-latest, windows-latest ]
         java-version: [ 11 ]
     steps:
       - name: Checkout 🛎️
