@@ -8,8 +8,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ macos-latest, windows-latest ]
-        java-version: [ 9, 11, 14 ]
+        os: [ ubuntu-latest ]
+        java-version: [ 11 ]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -35,10 +35,12 @@ jobs:
           java-version: ${{ matrix.java-version }}
 
       - name: Build with Gradle
-        run: ./gradlew clean core:build
+        uses: GabrielBB/xvfb-action@v1
+        with:
+          run: ./gradlew clean core:build
 
   build-integrations:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         java-version: [ 11 ]
@@ -67,4 +69,6 @@ jobs:
           java-version: ${{ matrix.java-version }}
 
       - name: Build with Gradle
-        run: ./gradlew clean build -x core:test -x docs:build
+        uses: GabrielBB/xvfb-action@v1
+        with:
+          run: ./gradlew clean build -x core:test -x docs:build
