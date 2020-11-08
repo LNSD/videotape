@@ -42,7 +42,7 @@ public class ScreenCaptureInput {
     CaptureInput<?> result = null;
 
     if (OS.IS_LINUX) {
-      String pattern = "^(?<host>\\w*):?(?<display>\\d+)\\.(?<screen>\\d+)$";
+      String pattern = "^(?<host>\\w*):?(?<display>\\d+)\\.?(?<screen>\\d+)$";
       Matcher matcher = Pattern.compile(pattern).matcher(display);
       if (!matcher.find()) {
         String err = "Invalid value format for 'video.ffmpeg.display' configuration parameter";
@@ -68,7 +68,6 @@ public class ScreenCaptureInput {
           matcher.group("video"),
           Optional.ofNullable(matcher.group("audio")).orElse("none")
       );
-      result.addArguments("-vsync", "2");
     }
 
     if (OS.IS_WINDOWS) {

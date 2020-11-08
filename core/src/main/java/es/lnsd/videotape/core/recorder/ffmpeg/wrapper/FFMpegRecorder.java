@@ -26,6 +26,7 @@
 
 package es.lnsd.videotape.core.recorder.ffmpeg.wrapper;
 
+import com.github.kokorin.jaffree.ffmpeg.CaptureInput;
 import com.github.kokorin.jaffree.ffmpeg.FFmpeg;
 import com.github.kokorin.jaffree.ffmpeg.FFmpegResultFuture;
 import com.github.kokorin.jaffree.ffmpeg.UrlOutput;
@@ -37,6 +38,7 @@ import java.nio.file.Path;
 import java.util.concurrent.ExecutionException;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.SystemUtils;
 
 @Slf4j
 @Accessors(fluent = true)
@@ -55,15 +57,20 @@ public class FFMpegRecorder extends AbstractRecorder {
 
   @Override
   public void startRecording(Path temporaryFile) {
+    CaptureInput<?> input = ScreenCaptureInput
+        .captureDesktop(conf.ffmpegDisplay())
+        .setCaptureFrameRate(conf.frameRate())
+        .setCaptureCursor(true)
+        .setCaptureVideoSize(getScreenSize())
+        .addArgument("-an");
+
+    if (SystemUtils.IS_OS_MAC) {
+      input.setPixelFormat(conf.ffmpegPixelFormat());
+      input.addArguments("-vsync", "2");
+    }
+
     future = FFmpeg.atPath(conf.ffmpegBinary())
-        .addInput(ScreenCaptureInput
-            .captureDesktop(conf.ffmpegDisplay())
-            .setCaptureFrameRate(conf.frameRate())
-            .setCaptureCursor(true)
-            .setCaptureVideoSize(getScreenSize())
-            .setPixelFormat(conf.ffmpegPixelFormat())
-            .addArgument("-an")
-        )
+        .addInput(input)
         .addOutput(UrlOutput
             .toPath(temporaryFile)
             .addArguments("-preset", "ultrafast")
