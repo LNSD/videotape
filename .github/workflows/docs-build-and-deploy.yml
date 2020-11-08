@@ -15,8 +15,10 @@ jobs:
           # to false in most cases for the deployment to work correctly.
           persist-credentials: false
 
-      - name: Set up JDK 1.8 ⚙️
+      - name: Set up JDK 11 ⚙️
         uses: actions/setup-java@v1
+        with:
+          java-version: 11
 
       - name: Build with Gradle 🔨
         run: ./gradlew clean docs:build
