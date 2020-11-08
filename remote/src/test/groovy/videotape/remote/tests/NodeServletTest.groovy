@@ -30,6 +30,7 @@ import es.lnsd.videotape.core.config.ConfigLoader
 import es.lnsd.videotape.core.recorder.AbstractRecorder
 import es.lnsd.videotape.remote.StartGrid
 import es.lnsd.videotape.remote.client.Client
+import java.nio.file.Paths
 import spock.lang.IgnoreIf
 import spock.lang.Shared
 import spock.lang.Specification
@@ -49,7 +50,7 @@ class NodeServletTest extends Specification {
   @Shared
   def client = Client.get("http://localhost:5555/extra/Video")
   @Shared
-  def OUTPUT_DIR = System.getProperty('project.test.resultsdir')
+  def OUTPUT_DIR = Paths.get(System.getProperty('project.test.resultsdir'))
 
   def "shouldBeOkMessageOnStartWithoutParameters"() {
     when:
@@ -79,7 +80,7 @@ class NodeServletTest extends Specification {
     def message = client.stop()
     then:
     message.startsWith "recording stopped"
-    message.contains "${OUTPUT_DIR}/video/video"
+    message.contains "$OUTPUT_DIR/video/video"
   }
 
   def "shouldBeDefaultFileName"() {
@@ -90,7 +91,7 @@ class NodeServletTest extends Specification {
     def message = client.stop()
     then:
     message.startsWith "recording stopped"
-    message.contains "${OUTPUT_DIR}/video/video"
+    message.contains "$OUTPUT_DIR/video/video"
   }
 
   @IgnoreIf({ os.windows })
@@ -103,7 +104,7 @@ class NodeServletTest extends Specification {
     def message = client.stop()
     then:
     message.startsWith "recording stopped"
-    message.contains "${OUTPUT_DIR}/video/video"
+    message.contains "$OUTPUT_DIR/video/video"
     ConfigLoader.load().folder().toFile().listFiles().first().name =~ name
   }
 
@@ -131,14 +132,14 @@ class NodeServletTest extends Specification {
 
   def "shouldBeCustomFolderForVideo"() {
     given:
-    def folderName = "${OUTPUT_DIR}/recordings"
+    def folderName = "$OUTPUT_DIR/recordings"
     client.sendRequest("/start?name=video&folder=${folderName}")
 
     when:
     def message = client.sendRequest("/stop?result=false")
     then:
     message.startsWith "recording stopped"
-    message.contains "${OUTPUT_DIR}/recordings/video"
+    message.contains "$OUTPUT_DIR/recordings/video"
   }
 }
 
