@@ -68,7 +68,6 @@ public class ScreenCaptureInput {
           matcher.group("video"),
           Optional.ofNullable(matcher.group("audio")).orElse("none")
       );
-      result.addArguments("-vsync", "2");
     }
 
     if (OS.IS_WINDOWS) {
