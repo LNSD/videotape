@@ -9,7 +9,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ windows-latest, macos-latest ]
+        os: [ macos-latest ]
         java-version: [ 9, 11, 14 ]
     steps:
       - name: Checkout 🛎️
@@ -24,7 +24,7 @@ jobs:
             choco install ffmpeg vlc
           elif [ "$RUNNER_OS" == "macOS" ]; then
             brew install ffmpeg
-            brew caks install vlc
+            brew cask install vlc
           else
             echo "$RUNNER_OS not supported"
             exit 1
