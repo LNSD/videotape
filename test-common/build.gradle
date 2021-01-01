@@ -33,5 +33,5 @@ sourceCompatibility = 1.8
 dependencies {
     implementation 'org.codehaus.groovy:groovy-all:2.5.14'
     implementation 'com.squareup:javapoet:1.13.0'
-    implementation 'net.openhft:compiler:2.4.0'
+    implementation 'net.openhft:compiler:2.21ea0'
 }
