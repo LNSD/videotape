@@ -24,21 +24,31 @@
  *
  */
 
-package es.lnsd.videotape.junit5;
+package es.lnsd.videotape.core.backend.ffmpeg.wrapper;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import org.junit.jupiter.api.extension.ExtendWith;
+import es.lnsd.videotape.core.backend.BackendConfiguration;
+import java.nio.file.Path;
+import org.aeonbits.owner.Config;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target( {ElementType.METHOD, ElementType.ANNOTATION_TYPE})
-@ExtendWith(VideoExtension.class)
-@es.lnsd.videotape.core.Video
-public @interface Video {
+@Config.LoadPolicy(Config.LoadType.MERGE)
+@Config.Sources( {
+    "system:properties",
+    "${conf.file}",
+    "classpath:video.properties",
+    "classpath:presets/ffmpeg-${os.type}.properties"
+})
+public interface FFMpegConfiguration extends BackendConfiguration {
 
-  boolean enable() default true;
+  @Key("video.ffmpeg.binary")
+  Path ffmpegBinary();
 
-  String name() default "";
+  @Key("video.ffmpeg.format")
+  String ffmpegFormat();
+
+  @Key("video.ffmpeg.display")
+  String ffmpegDisplay();
+
+  @Key("video.ffmpeg.pixelFormat")
+  @DefaultValue("yuv420p")
+  String ffmpegPixelFormat();
 }

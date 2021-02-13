@@ -26,9 +26,6 @@
 
 package es.lnsd.videotape.core.exception;
 
-import lombok.NoArgsConstructor;
-
-@NoArgsConstructor
 public class RecordingException extends RuntimeException {
 
   public RecordingException(String message) {

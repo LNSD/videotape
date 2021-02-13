@@ -1,6 +1,6 @@
 = Configuration
 
-Some aspects of videotape operation can be modified by configuration parameters. And these
+Some aspects of videotape operation can be modified by configuration parameters.And these
 configuration options can be passed through by any of the following mechanisms:
 
 * Declaring some JVM properties (e.g. using java/maven `-Doption.name=value` )
@@ -77,19 +77,19 @@ test {
 ----
 
 Library's configuration management is based on link:http://owner.aeonbits.org/docs/welcome/[owner]
-library. This allows videotape library to load configuration from different sources:
+library.
+This allows videotape library to load configuration from different sources:
 
-  * From filesystem: `file:${user.dir}/example-conf.properties`
-  * From classpath: `classpath:example-conf.properties`
-  * From a URL: `http://example.com/example-conf.properties`
+* From filesystem: `file:${user.dir}/example-conf.properties`
+* From classpath: `classpath:example-conf.properties`
+* From a URL: `http://example.com/example-conf.properties`
 
 == Options lookup sequence
 
 Configuration loader looks up for option values following this order:
 
-. First, _ConfigurationLoader_ looks up JVM's system properties for the configuration entry.
-. If no JVM's system property is set, it will inspect the `video.configurationFile` system property
-and it will load the configuration entry.
+. First, the _ConfigurationLoader_ looks up JVM's system properties for the configuration entry.
+. If no JVM's system property is set, it will inspect the `video.configurationFile` system property and it will load the configuration entry.
 . If entry is not set in `video.configurationFile`, the _ConfigurationLoader_ will look for
 `video.properties` file in the classpath.
 . If no `video.properties` file could be located, the _ConfigurationLoader_ will use default values.

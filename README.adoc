@@ -4,7 +4,7 @@ A library that allows you to record videos of your UI tests by just putting a co
 
 [source,java]
 ----
-@Listeners(UniversalVideoListener.class)
+@Listeners(VideoListener.class)
 public class TestNgVideoTest {
 
     @Test
@@ -42,7 +42,7 @@ project.
 
 == Copyright and license
 
-Copyright (c) 2020 Lorenzo Delgado
+Copyright (c) 2020-2021 Lorenzo Delgado
 
 Copyright (c) 2016-2019 Serhii Pyrohov and the individual contributors to the original project
 

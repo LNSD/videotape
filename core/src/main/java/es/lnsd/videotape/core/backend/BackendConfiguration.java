@@ -24,21 +24,36 @@
  *
  */
 
-package es.lnsd.videotape.junit5;
+package es.lnsd.videotape.core.backend;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import org.junit.jupiter.api.extension.ExtendWith;
+import es.lnsd.videotape.core.config.utils.LowerCaseConverter;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import org.aeonbits.owner.Config;
+import org.aeonbits.owner.Config.LoadPolicy;
+import org.aeonbits.owner.Config.LoadType;
+import org.aeonbits.owner.Config.Sources;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target( {ElementType.METHOD, ElementType.ANNOTATION_TYPE})
-@ExtendWith(VideoExtension.class)
-@es.lnsd.videotape.core.Video
-public @interface Video {
+@LoadPolicy(LoadType.MERGE)
+@Sources( {
+    "system:properties",
+    "${conf.file}",
+    "classpath:video.properties"
+})
+public interface BackendConfiguration extends Config {
 
-  boolean enable() default true;
+  @Key("video.format")
+  @ConverterClass(LowerCaseConverter.class)
+  @DefaultValue("mp4")
+  String fileFormat();
 
-  String name() default "";
+  @Key("video.frame.rate")
+  @DefaultValue("24")
+  int frameRate();
+
+  // Dynamic configuration value
+  default Dimension screenSize() {
+    return Toolkit.getDefaultToolkit().getScreenSize();
+  }
+
 }

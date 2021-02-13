@@ -26,14 +26,15 @@
 
 package es.lnsd.videotape.core.utils;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.SystemUtils;
 
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class OSUtils {
+
+  private OSUtils() {
+    throw new IllegalStateException();
+  }
 
   public static String getOsType() {
     if (SystemUtils.IS_OS_WINDOWS) {

@@ -24,21 +24,25 @@
  *
  */
 
-package es.lnsd.videotape.junit5;
+package es.lnsd.videotape.testng;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import org.junit.jupiter.api.extension.ExtendWith;
+import es.lnsd.videotape.core.Video;
+import org.testng.ITestNGMethod;
+import org.testng.ITestResult;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target( {ElementType.METHOD, ElementType.ANNOTATION_TYPE})
-@ExtendWith(VideoExtension.class)
-@es.lnsd.videotape.core.Video
-public @interface Video {
 
-  boolean enable() default true;
+public class TestNGUtils {
 
-  String name() default "";
+  private TestNGUtils() {
+    throw new IllegalStateException();
+  }
+
+  public static Video getVideoAnnotation(ITestNGMethod method) {
+    return method.getConstructorOrMethod().getMethod().getAnnotation(Video.class);
+  }
+
+  public static Video getVideoAnnotation(ITestResult result) {
+    return getVideoAnnotation(result.getMethod());
+  }
+
 }

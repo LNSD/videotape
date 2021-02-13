@@ -24,21 +24,23 @@
  *
  */
 
-package es.lnsd.videotape.junit5;
+package es.lnsd.videotape.core.backend.monte;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import org.junit.jupiter.api.extension.ExtendWith;
+import es.lnsd.videotape.core.backend.BackendConfiguration;
+import org.aeonbits.owner.Config.LoadPolicy;
+import org.aeonbits.owner.Config.LoadType;
+import org.aeonbits.owner.Config.Sources;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target( {ElementType.METHOD, ElementType.ANNOTATION_TYPE})
-@ExtendWith(VideoExtension.class)
-@es.lnsd.videotape.core.Video
-public @interface Video {
+@LoadPolicy(LoadType.MERGE)
+@Sources( {
+    "system:properties",
+    "${conf.file}",
+    "classpath:video.properties"
+})
+public interface MonteConfiguration extends BackendConfiguration {
 
-  boolean enable() default true;
-
-  String name() default "";
+  // Monte recorder only supports avi format
+  default String fileFormat() {
+    return "avi";
+  }
 }
