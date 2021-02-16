@@ -481,7 +481,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="listingblock">
 <div class="title">ExampleTest.java</div>
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@Listeners(UniversalVideoListener.class)
+<pre class="highlightjs highlight"><code data-lang="java" class="language-java hljs">@Listeners(VideoListener.class)
 public class TestNgVideoTest {
 
     @Test
@@ -720,7 +720,7 @@ public class TestNgVideoTest {
 <h2 id="configuration">Configuration</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Some aspects of videotape operation can be modified by configuration parameters. And these
+<p>Some aspects of videotape operation can be modified by configuration parameters.And these
 configuration options can be passed through by any of the following mechanisms:</p>
 </div>
 <div class="ulist">
@@ -849,7 +849,8 @@ java runtime at start up, just before starting the tests' execution.</p>
 </div>
 <div class="paragraph">
 <p>Library&#8217;s configuration management is based on <a href="http://owner.aeonbits.org/docs/welcome/">owner</a>
-library. This allows videotape library to load configuration from different sources:</p>
+library.
+This allows videotape library to load configuration from different sources:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -873,11 +874,10 @@ library. This allows videotape library to load configuration from different sour
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>First, <em>ConfigurationLoader</em> looks up JVM&#8217;s system properties for the configuration entry.</p>
+<p>First, the <em>ConfigurationLoader</em> looks up JVM&#8217;s system properties for the configuration entry.</p>
 </li>
 <li>
-<p>If no JVM&#8217;s system property is set, it will inspect the <code>video.configurationFile</code> system property
-and it will load the configuration entry.</p>
+<p>If no JVM&#8217;s system property is set, it will inspect the <code>video.configurationFile</code> system property and it will load the configuration entry.</p>
 </li>
 <li>
 <p>If entry is not set in <code>video.configurationFile</code>, the <em>ConfigurationLoader</em> will look for
@@ -1152,7 +1152,7 @@ project.</p>
 <h2 id="copyright-and-license">Copyright and license</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Copyright &#169; 2021 Lorenzo Delgado</p>
+<p>Copyright &#169; 2020-2021 Lorenzo Delgado</p>
 </div>
 <div class="paragraph">
 <p>Use of this software is granted under the terms of the MIT License.</p>
@@ -1161,7 +1161,7 @@ project.</p>
 <div class="content">
 <pre>The MIT License (MIT)
 
-Copyright (c) 2020 Lorenzo Delgado
+Copyright (c) 2020-2021 Lorenzo Delgado
 Copyright (c) 2016 Serhii Pirohov
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -1189,7 +1189,7 @@ SOFTWARE.</pre>
 <div id="footer">
 <div id="footer-text">
 Version 2.2.0<br>
-Last updated 2021-02-15 15:44:48 UTC
+Last updated 2021-02-16 13:16:53 UTC
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
