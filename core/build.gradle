@@ -1,8 +1,8 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2020 Lorenzo Delgado
- * Copyright (c) 2016 Serhii Pirohov
+ * Copyright (c) 2020-2021 Lorenzo Delgado
+ * Copyright (c) 2016-2019 Serhii Pirohov
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,35 +35,37 @@ sourceCompatibility = 1.8
 
 dependencies {
   /**
-   * Library
+   * Compile
    */
-  implementation 'org.projectlombok:lombok:1.18.18'
-  annotationProcessor 'org.projectlombok:lombok:1.18.16'
-  implementation 'org.apache.commons:commons-lang3:3.11'
-  implementation 'commons-io:commons-io:2.8.0'
-  implementation 'org.slf4j:slf4j-api:1.7.30'
-  api 'org.aeonbits.owner:owner-java8:1.0.12'
+  annotationProcessor('org.projectlombok:lombok:1.18.16')
+  api('org.aeonbits.owner:owner-java8:1.0.12')
+  implementation(
+          'org.projectlombok:lombok:1.18.18',
+          'org.apache.commons:commons-lang3:3.11',
+          'commons-io:commons-io:2.8.0',
+          'org.slf4j:slf4j-api:1.7.30'
+  )
 
   // Video backends
-  implementation 'com.github.stephenc.monte:monte-screen-recorder:0.7.7.0'
-  implementation 'com.github.kokorin.jaffree:jaffree:0.9.6'
-  implementation 'uk.co.caprica:vlcj:4.7.0'
+  implementation(
+          'com.github.stephenc.monte:monte-screen-recorder:0.7.7.0',
+          'com.github.kokorin.jaffree:jaffree:0.9.6',
+          'uk.co.caprica:vlcj:4.7.0'
+  )
 
   /**
    * Test
    */
-  testImplementation 'commons-io:commons-io:2.8.0'
-  testImplementation 'org.spockframework:spock-core:1.3-groovy-2.5'
-  testImplementation 'org.codehaus.groovy:groovy-all:2.5.14'
+  testImplementation(
+          'org.spockframework:spock-core:1.3-groovy-2.5',
+          'org.codehaus.groovy:groovy-all:2.5.14'
+  )
 
-  testRuntimeOnly 'org.apache.logging.log4j:log4j-slf4j-impl:2.14.0'
-  testRuntimeOnly 'org.apache.logging.log4j:log4j-api:2.14.0'
-  testRuntimeOnly 'org.apache.logging.log4j:log4j-core:2.14.0'
+  testRuntimeOnly(
+          'net.bytebuddy:byte-buddy:1.10.20',
+          'org.apache.logging.log4j:log4j-slf4j-impl:2.14.0',
+          'org.apache.logging.log4j:log4j-api:2.14.0',
+          'org.apache.logging.log4j:log4j-core:2.14.0'
+  )
 }
 
-test {
-  // Provide project paths to tests
-  systemProperty 'root.path', rootProject.projectDir.absolutePath
-  systemProperty 'project.builddir', project.buildDir.absolutePath
-  systemProperty 'project.test.resultsdir', "${buildDir}/test-results"
-}

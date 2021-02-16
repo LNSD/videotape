@@ -1,26 +1,26 @@
 /*
- *  The MIT License (MIT)
+ * The MIT License (MIT)
  *
- *  Copyright (c) 2020-2021 Lorenzo Delgado
- *  Copyright (c) 2016 Serhii Pirohov
+ * Copyright (c) 2020-2021 Lorenzo Delgado
+ * Copyright (c) 2016-2019 Serhii Pirohov
  *
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *  The above copyright notice and this permission notice shall be included in all
- *  copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
  *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- *  SOFTWARE.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  *
  */
 
@@ -31,55 +31,63 @@ import es.lnsd.videotape.core.backend.RecorderBackendFactory;
 import es.lnsd.videotape.core.config.Configuration;
 import es.lnsd.videotape.core.config.RecorderType;
 import es.lnsd.videotape.core.exception.RecordingException;
-import java.io.File;
+import es.lnsd.videotape.core.utils.FileManager;
+import es.lnsd.videotape.core.utils.FileNameBuilder;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FileUtils;
 
 @Slf4j
-public class DefaultRecorder implements VideotapeRecorder {
+public class DefaultRecorder implements Recorder {
 
   private static final String TEMP_FILENAME = "screen_recording";
 
   private final Configuration config;
   private final RecorderBackend recorder;
+  private final FileManager fileManager;
+  private final FileNameBuilder fileNameBuilder;
 
-  private Path tmpFile;
-  private Path dstFile;
+  private Path tmpFilePath;
+  private Path dstFilePath;
 
-  public DefaultRecorder(Configuration config, RecorderBackend backend) {
+  public DefaultRecorder(Configuration config, RecorderBackend backend, FileManager fileManager, FileNameBuilder fileNameBuilder) {
     this.config = config;
     this.recorder = backend;
+    this.fileManager = fileManager;
+    this.fileNameBuilder = fileNameBuilder;
   }
 
-  public static VideotapeRecorder get(Configuration config) {
+  public static Recorder get(Configuration config, RecorderBackend backend) {
+    FileManager fileManager = new FileManager();
+    FileNameBuilder fileNameBuilder = new FileNameBuilder();
+    return new DefaultRecorder(config, backend, fileManager, fileNameBuilder);
+  }
+
+  public static Recorder get(Configuration config) {
     RecorderType type = config.recorderType();
     RecorderBackend backend = RecorderBackendFactory.getRecorder(type);
-    return new DefaultRecorder(config, backend);
+    return DefaultRecorder.get(config, backend);
   }
 
   public void startRecording(String name) {
-    String fileFormat = config.fileFormat();
     Path dstDir = config.folder();
 
     try {
-      FileUtils.forceMkdir(dstDir.toFile());
+      fileManager.createDestinationDir(dstDir);
     } catch (IOException ex) {
-      log.error("Videos output folder could not be created", ex);
+      log.error("Output folder could not be created", ex);
       return;
     }
 
-    this.tmpFile = getFilePath(dstDir, TEMP_FILENAME, fileFormat);
-    this.dstFile = getFilePath(dstDir, name, fileFormat);
+    String extension = config.fileFormat();
+    this.tmpFilePath = getOutputFile(dstDir, TEMP_FILENAME, extension);
+    this.dstFilePath = getOutputFile(dstDir, name, extension);
 
-    recorder.start(tmpFile);
+    recorder.start(tmpFilePath);
   }
 
   public void stopRecording() {
-    if (this.tmpFile == null || !this.tmpFile.toFile().exists()) {
+    if (!recorder.isRecording()) {
       throw new RecordingException("Video recording was not started");
     }
 
@@ -87,40 +95,26 @@ public class DefaultRecorder implements VideotapeRecorder {
   }
 
   public void discardRecording() {
-    FileUtils.deleteQuietly(tmpFile.toFile());
+    try {
+      fileManager.discardFile(tmpFilePath);
+    } catch (IOException ex) {
+      log.error("Temporary file could not be discarded");
+    }
   }
 
   public Path keepRecording() {
-    File tmpFile = this.tmpFile.toFile();
-    File dstFile = this.dstFile.toFile();
-
-    if (!tmpFile.exists()) {
-      return null;
-    }
-
     try {
-      FileUtils.moveFile(tmpFile, dstFile);
+      fileManager.renameFile(tmpFilePath, dstFilePath);
     } catch (IOException ex) {
-      log.error("Failed renaming the temporary file", ex);
+      log.error("Temporary file could not be renamed", ex);
       return null;
     }
 
-    return this.dstFile;
+    return this.dstFilePath;
   }
 
-  private Path getFilePath(Path parent, String name, String extension) {
-    String fileName = buildFileName(name, extension);
+  private Path getOutputFile(Path parent, String name, String extension) {
+    String fileName = fileNameBuilder.fileNameWithTimestamp(name, extension);
     return parent.resolve(fileName);
-  }
-
-  private String getTimeStamp() {
-    Date now = new Date();
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy_dd_MM_HH_mm_ss");
-    return dateFormat.format(now);
-  }
-
-  private String buildFileName(String name, String extension) {
-    String timestamp = getTimeStamp();
-    return name + "_" + timestamp + "." + extension;
   }
 }

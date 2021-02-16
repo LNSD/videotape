@@ -1,26 +1,26 @@
 /*
- *  The MIT License (MIT)
+ * The MIT License (MIT)
  *
- *  Copyright (c) 2020-2021 Lorenzo Delgado
- *  Copyright (c) 2016 Serhii Pirohov
+ * Copyright (c) 2020-2021 Lorenzo Delgado
+ * Copyright (c) 2016-2019 Serhii Pirohov
  *
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *  The above copyright notice and this permission notice shall be included in all
- *  copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
  *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- *  SOFTWARE.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  *
  */
 
@@ -44,16 +44,21 @@ public class VlcRecorder implements RecorderBackend {
   private static final String MRL = "screen://";
   private static final String SOUT = ":sout=#transcode{vcodec=h264,vb=%d}:duplicate{dst=file{dst=%s}}";
   private static final String FPS = ":screen-fps=%d";
-  private static final String CACHING = ":screen-caching=%d";
+  private static final String SCREEN_CACHING_OPTION = ":screen-caching=%d";
 
-  private static final int caching = 500;
-  private static final int bits = 4096;
+  private static final int CACHING = 500;
+  private static final int BITS = 4096;
   private final BackendConfiguration config;
   private MediaPlayerFactory mediaPlayerFactory;
   private MediaPlayer mediaPlayer;
 
   public VlcRecorder(BackendConfiguration config) {
     this.config = config;
+  }
+
+  @Override
+  public boolean isRecording() {
+    return mediaPlayerFactory != null && mediaPlayer != null && mediaPlayer.status().isPlaying();
   }
 
   @Override
@@ -72,10 +77,10 @@ public class VlcRecorder implements RecorderBackend {
   }
 
   private String[] getMediaOptions(Path destination) {
-    return new String[] {
-        String.format(SOUT, bits, destination),
+    return new String[]{
+        String.format(SOUT, BITS, destination),
         String.format(FPS, config.frameRate()),
-        String.format(CACHING, caching)
+        String.format(SCREEN_CACHING_OPTION, CACHING)
     };
   }
 }

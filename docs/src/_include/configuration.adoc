@@ -35,11 +35,6 @@ a|Recorded videos keeping strategy.
 * `FAILED_ONLY`: Keep only failed test cases videos.
 * `ALL`: Keep all videos.
 
-|_video.name_
-| `-`
-|Fallback video filename. If not set, videos are named after the test method name. This option
-takes effect when `video.mode` option is set to `ALL` or annotation name is not set.
-
 |_video.format_
 |`mp4`
 |Recorded video format.

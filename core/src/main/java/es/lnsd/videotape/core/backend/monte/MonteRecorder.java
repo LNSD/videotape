@@ -1,26 +1,26 @@
 /*
- *  The MIT License (MIT)
+ * The MIT License (MIT)
  *
- *  Copyright (c) 2020-2021 Lorenzo Delgado
- *  Copyright (c) 2016 Serhii Pirohov
+ * Copyright (c) 2020-2021 Lorenzo Delgado
+ * Copyright (c) 2016-2019 Serhii Pirohov
  *
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- *  The above copyright notice and this permission notice shall be included in all
- *  copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
  *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- *  SOFTWARE.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  *
  */
 
@@ -36,7 +36,6 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.nio.file.Path;
-import lombok.Getter;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import org.monte.media.Format;
@@ -58,22 +57,28 @@ import static org.monte.media.VideoFormatKeys.QualityKey;
 @Accessors(fluent = true)
 public class MonteRecorder implements RecorderBackend {
 
-  private static BackendConfiguration config;
-  @Getter(lazy = true)
-  private final TempFileScreenRecorder screenRecorder = getWrapperInstance(config);
+  private final TempFileScreenRecorder screenRecorder;
+  private boolean isRecording = false;
 
   public MonteRecorder(BackendConfiguration config) {
-    MonteRecorder.config = config;
+    this.screenRecorder = getWrapperInstance(config);
+  }
+
+  @Override
+  public boolean isRecording() {
+    return isRecording;
   }
 
   @Override
   public void start(Path tmpFile) {
-    screenRecorder().startRecording(tmpFile.toFile());
+    screenRecorder.startRecording(tmpFile.toFile());
+    isRecording = true;
   }
 
   @Override
   public void stop() {
-    screenRecorder().stopRecording();
+    screenRecorder.stopRecording();
+    isRecording = false;
   }
 
   private GraphicsConfiguration getGraphicConfig() {
