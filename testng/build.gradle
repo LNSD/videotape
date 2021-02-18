@@ -34,7 +34,7 @@ archivesBaseName = "$baseArchiveName-${project.name}"
 sourceCompatibility = 1.8
 
 dependencies {
-  annotationProcessor('org.projectlombok:lombok:1.18.16')
+  annotationProcessor('org.projectlombok:lombok:1.18.18')
   implementation(
           project(':core'),
           'org.projectlombok:lombok:1.18.18',
