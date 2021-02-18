@@ -37,7 +37,7 @@ dependencies {
   /**
    * Compile
    */
-  annotationProcessor('org.projectlombok:lombok:1.18.16')
+  annotationProcessor('org.projectlombok:lombok:1.18.18')
   api('org.aeonbits.owner:owner-java8:1.0.12')
   implementation(
           'org.projectlombok:lombok:1.18.18',
