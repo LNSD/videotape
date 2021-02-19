@@ -23,12 +23,12 @@ jobs:
           java-version: 11
 
       - name: Build with Gradle
-        run: ./gradlew clean docs:build
+        run: ./mvnw -pl docs clean compile
 
-      - name: Deploy
+      - name: Deploy to Github pages
         uses: JamesIves/github-pages-deploy-action@4.0.0
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages
-          FOLDER: docs/build/html
+          FOLDER: docs/target/html
           CLEAN: true

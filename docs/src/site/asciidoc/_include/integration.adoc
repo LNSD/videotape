@@ -1,0 +1,158 @@
+= Test frameworks
+
+Videotape library integrates with some of the most popular JVM test frameworks:
+
+* JUnit
+* JUnit 5
+* TestNG
+
+== JUnit
+
+Videotape basically integrates with JUnit test framework as a rule:
+
+=== Dependencies
+
+.pom.xml
+[source,xml,subs="attributes,verbatim"]
+----
+<dependency>
+  <groupId>es.lnsd.videotape</groupId>
+  <artifactId>videotape-junit</artifactId>
+  <version>{revnumber}</version>
+</dependency>
+----
+
+.build.gradle
+[source,groovy,subs="attributes,verbatim"]
+----
+testImplementation group: 'es.lnsd.videotape', name: 'videotape-junit', version: '{revnumber}'
+----
+
+=== Example code
+
+.JUnitVideoTest.java
+[source,java]
+----
+import es.lnsd.videotape.core.annotations.Video;
+import es.lnsd.videotape.junit4.VideoRule;
+import org.junit.Rule;
+import org.junit.Test;
+
+import static junit.framework.Assert.assertTrue;
+
+public class JUnitVideoTest {
+
+    @Rule
+    public VideoRule videoRule = new VideoRule();
+
+    @Test
+    @Video
+    public void shouldFailAndCreateRecordWithTestName() {
+        Thread.sleep(5000);
+        assert false;
+    }
+
+    @Test
+    @Video(name = "second_test")
+    public void videoShouldHaveNameSecondTest() {
+        Thread.sleep(10000);
+        assertTrue(false);
+    }
+}
+----
+
+== JUnit 5
+
+=== Dependencies
+
+.pom.xml
+[source,xml,subs="attributes,verbatim"]
+----
+<dependency>
+  <groupId>es.lnsd.videotape</groupId>
+  <artifactId>videotape-junit5</artifactId>
+  <version>{revnumber}</version>
+</dependency>
+----
+
+.build.gradle
+[source,groovy,subs="attributes,verbatim"]
+----
+testImplementation group: 'es.lnsd.videotape', name: 'videotape-junit5', version: '{revnumber}'
+----
+
+=== Example code
+
+.JUnit5VideoTest.java
+[source,java]
+----
+import es.lnsd.videotape.junit5.Video;
+
+public class JUnit5VideoTest {
+
+    @Test
+    @Video
+    public void shouldFailAndCreateRecordWithTestName() {
+        Thread.sleep(5000);
+        assert false;
+    }
+
+    @Test
+    @Video(name = "second_test")
+    public void videoShouldHaveNameSecondTest() {
+        Thread.sleep(10000);
+        assertTrue(false);
+    }
+}
+----
+
+== TestNG
+
+=== Dependencies
+
+.pom.xml
+[source,xml,subs="attributes,verbatim"]
+----
+<dependency>
+  <groupId>es.lnsd.videotape</groupId>
+  <artifactId>videotape-testng</artifactId>
+  <version>{revnumber}</version>
+</dependency>
+----
+
+.build.gradle
+[source,groovy,subs="attributes,verbatim"]
+----
+testImplementation group: 'es.lnsd.videotape', name: 'videotape-testng', version: '{revnumber}'
+----
+
+=== Example code
+
+.TestNgVideoTest.java
+[source,java]
+----
+import es.lnsd.videotape.core.annotations.Video;
+import es.lnsd.videotape.testng.VideoListener;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Test;
+
+import static org.testng.Assert.assertTrue;
+
+@Listeners(UniversalVideoListener.class)
+public class TestNgVideoTest {
+
+    @Test
+    @Video
+    public void shouldFailAndCreateRecordWithTestName() {
+        Thread.sleep(1000);
+        assert false;
+    }
+
+    @Test
+    @Video(name = "second_test")
+    public void videoShouldHaveNameSecondTest(){
+        Thread.sleep(1000);
+        assertTrue(false);
+    }
+}
+----
