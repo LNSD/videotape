@@ -80,7 +80,7 @@
     <dependency>
       <groupId>com.github.kokorin.jaffree</groupId>
       <artifactId>jaffree</artifactId>
-      <version>0.9.6</version>
+      <version>0.9.10</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
