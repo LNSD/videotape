@@ -148,6 +148,15 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <systemPropertyVariables>
+            <project.builddir>${project.build.directory}</project.builddir>
+            <project.test.resourcesdir>${basedir}/src/test/resources</project.test.resourcesdir>
+            <project.test.resultsdir>
+              ${project.build.directory}/test-results
+            </project.test.resultsdir>
+          </systemPropertyVariables>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

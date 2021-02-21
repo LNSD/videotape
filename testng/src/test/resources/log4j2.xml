@@ -26,7 +26,7 @@
 
 <Configuration>
     <Properties>
-        <Property name="logPath">build/test-results/logs</Property>
+        <Property name="logPath">${sys:project.test.resultsdir}/logs</Property>
         <Property name="rollingFileName">output</Property>
     </Properties>
     <Appenders>

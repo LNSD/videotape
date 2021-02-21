@@ -25,19 +25,33 @@
   -->
 
 <Configuration>
-    <Appenders>
-        <Console name="CA" target="SYSTEM_OUT">
-            <PatternLayout pattern="%-4r [%t] %-5p %c %x - %m%n"/>
-        </Console>
-        <File name="FA" fileName="build/test-results/videotape.log" append="false">
-            <PatternLayout pattern="[%-5p] %d %c - %m%n"/>
-        </File>
-    </Appenders>
-    <Loggers>
-        <Logger name="es.lnsd.videotape.recorder" level="debug"/>
-        <Root level="info">
-            <AppenderRef ref="CA"/>
-            <AppenderRef ref="FA"/>
-        </Root>
-    </Loggers>
+  <Properties>
+    <Property name="logPath">${sys:project.test.resultsdir}/logs</Property>
+    <Property name="rollingFileName">output</Property>
+  </Properties>
+  <Appenders>
+    <Console name="CA" target="SYSTEM_OUT">
+      <PatternLayout pattern="%d{DEFAULT} [%highlight{%-5level}] %c - %msg%n%throwable{7}"/>
+    </Console>
+    <RollingFile name="FA"
+                 fileName="${logPath}/${rollingFileName}.log"
+                 filePattern="${logPath}/${rollingFileName}_%d{yyyyMMdd_HHmm}.log"
+                 immediateFlush="true">
+      <PatternLayout pattern="%d{DEFAULT} [%-5level] %c - %msg%n%throwable{full}"/>
+      <Policies>
+        <!-- Causes a rollover if the log file is older than the current JVM's start time -->
+        <OnStartupTriggeringPolicy/>
+        <!-- Causes a rollover once the active file reaches certain size -->
+        <SizeBasedTriggeringPolicy size="2 MB"/>
+      </Policies>
+    </RollingFile>
+  </Appenders>
+  <Loggers>
+    <Logger name="es.lnsd.videotape.recorder" level="debug"/>
+    <Logger name="videotape.junit5.inttests" level="trace"/>
+    <Root level="info">
+      <AppenderRef ref="CA"/>
+      <AppenderRef ref="FA"/>
+    </Root>
+  </Loggers>
 </Configuration>
