@@ -32,7 +32,6 @@ import org.apache.commons.lang3.SystemUtils;
 public class OSUtils {
 
   private OSUtils() {
-    throw new IllegalStateException();
   }
 
   public static String getOsType() {

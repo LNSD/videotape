@@ -52,6 +52,16 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
+      <groupId>org.spockframework</groupId>
+      <artifactId>spock-guice</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.inject</groupId>
+      <artifactId>guice</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
       <groupId>com.squareup</groupId>
       <artifactId>javapoet</artifactId>
       <scope>compile</scope>

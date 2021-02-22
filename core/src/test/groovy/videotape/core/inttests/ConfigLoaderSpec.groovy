@@ -26,18 +26,20 @@
 package videotape.core.inttests
 
 import es.lnsd.videotape.core.config.ConfigLoader
+import es.lnsd.videotape.core.config.Configuration
 import es.lnsd.videotape.core.config.RecorderType
 import es.lnsd.videotape.core.config.RecordingMode
 import es.lnsd.videotape.core.config.SavingStrategy
 import java.nio.file.Paths
+import spock.lang.Specification
 import spock.util.environment.RestoreSystemProperties
 
 @RestoreSystemProperties
-class ConfigLoaderSpec extends ItSpec {
+class ConfigLoaderSpec extends Specification {
 
   def "default config should be loaded"() {
     when:
-    def conf = ConfigLoader.load()
+    def conf = ConfigLoader.load(Configuration.class)
 
     then:
     conf.folder() == Paths.get(System.getProperty("user.dir"), "video")
@@ -53,7 +55,7 @@ class ConfigLoaderSpec extends ItSpec {
     System.setProperty('video.configurationFile', file)
 
     when:
-    def conf = ConfigLoader.load()
+    def conf = ConfigLoader.load(Configuration.class)
 
     then:
     conf.mode() == RecordingMode.ANNOTATED
@@ -64,8 +66,8 @@ class ConfigLoaderSpec extends ItSpec {
 
     where:
     file << [
-        'classpath:custom-video.properties',
-        "file:${System.getProperty('project.test.resourcesdir')}/custom-video.properties"
+            'classpath:custom-video.properties',
+            "file:${System.getProperty('project.test.resourcesdir')}/custom-video.properties"
     ]
   }
 }

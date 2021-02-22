@@ -27,9 +27,6 @@ package es.lnsd.videotape.core.exception;
 
 public class ConfigurationException extends RuntimeException {
 
-  public ConfigurationException() {
-  }
-
   public ConfigurationException(String message) {
     super(message);
   }

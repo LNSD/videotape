@@ -36,7 +36,7 @@ public class VideoListener implements ITestListener {
   private final TestFrameworkAdapter recorder;
 
   public VideoListener() {
-    this.recorder = new TestFrameworkAdapter();
+    this.recorder = TestFrameworkAdapter.getInstance();
   }
 
   @Override

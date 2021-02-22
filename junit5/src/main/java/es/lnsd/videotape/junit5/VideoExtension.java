@@ -28,6 +28,7 @@ package es.lnsd.videotape.junit5;
 import es.lnsd.videotape.core.TestFrameworkAdapter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.Optional;
 import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
 import org.junit.jupiter.api.extension.BeforeTestExecutionCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -38,24 +39,21 @@ public class VideoExtension implements BeforeTestExecutionCallback, AfterTestExe
 
   @Override
   public void beforeTestExecution(ExtensionContext context) {
-    if (!context.getTestMethod().isPresent()) {
+    Optional<Method> testMethod = context.getTestMethod();
+    if (!testMethod.isPresent()) {
       return;
     }
 
-    Method method = context.getTestMethod().get();
+    Method method = testMethod.get();
     String fileName = method.getName();
     Video video = method.getAnnotation(Video.class);
 
-    this.recorder = new TestFrameworkAdapter();
+    this.recorder = TestFrameworkAdapter.getInstance();
     recorder.onTestStart(fileName, convertToVideoAnnotation(video));
   }
 
   @Override
   public void afterTestExecution(ExtensionContext context) {
-    if (!context.getTestMethod().isPresent()) {
-      return;
-    }
-
     boolean success = !context.getExecutionException().isPresent();
     recorder.afterTestExecution(success);
   }

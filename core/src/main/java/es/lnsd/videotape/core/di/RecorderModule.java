@@ -23,39 +23,23 @@
  * SOFTWARE.
  */
 
-package es.lnsd.videotape.junit4;
+package es.lnsd.videotape.core.di;
 
-import es.lnsd.videotape.core.TestFrameworkAdapter;
-import es.lnsd.videotape.core.Video;
-import org.junit.AssumptionViolatedException;
-import org.junit.rules.TestWatcher;
-import org.junit.runner.Description;
+import com.google.inject.AbstractModule;
+import es.lnsd.videotape.core.DefaultRecorder;
+import es.lnsd.videotape.core.Recorder;
+import es.lnsd.videotape.core.backend.RecorderBackend;
+import es.lnsd.videotape.core.backend.RecorderBackendFactory;
+import es.lnsd.videotape.core.utils.FileManager;
+import es.lnsd.videotape.core.utils.FileNameBuilder;
 
-public class VideoRule extends TestWatcher {
-
-  private TestFrameworkAdapter recorder;
-
-  @Override
-  protected void starting(Description description) {
-    String fileName = description.getMethodName();
-    Video annotation = description.getAnnotation(Video.class);
-
-    this.recorder = TestFrameworkAdapter.getInstance();
-    recorder.onTestStart(fileName, annotation);
-  }
+public class RecorderModule extends AbstractModule {
 
   @Override
-  protected void succeeded(Description description) {
-    recorder.onTestSuccess();
-  }
-
-  @Override
-  protected void failed(Throwable e, Description description) {
-    recorder.onTestFailure();
-  }
-
-  @Override
-  protected void skipped(AssumptionViolatedException e, Description description) {
-    failed(e, description);
+  protected void configure() {
+    bind(Recorder.class).to(DefaultRecorder.class);
+    bind(FileManager.class).toInstance(new FileManager());
+    bind(FileNameBuilder.class).toInstance(new FileNameBuilder());
+    bind(RecorderBackend.class).toProvider(RecorderBackendFactory.class);
   }
 }

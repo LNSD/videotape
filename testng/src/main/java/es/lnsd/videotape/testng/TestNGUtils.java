@@ -33,7 +33,6 @@ import org.testng.ITestResult;
 public class TestNGUtils {
 
   private TestNGUtils() {
-    throw new IllegalStateException();
   }
 
   public static Video getVideoAnnotation(ITestNGMethod method) {

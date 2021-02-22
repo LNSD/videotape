@@ -26,14 +26,13 @@
 package es.lnsd.videotape.core;
 
 import es.lnsd.videotape.core.backend.RecorderBackend;
-import es.lnsd.videotape.core.backend.RecorderBackendFactory;
 import es.lnsd.videotape.core.config.Configuration;
-import es.lnsd.videotape.core.config.RecorderType;
 import es.lnsd.videotape.core.exception.RecordingException;
 import es.lnsd.videotape.core.utils.FileManager;
 import es.lnsd.videotape.core.utils.FileNameBuilder;
 import java.io.IOException;
 import java.nio.file.Path;
+import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -49,23 +48,12 @@ public class DefaultRecorder implements Recorder {
   private Path tmpFilePath;
   private Path dstFilePath;
 
+  @Inject
   public DefaultRecorder(Configuration config, RecorderBackend backend, FileManager fileManager, FileNameBuilder fileNameBuilder) {
     this.config = config;
     this.recorder = backend;
     this.fileManager = fileManager;
     this.fileNameBuilder = fileNameBuilder;
-  }
-
-  public static Recorder get(Configuration config, RecorderBackend backend) {
-    FileManager fileManager = new FileManager();
-    FileNameBuilder fileNameBuilder = new FileNameBuilder();
-    return new DefaultRecorder(config, backend, fileManager, fileNameBuilder);
-  }
-
-  public static Recorder get(Configuration config) {
-    RecorderType type = config.recorderType();
-    RecorderBackend backend = RecorderBackendFactory.getRecorder(type);
-    return DefaultRecorder.get(config, backend);
   }
 
   public void startRecording(String name) {

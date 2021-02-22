@@ -25,19 +25,25 @@
 
 package es.lnsd.videotape.core.backend;
 
+import com.google.inject.Provider;
 import es.lnsd.videotape.core.backend.ffmpeg.wrapper.FFMpegConfiguration;
 import es.lnsd.videotape.core.backend.ffmpeg.wrapper.FFMpegRecorder;
 import es.lnsd.videotape.core.backend.monte.MonteConfiguration;
 import es.lnsd.videotape.core.backend.monte.MonteRecorder;
 import es.lnsd.videotape.core.backend.vlc.VlcRecorder;
 import es.lnsd.videotape.core.config.ConfigLoader;
+import es.lnsd.videotape.core.config.Configuration;
 import es.lnsd.videotape.core.config.RecorderType;
+import javax.inject.Inject;
 import org.apache.commons.lang3.NotImplementedException;
 
-public class RecorderBackendFactory {
+public class RecorderBackendFactory implements Provider<RecorderBackend> {
 
-  private RecorderBackendFactory() {
-    throw new IllegalStateException();
+  private final Configuration configuration;
+
+  @Inject
+  public RecorderBackendFactory(Configuration configuration) {
+    this.configuration = configuration;
   }
 
   public static RecorderBackend getRecorder(RecorderType recorderType) {
@@ -59,5 +65,11 @@ public class RecorderBackendFactory {
 
     String err = String.format("Recorder '%s' not available", recorderType);
     throw new NotImplementedException(err);
+  }
+
+  @Override
+  public RecorderBackend get() {
+    RecorderType type = configuration.recorderType();
+    return getRecorder(type);
   }
 }

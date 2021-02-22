@@ -32,20 +32,26 @@ import es.lnsd.videotape.core.config.Configuration
 import es.lnsd.videotape.core.config.RecordingMode
 import es.lnsd.videotape.core.config.SavingStrategy
 import es.lnsd.videotape.core.exception.RecordingException
+import javax.inject.Inject
+import spock.guice.UseModules
 import spock.lang.Specification
+import spock.lang.Unroll
+import videotape.core.di.MockRecorderModule
+import videotape.core.di.MockConfigurationModule
 
+@Unroll
+@UseModules([MockConfigurationModule, MockRecorderModule])
 class TestFrameworkAdapterSpec extends Specification {
+
+  @Inject
+  private Configuration configuration
+  @Inject
+  private Recorder recorder
 
   // Class under test
   private TestFrameworkAdapter tfAdapter
 
-  // Dependencies (will be stubbed/mocked)
-  private Configuration configuration
-  private Recorder recorder
-
   void setup() {
-    configuration = Stub(Configuration.class)
-    recorder = Mock(Recorder.class)
     tfAdapter = new TestFrameworkAdapter(configuration, recorder)
   }
 

@@ -23,9 +23,16 @@
  * SOFTWARE.
  */
 
-package videotape.common.inttests
+package es.lnsd.videotape.core.di;
 
-interface TestSuiteGenerator {
+import com.google.inject.AbstractModule;
+import es.lnsd.videotape.core.config.ConfigLoader;
+import es.lnsd.videotape.core.config.Configuration;
 
+public class ConfigurationModule extends AbstractModule {
 
+  @Override
+  protected void configure() {
+    bind(Configuration.class).toProvider(() -> ConfigLoader.load(Configuration.class));
+  }
 }

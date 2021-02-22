@@ -33,24 +33,29 @@ import es.lnsd.videotape.core.exception.RecordingException
 import es.lnsd.videotape.core.utils.FileManager
 import es.lnsd.videotape.core.utils.FileNameBuilder
 import java.nio.file.Path
+import javax.inject.Inject
+import spock.guice.UseModules
 import spock.lang.Specification
+import videotape.core.di.MockRecorderModule
+import videotape.core.di.MockConfigurationModule
 
+@UseModules([MockConfigurationModule, MockRecorderModule])
 class DefaultRecorderSpec extends Specification {
 
   // Class under test
   private Recorder recorder
 
-  // Dependencies (will be stubbed/mocked)
+  // Dependencies
+  @Inject
   private Configuration configuration
+  @Inject
   private RecorderBackend backend
+  @Inject
   private FileManager fileManager
+  @Inject
   private FileNameBuilder fileNameBuilder
 
   void setup() {
-    configuration = Stub(Configuration)
-    backend = Mock(RecorderBackend)
-    fileManager = Mock(FileManager)
-    fileNameBuilder = Stub(FileNameBuilder)
     recorder = new DefaultRecorder(configuration, backend, fileManager, fileNameBuilder)
   }
 
@@ -127,5 +132,4 @@ class DefaultRecorderSpec extends Specification {
     then:
     1 * fileManager.discardFile(_)
   }
-
 }

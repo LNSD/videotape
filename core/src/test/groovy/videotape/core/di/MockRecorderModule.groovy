@@ -23,39 +23,24 @@
  * SOFTWARE.
  */
 
-package es.lnsd.videotape.junit4;
+package videotape.core.di
 
-import es.lnsd.videotape.core.TestFrameworkAdapter;
-import es.lnsd.videotape.core.Video;
-import org.junit.AssumptionViolatedException;
-import org.junit.rules.TestWatcher;
-import org.junit.runner.Description;
 
-public class VideoRule extends TestWatcher {
+import es.lnsd.videotape.core.Recorder
+import es.lnsd.videotape.core.backend.RecorderBackend
+import es.lnsd.videotape.core.di.RecorderModule
+import es.lnsd.videotape.core.utils.FileManager
+import es.lnsd.videotape.core.utils.FileNameBuilder
+import spock.mock.DetachedMockFactory
 
-  private TestFrameworkAdapter recorder;
-
-  @Override
-  protected void starting(Description description) {
-    String fileName = description.getMethodName();
-    Video annotation = description.getAnnotation(Video.class);
-
-    this.recorder = TestFrameworkAdapter.getInstance();
-    recorder.onTestStart(fileName, annotation);
-  }
+class MockRecorderModule extends RecorderModule {
 
   @Override
-  protected void succeeded(Description description) {
-    recorder.onTestSuccess();
-  }
-
-  @Override
-  protected void failed(Throwable e, Description description) {
-    recorder.onTestFailure();
-  }
-
-  @Override
-  protected void skipped(AssumptionViolatedException e, Description description) {
-    failed(e, description);
+  protected void configure() {
+    DetachedMockFactory factory = new DetachedMockFactory()
+    bind(Recorder).toInstance(factory.Mock(Recorder))
+    bind(RecorderBackend).toInstance(factory.Mock(RecorderBackend))
+    bind(FileManager).toInstance(factory.Mock(FileManager))
+    bind(FileNameBuilder).toInstance(factory.Stub(FileNameBuilder))
   }
 }

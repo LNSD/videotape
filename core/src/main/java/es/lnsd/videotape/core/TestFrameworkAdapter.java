@@ -25,12 +25,16 @@
 
 package es.lnsd.videotape.core;
 
-import es.lnsd.videotape.core.config.ConfigLoader;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import es.lnsd.videotape.core.config.Configuration;
 import es.lnsd.videotape.core.config.RecordingMode;
 import es.lnsd.videotape.core.config.SavingStrategy;
+import es.lnsd.videotape.core.di.ConfigurationModule;
+import es.lnsd.videotape.core.di.RecorderModule;
 import es.lnsd.videotape.core.exception.RecordingException;
 import java.util.Optional;
+import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -42,17 +46,21 @@ public class TestFrameworkAdapter {
   private final Configuration config;
   private final Recorder recorder;
 
+  @Inject
   public TestFrameworkAdapter(Configuration config, Recorder recorder) {
     this.config = config;
     this.recorder = recorder;
   }
 
-  private TestFrameworkAdapter(Configuration config) {
-    this(config, DefaultRecorder.get(config));
-  }
-
-  public TestFrameworkAdapter() {
-    this(ConfigLoader.load());
+  public static TestFrameworkAdapter getInstance() {
+    Injector injector = Guice.createInjector(
+        new ConfigurationModule(),
+        new RecorderModule()
+    );
+    return new TestFrameworkAdapter(
+        injector.getInstance(Configuration.class),
+        injector.getInstance(Recorder.class)
+    );
   }
 
   private static String getVideoName(Video video, String testName) {

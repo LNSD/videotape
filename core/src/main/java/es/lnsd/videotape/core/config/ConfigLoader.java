@@ -26,42 +26,21 @@
 package es.lnsd.videotape.core.config;
 
 import es.lnsd.videotape.core.utils.OSUtils;
-import java.util.HashMap;
 import java.util.Map;
 import org.aeonbits.owner.Config;
 import org.aeonbits.owner.ConfigFactory;
-import org.apache.commons.lang3.StringUtils;
 
 public final class ConfigLoader {
 
   private ConfigLoader() {
-    throw new IllegalStateException();
   }
 
-  public static <T extends Config> T load(Class<T> configClass, String configurationFile,
-                                          Map<?, ?>... imports) {
+  public static <T extends Config> T load(Class<T> configClass, Map<?, ?>... imports) {
     String file = System.getProperty("video.configurationFile", "classpath:video.properties");
-
-    // Allow overriding the configuration file
-    if (StringUtils.isNotBlank(configurationFile)) {
-      file = configurationFile;
-    }
 
     ConfigFactory.setProperty("conf.file", file);
     ConfigFactory.setProperty("os.type", OSUtils.getOsType());
 
     return ConfigFactory.create(configClass, imports);
-  }
-
-  public static <T extends Config> T load(Class<T> configClass, Map<?, ?>... imports) {
-    return load(configClass, null, imports);
-  }
-
-  public static Configuration load() {
-    return load(new HashMap<>());
-  }
-
-  public static Configuration load(Map<?, ?>... conf) {
-    return load(Configuration.class, null, conf);
   }
 }

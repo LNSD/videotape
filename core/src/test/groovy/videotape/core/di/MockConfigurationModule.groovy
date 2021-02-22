@@ -23,41 +23,27 @@
  * SOFTWARE.
  */
 
-package videotape.core.inttests
+package videotape.core.di
 
-import es.lnsd.videotape.core.DefaultRecorder
-import es.lnsd.videotape.core.Recorder
-import es.lnsd.videotape.core.backend.RecorderBackendFactory
-import es.lnsd.videotape.core.config.ConfigLoader
-import es.lnsd.videotape.core.config.RecorderType
-import java.nio.file.Paths
-import spock.lang.Specification
+import es.lnsd.videotape.core.config.Configuration
+import es.lnsd.videotape.core.di.ConfigurationModule
+import spock.mock.DetachedMockFactory
 
-class ItSpec extends Specification {
+class MockConfigurationModule extends ConfigurationModule {
 
-  public static final String VIDEO_FILE_NAME = "video_test"
+  Configuration configuration = null
 
-  protected static Recorder getRecorder(RecorderType type) {
-    def config = ConfigLoader.load()
-    def backend = RecorderBackendFactory.getRecorder(type)
-    return DefaultRecorder.get(config, backend)
+  MockConfigurationModule(Configuration configuration = null) {
+    this.configuration = configuration
   }
 
-  protected static File recordVideo(RecorderType type) {
-    def recorder = getRecorder(type)
-
-    recorder.startRecording(VIDEO_FILE_NAME)
-    sleep(5)
-    recorder.stopRecording()
-
-    return recorder.keepRecording().toFile()
-  }
-
-  private static void sleep(int sec) {
-    try {
-      Thread.sleep(sec * 1000)
-    } catch (InterruptedException e) {
-      e.printStackTrace()
+  @Override
+  protected void configure() {
+    if (configuration != null) {
+      bind(Configuration).toInstance(configuration)
+    } else {
+      DetachedMockFactory factory = new DetachedMockFactory()
+      bind(Configuration).toInstance(factory.Stub(Configuration))
     }
   }
 }

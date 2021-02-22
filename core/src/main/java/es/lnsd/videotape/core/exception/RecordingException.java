@@ -42,8 +42,4 @@ public class RecordingException extends RuntimeException {
   public RecordingException(Throwable cause) {
     super(cause);
   }
-
-  public RecordingException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-    super(message, cause, enableSuppression, writableStackTrace);
-  }
 }
