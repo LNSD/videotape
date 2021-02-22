@@ -48,12 +48,12 @@
   </properties>
 
   <modules>
-    <module>docs</module>
     <module>core</module>
     <module>junit4</module>
     <module>junit5</module>
     <module>testng</module>
     <module>common</module>
+    <module>docs</module>
   </modules>
 
   <licenses>
@@ -234,8 +234,29 @@
             </execution>
           </executions>
         </plugin>
+        <plugin>
+          <groupId>org.jacoco</groupId>
+          <artifactId>jacoco-maven-plugin</artifactId>
+          <version>0.8.6</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>prepare-agent</goal>
+                <goal>prepare-agent-integration</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
       </plugins>
     </pluginManagement>
   </build>
 
+  <profiles>
+    <profile>
+      <id>cov-report</id>
+      <modules>
+        <module>coverage</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>
