@@ -26,50 +26,45 @@
 package es.lnsd.videotape.core.backend;
 
 import com.google.inject.Provider;
-import es.lnsd.videotape.core.backend.ffmpeg.wrapper.FFMpegConfiguration;
-import es.lnsd.videotape.core.backend.ffmpeg.wrapper.FFMpegRecorder;
-import es.lnsd.videotape.core.backend.monte.MonteConfiguration;
+import es.lnsd.videotape.core.backend.ffmpeg.wrapper.FFMpegWrapperRecorder;
 import es.lnsd.videotape.core.backend.monte.MonteRecorder;
 import es.lnsd.videotape.core.backend.vlc.VlcRecorder;
-import es.lnsd.videotape.core.config.ConfigLoader;
-import es.lnsd.videotape.core.config.Configuration;
 import es.lnsd.videotape.core.config.BackendType;
+import es.lnsd.videotape.core.config.Configuration;
 import javax.inject.Inject;
 import org.apache.commons.lang3.NotImplementedException;
 
-public class BackendFactory implements Provider<Backend> {
+public class BackendProvider implements Provider<Backend> {
 
   private final Configuration configuration;
 
   @Inject
-  public BackendFactory(Configuration configuration) {
+  private Provider<FFMpegWrapperRecorder> ffMpegWrapperRecorderProvider;
+  @Inject
+  private Provider<VlcRecorder> vlcRecorderProvider;
+  @Inject
+  private Provider<MonteRecorder> monteRecorderProvider;
+
+  @Inject
+  public BackendProvider(Configuration configuration) {
     this.configuration = configuration;
-  }
-
-  public static Backend getRecorder(BackendType recorderType) {
-
-    if (recorderType == BackendType.FFMPEG || recorderType == BackendType.FFMPEG_WRAPPER) {
-      FFMpegConfiguration configuration = ConfigLoader.load(FFMpegConfiguration.class);
-      return new FFMpegRecorder(configuration);
-    }
-
-    if (recorderType == BackendType.VLC) {
-      BackendConfiguration configuration = ConfigLoader.load(BackendConfiguration.class);
-      return new VlcRecorder(configuration);
-    }
-
-    if (recorderType == BackendType.MONTE) {
-      BackendConfiguration configuration = ConfigLoader.load(MonteConfiguration.class);
-      return new MonteRecorder(configuration);
-    }
-
-    String err = String.format("Recorder '%s' not available", recorderType);
-    throw new NotImplementedException(err);
   }
 
   @Override
   public Backend get() {
     BackendType type = configuration.backend();
-    return getRecorder(type);
+
+    switch (type) {
+      case MONTE:
+        return monteRecorderProvider.get();
+      case FFMPEG:
+      case FFMPEG_WRAPPER:
+        return ffMpegWrapperRecorderProvider.get();
+      case VLC:
+        return vlcRecorderProvider.get();
+      default:
+        String err = String.format("Recorder '%s' not available", type);
+        throw new NotImplementedException(err);
+    }
   }
 }

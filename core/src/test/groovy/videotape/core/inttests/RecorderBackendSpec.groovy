@@ -26,8 +26,13 @@
 package videotape.core.inttests
 
 import es.lnsd.videotape.core.backend.Backend
-import es.lnsd.videotape.core.backend.BackendFactory
-import es.lnsd.videotape.core.config.BackendType
+import es.lnsd.videotape.core.backend.BackendConfiguration
+import es.lnsd.videotape.core.backend.ffmpeg.wrapper.FFMpegConfiguration
+import es.lnsd.videotape.core.backend.ffmpeg.wrapper.FFMpegWrapperRecorder
+import es.lnsd.videotape.core.backend.monte.MonteConfiguration
+import es.lnsd.videotape.core.backend.monte.MonteRecorder
+import es.lnsd.videotape.core.backend.vlc.VlcRecorder
+import es.lnsd.videotape.core.config.ConfigLoader
 import java.nio.file.Path
 import org.apache.commons.io.FileUtils
 import spock.lang.Requires
@@ -42,13 +47,10 @@ import static org.apache.commons.io.FileUtils.ONE_KB
 @RestoreSystemProperties
 class RecorderBackendSpec extends Specification {
 
-  static final Long TEN_KB = 10 * ONE_KB
   static final String VIDEO_FILE_NAME = "video_test"
 
   @Shared
   Path OUTPUT_DIR = Path.of(System.getProperty("project.test.resultsdir")).resolve("video")
-  @Shared
-  Path VIDEO_FILE = OUTPUT_DIR.resolve(VIDEO_FILE_NAME + ".mp4")
 
   def setupSpec() {
     try {
@@ -66,8 +68,8 @@ class RecorderBackendSpec extends Specification {
     }
   }
 
-  static void recordAFewSecondsVideo(Backend recorder, Path file) {
-    recorder.start(file)
+  static void recordAFewSecondsVideo(Backend recorder, File file) {
+    recorder.start(file.absoluteFile.toPath())
     sleep(5)
     recorder.stop()
   }
@@ -80,49 +82,102 @@ class RecorderBackendSpec extends Specification {
     }
   }
 
-  def "should be video in folder with #type recorder"() {
+  /**
+   * Monte recorder
+   */
+
+  def "Record video with MONTE backend default configuration"() {
     given:
-    Backend backend = BackendFactory.getRecorder(type as BackendType)
+    def video = OUTPUT_DIR.resolve(VIDEO_FILE_NAME + ".avi").toFile()
+
+    MonteConfiguration config = ConfigLoader.load(MonteConfiguration.class)
+    Backend backend = new MonteRecorder(config)
 
     when:
-    recordAFewSecondsVideo(backend, VIDEO_FILE)
+    recordAFewSecondsVideo(backend, video)
 
     then:
-    with(VIDEO_FILE.toFile()) {
+    with(video) {
       verifyAll {
         exists()
         parentFile.toPath() == OUTPUT_DIR
         name.startsWith(VIDEO_FILE_NAME)
-        length() >= TEN_KB
+        length() >= 10 * ONE_KB
       }
     }
+  }
 
-    where:
-    type << BackendType.values()
+  /**
+   * FFMpeg recorder
+   */
+
+  def "Record video with FFMPEG_WRAPPER backend default configuration"() {
+    given:
+    def video = OUTPUT_DIR.resolve(VIDEO_FILE_NAME + ".mp4").toFile()
+
+    FFMpegConfiguration config = ConfigLoader.load(FFMpegConfiguration)
+    Backend backend = new FFMpegWrapperRecorder(config)
+
+    when:
+    recordAFewSecondsVideo(backend, video)
+
+    then:
+    with(video) {
+      verifyAll {
+        exists()
+        parentFile.toPath() == OUTPUT_DIR
+        name.startsWith(VIDEO_FILE_NAME)
+        length() >= 10 * ONE_KB
+      }
+    }
   }
 
   @Requires({ os.macOs })
-  def "ffmpeg should record video with custom pixel format for #type"() {
+  def "Record video with FFMPEG_WRAPPER backend with custom pixel format"() {
     given:
-    Backend backend = BackendFactory.getRecorder(type as BackendType)
+    def video = OUTPUT_DIR.resolve(VIDEO_FILE_NAME + ".mp4").toFile()
 
-    // TODO Allow passing backend configuration via guice
-    System.setProperty("video.ffmpeg.pixelFormat", "yuyv422")
+    FFMpegConfiguration config = ConfigLoader.load(FFMpegConfiguration, [
+            "video.ffmpeg.pixelFormat": "yuyv422"
+    ])
+    Backend backend = new FFMpegWrapperRecorder(config)
 
     when:
-    recordAFewSecondsVideo(backend, VIDEO_FILE)
+    recordAFewSecondsVideo(backend, video)
 
     then:
-    with(VIDEO_FILE.toFile()) {
+    with(video) {
       verifyAll {
         exists()
         parentFile.toPath() == OUTPUT_DIR
         name.startsWith(VIDEO_FILE_NAME)
-        length() >= TEN_KB
+        length() >= 10 * ONE_KB
       }
     }
+  }
 
-    where:
-    type << [BackendType.FFMPEG, BackendType.FFMPEG_WRAPPER]
+  /**
+   * VLC recorder
+   */
+
+  def "Record video with VLC backend default configuration"() {
+    given:
+    def video = OUTPUT_DIR.resolve(VIDEO_FILE_NAME + ".mp4").toFile()
+
+    BackendConfiguration config = ConfigLoader.load(BackendConfiguration)
+    Backend backend = new VlcRecorder(config)
+
+    when:
+    recordAFewSecondsVideo(backend, video)
+
+    then:
+    with(video) {
+      verifyAll {
+        exists()
+        parentFile.toPath() == OUTPUT_DIR
+        name.startsWith(VIDEO_FILE_NAME)
+        length() >= 10 * ONE_KB
+      }
+    }
   }
 }
