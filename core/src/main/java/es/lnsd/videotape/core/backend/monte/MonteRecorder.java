@@ -59,7 +59,7 @@ public class MonteRecorder implements Backend {
   private final TempFileScreenRecorder screenRecorder;
   private boolean isRecording = false;
 
-  public MonteRecorder(BackendConfiguration config) {
+  public MonteRecorder(MonteConfiguration config) {
     this.screenRecorder = getWrapperInstance(config);
   }
 

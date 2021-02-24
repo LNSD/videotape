@@ -30,6 +30,7 @@ import com.google.inject.Injector;
 import es.lnsd.videotape.core.config.Configuration;
 import es.lnsd.videotape.core.config.RecordingMode;
 import es.lnsd.videotape.core.config.KeepStrategy;
+import es.lnsd.videotape.core.di.BackendModule;
 import es.lnsd.videotape.core.di.ConfigurationModule;
 import es.lnsd.videotape.core.di.RecorderModule;
 import es.lnsd.videotape.core.exception.RecordingException;
@@ -55,7 +56,8 @@ public class TestFrameworkAdapter {
   public static TestFrameworkAdapter getInstance() {
     Injector injector = Guice.createInjector(
         new ConfigurationModule(),
-        new RecorderModule()
+        new RecorderModule(),
+        new BackendModule()
     );
     return new TestFrameworkAdapter(
         injector.getInstance(Configuration.class),

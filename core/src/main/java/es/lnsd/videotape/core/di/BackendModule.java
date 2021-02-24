@@ -26,17 +26,35 @@
 package es.lnsd.videotape.core.di;
 
 import com.google.inject.AbstractModule;
-import es.lnsd.videotape.core.DefaultRecorder;
-import es.lnsd.videotape.core.Recorder;
-import es.lnsd.videotape.core.utils.FileManager;
-import es.lnsd.videotape.core.utils.FileNameBuilder;
+import com.google.inject.Provides;
+import es.lnsd.videotape.core.backend.Backend;
+import es.lnsd.videotape.core.backend.BackendConfiguration;
+import es.lnsd.videotape.core.backend.BackendProvider;
+import es.lnsd.videotape.core.backend.ffmpeg.wrapper.FFMpegConfiguration;
+import es.lnsd.videotape.core.backend.ffmpeg.wrapper.FFMpegWrapperRecorder;
+import es.lnsd.videotape.core.backend.monte.MonteConfiguration;
+import es.lnsd.videotape.core.backend.monte.MonteRecorder;
+import es.lnsd.videotape.core.backend.vlc.VlcRecorder;
 
-public class RecorderModule extends AbstractModule {
+public class BackendModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    bind(Recorder.class).to(DefaultRecorder.class);
-    bind(FileManager.class).toInstance(new FileManager());
-    bind(FileNameBuilder.class).toInstance(new FileNameBuilder());
+    bind(Backend.class).toProvider(BackendProvider.class);
+  }
+
+  @Provides
+  private MonteRecorder provideMonteBackend(MonteConfiguration configuration) {
+    return new MonteRecorder(configuration);
+  }
+
+  @Provides
+  private FFMpegWrapperRecorder provideFFMpegWrapperBackend(FFMpegConfiguration configuration) {
+    return new FFMpegWrapperRecorder(configuration);
+  }
+
+  @Provides
+  private VlcRecorder provideVlcBackend(BackendConfiguration configuration) {
+    return new VlcRecorder(configuration);
   }
 }

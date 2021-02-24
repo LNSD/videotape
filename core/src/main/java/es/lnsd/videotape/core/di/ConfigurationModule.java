@@ -26,6 +26,9 @@
 package es.lnsd.videotape.core.di;
 
 import com.google.inject.AbstractModule;
+import es.lnsd.videotape.core.backend.BackendConfiguration;
+import es.lnsd.videotape.core.backend.ffmpeg.wrapper.FFMpegConfiguration;
+import es.lnsd.videotape.core.backend.monte.MonteConfiguration;
 import es.lnsd.videotape.core.config.ConfigLoader;
 import es.lnsd.videotape.core.config.Configuration;
 
@@ -34,5 +37,8 @@ public class ConfigurationModule extends AbstractModule {
   @Override
   protected void configure() {
     bind(Configuration.class).toProvider(() -> ConfigLoader.load(Configuration.class));
+    bind(BackendConfiguration.class).toProvider(() -> ConfigLoader.load(BackendConfiguration.class));
+    bind(MonteConfiguration.class).toProvider(() -> ConfigLoader.load(MonteConfiguration.class));
+    bind(FFMpegConfiguration.class).toProvider(() -> ConfigLoader.load(FFMpegConfiguration.class));
   }
 }

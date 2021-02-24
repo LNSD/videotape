@@ -40,12 +40,12 @@ import org.apache.commons.lang3.SystemUtils;
 
 @Slf4j
 @Accessors(fluent = true)
-public class FFMpegRecorder implements Backend {
+public class FFMpegWrapperRecorder implements Backend {
 
   private final FFMpegConfiguration config;
   private FFmpegResultFuture future;
 
-  public FFMpegRecorder(FFMpegConfiguration config) {
+  public FFMpegWrapperRecorder(FFMpegConfiguration config) {
     this.config = config;
   }
 
