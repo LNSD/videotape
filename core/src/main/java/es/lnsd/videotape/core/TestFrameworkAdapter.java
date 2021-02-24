@@ -29,7 +29,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import es.lnsd.videotape.core.config.Configuration;
 import es.lnsd.videotape.core.config.RecordingMode;
-import es.lnsd.videotape.core.config.SavingStrategy;
+import es.lnsd.videotape.core.config.KeepStrategy;
 import es.lnsd.videotape.core.di.ConfigurationModule;
 import es.lnsd.videotape.core.di.RecorderModule;
 import es.lnsd.videotape.core.exception.RecordingException;
@@ -86,7 +86,7 @@ public class TestFrameworkAdapter {
       return;
     }
 
-    if (config.saveStrategy().equals(SavingStrategy.ALL)) {
+    if (config.keepStrategy().equals(KeepStrategy.ALL)) {
       recorder.keepRecording();
     } else {
       recorder.discardRecording();

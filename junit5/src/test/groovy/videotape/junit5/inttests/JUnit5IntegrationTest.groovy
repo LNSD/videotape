@@ -27,7 +27,7 @@ package videotape.junit5.inttests
 
 import com.squareup.javapoet.AnnotationSpec
 import com.squareup.javapoet.MethodSpec
-import es.lnsd.videotape.core.config.SavingStrategy
+import es.lnsd.videotape.core.config.KeepStrategy
 import es.lnsd.videotape.junit5.Video
 import java.nio.file.Paths
 import javax.lang.model.element.Modifier
@@ -99,7 +99,7 @@ class JUnit5IntegrationTest extends BaseSpec {
 
   def "should pass on success test with video if save strategy is all"() {
     given:
-    System.setProperty("video.save.mode", SavingStrategy.ALL.toString())
+    System.setProperty("video.keep", KeepStrategy.ALL.toString())
     def testClass = generateJUnit5TestClass("PassWithVideoTest") {
       MethodSpec.methodBuilder("passWithVideo")
           .addAnnotation(Test)
@@ -119,7 +119,7 @@ class JUnit5IntegrationTest extends BaseSpec {
 
   def "should pass on success test without video if save strategy is failed only"() {
     given:
-    System.setProperty("video.save.mode", SavingStrategy.FAILED_ONLY.toString())
+    System.setProperty("video.keep", KeepStrategy.FAILED_ONLY.toString())
     def testClass = generateJUnit5TestClass("PassWithoutVideoTest") {
       MethodSpec.methodBuilder("passWithoutVideo")
           .addAnnotation(Test)

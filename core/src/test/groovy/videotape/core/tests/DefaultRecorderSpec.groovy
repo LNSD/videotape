@@ -27,7 +27,7 @@ package videotape.core.tests
 
 import es.lnsd.videotape.core.DefaultRecorder
 import es.lnsd.videotape.core.Recorder
-import es.lnsd.videotape.core.backend.RecorderBackend
+import es.lnsd.videotape.core.backend.Backend
 import es.lnsd.videotape.core.config.Configuration
 import es.lnsd.videotape.core.exception.RecordingException
 import es.lnsd.videotape.core.utils.FileManager
@@ -49,7 +49,7 @@ class DefaultRecorderSpec extends Specification {
   @Inject
   private Configuration configuration
   @Inject
-  private RecorderBackend backend
+  private Backend backend
   @Inject
   private FileManager fileManager
   @Inject
@@ -68,7 +68,7 @@ class DefaultRecorderSpec extends Specification {
     def dstDir = Path.of("/video/")
     def extension = "webm"
     def fileName = "screen_recording_2015_10_21_19_28.$extension"
-    configuration.folder() >> dstDir
+    configuration.output() >> dstDir
     configuration.fileFormat() >> extension
     fileNameBuilder.fileNameWithTimestamp(*_) >> fileName
 
@@ -107,7 +107,7 @@ class DefaultRecorderSpec extends Specification {
     def testCaseName = "testCaseMethodName"
     def dstDir = Path.of("/video/")
     def extension = "mp4"
-    configuration.folder() >> dstDir
+    configuration.output() >> dstDir
     configuration.fileFormat() >> extension
     fileNameBuilder.fileNameWithTimestamp(*_) >> { String name, String ext -> "${name}_2015_10_21_19_28.$ext" }
 

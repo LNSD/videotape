@@ -29,7 +29,7 @@ import com.squareup.javapoet.AnnotationSpec
 import com.squareup.javapoet.MethodSpec
 import es.lnsd.videotape.core.Video
 import es.lnsd.videotape.core.config.RecordingMode
-import es.lnsd.videotape.core.config.SavingStrategy
+import es.lnsd.videotape.core.config.KeepStrategy
 import es.lnsd.videotape.testng.VideoListener
 import java.nio.file.Paths
 import javax.lang.model.element.Modifier
@@ -119,7 +119,7 @@ class TestNGIntegrationTest extends BaseSpec {
 
   def "should be recording for successful test and save strategy ALL"() {
     given:
-    System.setProperty("video.save.mode", SavingStrategy.ALL.toString())
+    System.setProperty("video.keep", KeepStrategy.ALL.toString())
     def testClass = generateTestNGTestClass("PassWithVideoTest") {
       MethodSpec.methodBuilder("passWithVideo")
           .addAnnotation(Test)
@@ -139,7 +139,7 @@ class TestNGIntegrationTest extends BaseSpec {
 
   def "should be recording for failed test and save strategy FAILED_ONLY"() {
     given:
-    System.setProperty("video.save.mode", SavingStrategy.FAILED_ONLY.toString())
+    System.setProperty("video.keep", KeepStrategy.FAILED_ONLY.toString())
     def testClass = generateTestNGTestClass("FailAndFailedOnlyTest") {
       MethodSpec.methodBuilder("failAndFailedOnlyTest")
           .addAnnotation(Test)
@@ -160,7 +160,7 @@ class TestNGIntegrationTest extends BaseSpec {
 
   def "should not be recording for successful test and save strategy FAILED_ONLY"() {
     given:
-    System.setProperty("video.save.mode", SavingStrategy.FAILED_ONLY.toString())
+    System.setProperty("video.keep", KeepStrategy.FAILED_ONLY.toString())
     def testClass = generateTestNGTestClass("PassWithoutVideoTest") {
       MethodSpec.methodBuilder("passWithoutVideo")
           .addAnnotation(Test)

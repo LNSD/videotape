@@ -23,15 +23,24 @@
  * SOFTWARE.
  */
 
-package es.lnsd.videotape.core.config.utils;
+package es.lnsd.videotape.core.config;
 
+import es.lnsd.videotape.core.exception.InvalidConfigurationValueException;
 import java.lang.reflect.Method;
-import java.util.Optional;
-import org.aeonbits.owner.Converter;
 
-public class UpperCaseConverter implements Converter<String> {
-  @Override
-  public String convert(Method method, String input) {
-    return Optional.ofNullable(input).map(String::toUpperCase).orElse("");
+public enum BackendType {
+  MONTE,
+  FFMPEG, FFMPEG_WRAPPER,
+  VLC;
+
+  public static class Converter implements org.aeonbits.owner.Converter<BackendType> {
+    @Override
+    public BackendType convert(Method method, String input) {
+      try {
+        return valueOf(input.toUpperCase());
+      } catch (IllegalArgumentException ex) {
+        throw new InvalidConfigurationValueException(method, input);
+      }
+    }
   }
 }

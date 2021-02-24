@@ -27,9 +27,9 @@ package videotape.core.inttests
 
 import es.lnsd.videotape.core.config.ConfigLoader
 import es.lnsd.videotape.core.config.Configuration
-import es.lnsd.videotape.core.config.RecorderType
+import es.lnsd.videotape.core.config.BackendType
 import es.lnsd.videotape.core.config.RecordingMode
-import es.lnsd.videotape.core.config.SavingStrategy
+import es.lnsd.videotape.core.config.KeepStrategy
 import java.nio.file.Paths
 import spock.lang.Specification
 import spock.util.environment.RestoreSystemProperties
@@ -42,10 +42,10 @@ class ConfigLoaderSpec extends Specification {
     def conf = ConfigLoader.load(Configuration.class)
 
     then:
-    conf.folder() == Paths.get(System.getProperty("user.dir"), "video")
+    conf.output() == Paths.get(System.getProperty("user.dir"), "video")
     conf.mode() == RecordingMode.ANNOTATED
-    conf.recorderType() == RecorderType.MONTE
-    conf.saveStrategy() == SavingStrategy.FAILED_ONLY
+    conf.backend() == BackendType.MONTE
+    conf.keepStrategy() == KeepStrategy.FAILED_ONLY
     conf.videoEnabled()
     conf.fileFormat() == "mp4"
   }
@@ -59,8 +59,8 @@ class ConfigLoaderSpec extends Specification {
 
     then:
     conf.mode() == RecordingMode.ANNOTATED
-    conf.recorderType() == RecorderType.MONTE
-    conf.saveStrategy() == SavingStrategy.ALL
+    conf.backend() == BackendType.MONTE
+    conf.keepStrategy() == KeepStrategy.ALL
     !conf.videoEnabled()
     conf.fileFormat() == "webm"
 

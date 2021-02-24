@@ -25,21 +25,11 @@
 
 package videotape.core.inttests
 
-
-import es.lnsd.videotape.core.DefaultRecorder
-import es.lnsd.videotape.core.Recorder
-import es.lnsd.videotape.core.backend.RecorderBackend
-import es.lnsd.videotape.core.backend.RecorderBackendFactory
-import es.lnsd.videotape.core.config.ConfigLoader
-import es.lnsd.videotape.core.config.Configuration
-import es.lnsd.videotape.core.config.RecorderType
-import es.lnsd.videotape.core.di.ConfigurationModule
-import es.lnsd.videotape.core.di.RecorderModule
-import es.lnsd.videotape.core.utils.FileManager
-import es.lnsd.videotape.core.utils.FileNameBuilder
+import es.lnsd.videotape.core.backend.Backend
+import es.lnsd.videotape.core.backend.BackendFactory
+import es.lnsd.videotape.core.config.BackendType
 import java.nio.file.Path
-import javax.inject.Inject
-import spock.guice.UseModules
+import org.apache.commons.io.FileUtils
 import spock.lang.Requires
 import spock.lang.Shared
 import spock.lang.Specification
@@ -50,26 +40,36 @@ import static org.apache.commons.io.FileUtils.ONE_KB
 
 @Unroll
 @RestoreSystemProperties
-@UseModules([ConfigurationModule, RecorderModule])
 class RecorderBackendSpec extends Specification {
-
-  @Shared
-  Path VIDEO_FOLDER = Path.of(System.getProperty("project.test.resultsdir")).resolve("video")
 
   static final Long TEN_KB = 10 * ONE_KB
   static final String VIDEO_FILE_NAME = "video_test"
 
-  @Inject
-  FileManager fileManager
-  @Inject
-  FileNameBuilder fileNameBuilder
+  @Shared
+  Path OUTPUT_DIR = Path.of(System.getProperty("project.test.resultsdir")).resolve("video")
+  @Shared
+  Path VIDEO_FILE = OUTPUT_DIR.resolve(VIDEO_FILE_NAME + ".mp4")
 
-  static Path recordAFewSecondsVideo(Recorder recorder) {
-    recorder.startRecording(VIDEO_FILE_NAME)
+  def setupSpec() {
+    try {
+      FileUtils.forceMkdir(OUTPUT_DIR.toFile())
+    } catch (ex) {
+      ex.printStackTrace()
+    }
+  }
+
+  def cleanupSpec() {
+    try {
+      FileUtils.deleteDirectory(OUTPUT_DIR.toFile())
+    } catch (ex) {
+      ex.printStackTrace()
+    }
+  }
+
+  static void recordAFewSecondsVideo(Backend recorder, Path file) {
+    recorder.start(file)
     sleep(5)
-    recorder.stopRecording()
-
-    return recorder.keepRecording()
+    recorder.stop()
   }
 
   static void sleep(int seconds) {
@@ -82,50 +82,47 @@ class RecorderBackendSpec extends Specification {
 
   def "should be video in folder with #type recorder"() {
     given:
-    def configuration = ConfigLoader.load(Configuration, [
-            'video.folder': VIDEO_FOLDER.toString(),
-    ])
-    RecorderBackend backend = RecorderBackendFactory.getRecorder(type as RecorderType)
-    Recorder recorder = new DefaultRecorder(configuration, backend, fileManager, fileNameBuilder)
+    Backend backend = BackendFactory.getRecorder(type as BackendType)
 
     when:
-    File video = recordAFewSecondsVideo(recorder).toFile()
+    recordAFewSecondsVideo(backend, VIDEO_FILE)
 
     then:
-    verifyAll {
-      video.exists()
-      video.parentFile.toPath() == VIDEO_FOLDER
-      video.name.startsWith(VIDEO_FILE_NAME)
-      video.length() >= TEN_KB
+    with(VIDEO_FILE.toFile()) {
+      verifyAll {
+        exists()
+        parentFile.toPath() == OUTPUT_DIR
+        name.startsWith(VIDEO_FILE_NAME)
+        length() >= TEN_KB
+      }
     }
 
     where:
-    type << RecorderType.values()
+    type << BackendType.values()
   }
 
   @Requires({ os.macOs })
   def "ffmpeg should record video with custom pixel format for #type"() {
     given:
-    def configuration = ConfigLoader.load(Configuration, [
-            'video.folder': VIDEO_FOLDER.toString()
-    ])
-    RecorderBackend backend = RecorderBackendFactory.getRecorder(type as RecorderType)
-    Recorder recorder = new DefaultRecorder(configuration, backend, fileManager, fileNameBuilder)
+    Backend backend = BackendFactory.getRecorder(type as BackendType)
 
-    // TODO Move to DI
-    System.setProperty("video.ffmpeg.pixelFormat", "yuv444p")
+    // TODO Allow passing backend configuration via guice
+    System.setProperty("video.ffmpeg.pixelFormat", "yuyv422")
 
     when:
-    File video = recordAFewSecondsVideo(recorder).toFile()
+    recordAFewSecondsVideo(backend, VIDEO_FILE)
+
     then:
-    verifyAll {
-      video.exists()
-      video.parentFile.toPath() == VIDEO_FOLDER
-      video.name.startsWith(VIDEO_FILE_NAME)
-      video.length() >= TEN_KB
+    with(VIDEO_FILE.toFile()) {
+      verifyAll {
+        exists()
+        parentFile.toPath() == OUTPUT_DIR
+        name.startsWith(VIDEO_FILE_NAME)
+        length() >= TEN_KB
+      }
     }
 
     where:
-    type << [RecorderType.FFMPEG, RecorderType.FFMPEG_WRAPPER]
+    type << [BackendType.FFMPEG, BackendType.FFMPEG_WRAPPER]
   }
 }

@@ -25,15 +25,20 @@
 
 package es.lnsd.videotape.core.config;
 
+import es.lnsd.videotape.core.exception.InvalidConfigurationValueException;
 import java.lang.reflect.Method;
 
-public enum SavingStrategy {
+public enum KeepStrategy {
   FAILED_ONLY, ALL;
 
-  public static class Converter implements org.aeonbits.owner.Converter<SavingStrategy> {
+  public static class Converter implements org.aeonbits.owner.Converter<KeepStrategy> {
     @Override
-    public SavingStrategy convert(Method method, String input) {
-      return valueOf(input.toUpperCase());
+    public KeepStrategy convert(Method method, String input) {
+      try {
+        return valueOf(input.toUpperCase());
+      } catch (IllegalArgumentException ex) {
+        throw new InvalidConfigurationValueException(method, input);
+      }
     }
   }
 }

@@ -29,7 +29,7 @@ import com.github.kokorin.jaffree.ffmpeg.CaptureInput;
 import com.github.kokorin.jaffree.ffmpeg.FFmpeg;
 import com.github.kokorin.jaffree.ffmpeg.FFmpegResultFuture;
 import com.github.kokorin.jaffree.ffmpeg.UrlOutput;
-import es.lnsd.videotape.core.backend.RecorderBackend;
+import es.lnsd.videotape.core.backend.Backend;
 import es.lnsd.videotape.core.exception.RecordingException;
 import java.awt.Dimension;
 import java.nio.file.Path;
@@ -40,7 +40,7 @@ import org.apache.commons.lang3.SystemUtils;
 
 @Slf4j
 @Accessors(fluent = true)
-public class FFMpegRecorder implements RecorderBackend {
+public class FFMpegRecorder implements Backend {
 
   private final FFMpegConfiguration config;
   private FFmpegResultFuture future;

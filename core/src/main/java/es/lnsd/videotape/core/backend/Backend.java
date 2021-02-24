@@ -23,23 +23,15 @@
  * SOFTWARE.
  */
 
-package es.lnsd.videotape.core.config.utils;
+package es.lnsd.videotape.core.backend;
 
-import es.lnsd.videotape.core.exception.InvalidConfigurationValueException;
-import java.lang.reflect.Method;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import org.aeonbits.owner.Converter;
 
-public class DirectoryValidatorConverter implements Converter<Path> {
-  @Override
-  public Path convert(Method method, String input) {
-    Path dir = Paths.get(input);
+public interface Backend {
 
-    if (dir.toFile().exists() && !dir.toFile().isDirectory()) {
-      throw new InvalidConfigurationValueException(method, input);
-    }
+  boolean isRecording();
 
-    return dir;
-  }
+  void start(Path file);
+
+  void stop();
 }

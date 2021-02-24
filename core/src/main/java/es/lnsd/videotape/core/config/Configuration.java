@@ -25,8 +25,8 @@
 
 package es.lnsd.videotape.core.config;
 
-import es.lnsd.videotape.core.config.utils.DirectoryValidatorConverter;
 import es.lnsd.videotape.core.config.utils.LowerCaseConverter;
+import es.lnsd.videotape.core.config.utils.PathConverter;
 import java.nio.file.Path;
 import org.aeonbits.owner.Config;
 import org.aeonbits.owner.Config.LoadPolicy;
@@ -37,15 +37,9 @@ import org.aeonbits.owner.Config.Sources;
 @Sources({
     "system:properties",
     "${conf.file}",
-    "classpath:video.properties",
-    "classpath:presets/ffmpeg-${os.type}.properties"
+    "classpath:video.properties"
 })
 public interface Configuration extends Config {
-
-  @Key("video.folder")
-  @ConverterClass(DirectoryValidatorConverter.class)
-  @DefaultValue("${user.dir}/video")
-  Path folder();
 
   @Key("video.enable")
   @DefaultValue("true")
@@ -56,19 +50,23 @@ public interface Configuration extends Config {
   @DefaultValue("ANNOTATED")
   RecordingMode mode();
 
-  @Key("video.save.mode")
-  @ConverterClass(SavingStrategy.Converter.class)
+  @Key("video.keep")
+  @ConverterClass(KeepStrategy.Converter.class)
   @DefaultValue("FAILED_ONLY")
-  SavingStrategy saveStrategy();
+  KeepStrategy keepStrategy();
+
+  @Key("video.output")
+  @ConverterClass(PathConverter.class)
+  @DefaultValue("${user.dir}/video")
+  Path output();
 
   @Key("video.format")
   @ConverterClass(LowerCaseConverter.class)
   @DefaultValue("mp4")
   String fileFormat();
 
-  @Key("video.recorder.type")
-  @ConverterClass(RecorderType.Converter.class)
+  @Key("video.recorder.backend")
+  @ConverterClass(BackendType.Converter.class)
   @DefaultValue("MONTE")
-  RecorderType recorderType();
-
+  BackendType backend();
 }

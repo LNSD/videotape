@@ -30,7 +30,7 @@ import es.lnsd.videotape.core.TestFrameworkAdapter
 import es.lnsd.videotape.core.Video
 import es.lnsd.videotape.core.config.Configuration
 import es.lnsd.videotape.core.config.RecordingMode
-import es.lnsd.videotape.core.config.SavingStrategy
+import es.lnsd.videotape.core.config.KeepStrategy
 import es.lnsd.videotape.core.exception.RecordingException
 import javax.inject.Inject
 import spock.guice.UseModules
@@ -168,7 +168,7 @@ class TestFrameworkAdapterSpec extends Specification {
     with(configuration) {
       videoEnabled() >> true
       mode() >> RecordingMode.ALL
-      saveStrategy() >> SavingStrategy.FAILED_ONLY
+      keepStrategy() >> KeepStrategy.FAILED_ONLY
     }
 
     when:
@@ -189,7 +189,7 @@ class TestFrameworkAdapterSpec extends Specification {
     with(configuration) {
       videoEnabled() >> true
       mode() >> RecordingMode.ALL
-      saveStrategy() >> SavingStrategy.FAILED_ONLY
+      keepStrategy() >> KeepStrategy.FAILED_ONLY
     }
 
     when:
@@ -210,7 +210,7 @@ class TestFrameworkAdapterSpec extends Specification {
     with(configuration) {
       videoEnabled() >> true
       mode() >> RecordingMode.ALL
-      saveStrategy() >> SavingStrategy.ALL
+      keepStrategy() >> KeepStrategy.ALL
     }
 
     when:
@@ -234,7 +234,7 @@ class TestFrameworkAdapterSpec extends Specification {
     with(configuration) {
       videoEnabled() >> true
       mode() >> RecordingMode.ALL
-      saveStrategy() >> SavingStrategy.FAILED_ONLY
+      keepStrategy() >> KeepStrategy.FAILED_ONLY
     }
 
     when:

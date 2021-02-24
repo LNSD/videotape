@@ -25,6 +25,7 @@
 
 package es.lnsd.videotape.core.config.utils;
 
+import es.lnsd.videotape.core.exception.InvalidConfigurationValueException;
 import java.lang.reflect.Method;
 import java.util.Optional;
 import org.aeonbits.owner.Converter;
@@ -32,6 +33,7 @@ import org.aeonbits.owner.Converter;
 public class LowerCaseConverter implements Converter<String> {
   @Override
   public String convert(Method method, String input) {
-    return Optional.ofNullable(input).map(String::toLowerCase).orElse("");
+    return Optional.ofNullable(input).map(String::toLowerCase)
+        .orElseThrow(() ->  new InvalidConfigurationValueException(method, input));
   }
 }

@@ -33,32 +33,32 @@ import es.lnsd.videotape.core.backend.monte.MonteRecorder;
 import es.lnsd.videotape.core.backend.vlc.VlcRecorder;
 import es.lnsd.videotape.core.config.ConfigLoader;
 import es.lnsd.videotape.core.config.Configuration;
-import es.lnsd.videotape.core.config.RecorderType;
+import es.lnsd.videotape.core.config.BackendType;
 import javax.inject.Inject;
 import org.apache.commons.lang3.NotImplementedException;
 
-public class RecorderBackendFactory implements Provider<RecorderBackend> {
+public class BackendFactory implements Provider<Backend> {
 
   private final Configuration configuration;
 
   @Inject
-  public RecorderBackendFactory(Configuration configuration) {
+  public BackendFactory(Configuration configuration) {
     this.configuration = configuration;
   }
 
-  public static RecorderBackend getRecorder(RecorderType recorderType) {
+  public static Backend getRecorder(BackendType recorderType) {
 
-    if (recorderType == RecorderType.FFMPEG || recorderType == RecorderType.FFMPEG_WRAPPER) {
+    if (recorderType == BackendType.FFMPEG || recorderType == BackendType.FFMPEG_WRAPPER) {
       FFMpegConfiguration configuration = ConfigLoader.load(FFMpegConfiguration.class);
       return new FFMpegRecorder(configuration);
     }
 
-    if (recorderType == RecorderType.VLC) {
+    if (recorderType == BackendType.VLC) {
       BackendConfiguration configuration = ConfigLoader.load(BackendConfiguration.class);
       return new VlcRecorder(configuration);
     }
 
-    if (recorderType == RecorderType.MONTE) {
+    if (recorderType == BackendType.MONTE) {
       BackendConfiguration configuration = ConfigLoader.load(MonteConfiguration.class);
       return new MonteRecorder(configuration);
     }
@@ -68,8 +68,8 @@ public class RecorderBackendFactory implements Provider<RecorderBackend> {
   }
 
   @Override
-  public RecorderBackend get() {
-    RecorderType type = configuration.recorderType();
+  public Backend get() {
+    BackendType type = configuration.backend();
     return getRecorder(type);
   }
 }

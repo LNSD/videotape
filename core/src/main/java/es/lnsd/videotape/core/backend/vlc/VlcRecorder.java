@@ -26,12 +26,12 @@
 package es.lnsd.videotape.core.backend.vlc;
 
 import es.lnsd.videotape.core.backend.BackendConfiguration;
-import es.lnsd.videotape.core.backend.RecorderBackend;
+import es.lnsd.videotape.core.backend.Backend;
 import java.nio.file.Path;
 import uk.co.caprica.vlcj.factory.MediaPlayerFactory;
 import uk.co.caprica.vlcj.player.base.MediaPlayer;
 
-public class VlcRecorder implements RecorderBackend {
+public class VlcRecorder implements Backend {
 
   private static final String[] OPTIONS = {
       "--quiet",

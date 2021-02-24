@@ -25,7 +25,7 @@
 
 package es.lnsd.videotape.core;
 
-import es.lnsd.videotape.core.backend.RecorderBackend;
+import es.lnsd.videotape.core.backend.Backend;
 import es.lnsd.videotape.core.config.Configuration;
 import es.lnsd.videotape.core.exception.RecordingException;
 import es.lnsd.videotape.core.utils.FileManager;
@@ -41,7 +41,7 @@ public class DefaultRecorder implements Recorder {
   private static final String TEMP_FILENAME = "screen_recording";
 
   private final Configuration config;
-  private final RecorderBackend recorder;
+  private final Backend recorder;
   private final FileManager fileManager;
   private final FileNameBuilder fileNameBuilder;
 
@@ -49,7 +49,7 @@ public class DefaultRecorder implements Recorder {
   private Path dstFilePath;
 
   @Inject
-  public DefaultRecorder(Configuration config, RecorderBackend backend, FileManager fileManager, FileNameBuilder fileNameBuilder) {
+  public DefaultRecorder(Configuration config, Backend backend, FileManager fileManager, FileNameBuilder fileNameBuilder) {
     this.config = config;
     this.recorder = backend;
     this.fileManager = fileManager;
@@ -57,12 +57,12 @@ public class DefaultRecorder implements Recorder {
   }
 
   public void startRecording(String name) {
-    Path dstDir = config.folder();
+    Path dstDir = config.output();
 
     try {
       fileManager.createDestinationDir(dstDir);
     } catch (IOException ex) {
-      log.error("Output folder could not be created", ex);
+      log.error("Output output could not be created", ex);
       return;
     }
 

@@ -15,7 +15,7 @@ Alias to `FFMPEG_WRAPPER`.
 [%autowidth,options="header"]
 |===
 |Configuration option | Value
-|_video.recorder_ | `MONTE`
+|_video.recorder.backend_ | `MONTE`
 |===
 
 Recorder based on the link:http://www.randelshofer.ch/monte/[Monte Media Library].A java library for processing
@@ -26,7 +26,7 @@ media files based on Java Media Framework (JMF).
 [%autowidth,options="header"]
 |===
 |Configuration option | Value
-|_video.recorder_ | `FFMPEG` or `FFMPEG_WRAPPER`
+|_video.recorder.backend_ | `FFMPEG` or `FFMPEG_WRAPPER`
 |===
 
 Recorder backend based on a wrapper around FFMPEG command line interface.
@@ -87,7 +87,7 @@ Binaries can be found at FFMPEG's project link:https://ffmpeg.org/download.html[
 [%autowidth, options="header"]
 |===
 |Configuration option | Value
-|_video.recorder_ | `VLC`
+|_video.recorder.backend_ | `VLC`
 |===
 
 VLC recorder backend is based on link:https://github.com/caprica/vlcj[vlcj], a Java framework that

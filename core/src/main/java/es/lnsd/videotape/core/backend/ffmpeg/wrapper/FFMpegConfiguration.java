@@ -48,6 +48,6 @@ public interface FFMpegConfiguration extends BackendConfiguration {
   String ffmpegDisplay();
 
   @Key("video.ffmpeg.pixelFormat")
-  @DefaultValue("yuv420p")
+  @DefaultValue("uyvy422")
   String ffmpegPixelFormat();
 }

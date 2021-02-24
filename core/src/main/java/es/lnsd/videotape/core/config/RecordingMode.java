@@ -25,6 +25,7 @@
 
 package es.lnsd.videotape.core.config;
 
+import es.lnsd.videotape.core.exception.InvalidConfigurationValueException;
 import java.lang.reflect.Method;
 
 public enum RecordingMode {
@@ -33,7 +34,11 @@ public enum RecordingMode {
   public static class Converter implements org.aeonbits.owner.Converter<RecordingMode> {
     @Override
     public RecordingMode convert(Method method, String input) {
-      return valueOf(input.toUpperCase());
+      try {
+        return valueOf(input.toUpperCase());
+      } catch (IllegalArgumentException ex) {
+        throw new InvalidConfigurationValueException(method, input);
+      }
     }
   }
 }

@@ -13,7 +13,7 @@ The following options apply to any of the different test framework integrations:
 |===
 |Name |Default value |Description
 
-|_video.folder_
+|_video.output_
 |`${user.dir}/video`
 | Recorded videos output directory.
 
@@ -28,7 +28,7 @@ a|Test cases to be recorded.
 * `ANNOTATED`: Record only the execution of test case methods annotated with `@Video`.
 * `ALL`: Record all test cases execution.
 
-|_video.save.mode_
+|_video.keep_
 |`FAILED_ONLY`
 a|Recorded videos keeping strategy.
 

@@ -73,10 +73,6 @@ class ScreenCaptureInput {
       result = CaptureInput.WindowsGdiGrab.captureDesktop();
     }
 
-    if (result == null) {
-      throw new ConfigurationException("Could not detect OS");
-    }
-
     return result;
   }
 }

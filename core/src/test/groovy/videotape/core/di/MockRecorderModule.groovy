@@ -27,7 +27,7 @@ package videotape.core.di
 
 
 import es.lnsd.videotape.core.Recorder
-import es.lnsd.videotape.core.backend.RecorderBackend
+import es.lnsd.videotape.core.backend.Backend
 import es.lnsd.videotape.core.di.RecorderModule
 import es.lnsd.videotape.core.utils.FileManager
 import es.lnsd.videotape.core.utils.FileNameBuilder
@@ -39,7 +39,7 @@ class MockRecorderModule extends RecorderModule {
   protected void configure() {
     DetachedMockFactory factory = new DetachedMockFactory()
     bind(Recorder).toInstance(factory.Mock(Recorder))
-    bind(RecorderBackend).toInstance(factory.Mock(RecorderBackend))
+    bind(Backend).toInstance(factory.Mock(Backend))
     bind(FileManager).toInstance(factory.Mock(FileManager))
     bind(FileNameBuilder).toInstance(factory.Stub(FileNameBuilder))
   }

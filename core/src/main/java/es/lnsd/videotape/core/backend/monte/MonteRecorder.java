@@ -26,7 +26,7 @@
 package es.lnsd.videotape.core.backend.monte;
 
 import es.lnsd.videotape.core.backend.BackendConfiguration;
-import es.lnsd.videotape.core.backend.RecorderBackend;
+import es.lnsd.videotape.core.backend.Backend;
 import es.lnsd.videotape.core.exception.RecordingException;
 import java.awt.AWTException;
 import java.awt.Dimension;
@@ -54,7 +54,7 @@ import static org.monte.media.VideoFormatKeys.QualityKey;
 
 @Slf4j
 @Accessors(fluent = true)
-public class MonteRecorder implements RecorderBackend {
+public class MonteRecorder implements Backend {
 
   private final TempFileScreenRecorder screenRecorder;
   private boolean isRecording = false;

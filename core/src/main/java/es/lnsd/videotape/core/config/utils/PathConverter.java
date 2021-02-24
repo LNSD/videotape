@@ -23,15 +23,22 @@
  * SOFTWARE.
  */
 
-package es.lnsd.videotape.core.backend;
+package es.lnsd.videotape.core.config.utils;
 
+import es.lnsd.videotape.core.exception.InvalidConfigurationValueException;
+import java.lang.reflect.Method;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import org.aeonbits.owner.Converter;
 
-public interface RecorderBackend {
-
-  boolean isRecording();
-
-  void start(Path file);
-
-  void stop();
+public class PathConverter implements Converter<Path> {
+  @Override
+  public Path convert(Method method, String input) {
+    try {
+      return Paths.get(input);
+    } catch (InvalidPathException ignore) {
+      throw new InvalidConfigurationValueException(method, input);
+    }
+  }
 }

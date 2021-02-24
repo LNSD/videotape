@@ -28,8 +28,8 @@ package es.lnsd.videotape.core.di;
 import com.google.inject.AbstractModule;
 import es.lnsd.videotape.core.DefaultRecorder;
 import es.lnsd.videotape.core.Recorder;
-import es.lnsd.videotape.core.backend.RecorderBackend;
-import es.lnsd.videotape.core.backend.RecorderBackendFactory;
+import es.lnsd.videotape.core.backend.Backend;
+import es.lnsd.videotape.core.backend.BackendFactory;
 import es.lnsd.videotape.core.utils.FileManager;
 import es.lnsd.videotape.core.utils.FileNameBuilder;
 
@@ -40,6 +40,6 @@ public class RecorderModule extends AbstractModule {
     bind(Recorder.class).to(DefaultRecorder.class);
     bind(FileManager.class).toInstance(new FileManager());
     bind(FileNameBuilder.class).toInstance(new FileNameBuilder());
-    bind(RecorderBackend.class).toProvider(RecorderBackendFactory.class);
+    bind(Backend.class).toProvider(BackendFactory.class);
   }
 }
