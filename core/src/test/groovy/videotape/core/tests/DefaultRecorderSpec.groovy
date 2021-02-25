@@ -36,8 +36,8 @@ import java.nio.file.Path
 import javax.inject.Inject
 import spock.guice.UseModules
 import spock.lang.Specification
-import videotape.core.di.MockRecorderModule
 import videotape.core.di.MockConfigurationModule
+import videotape.core.di.MockRecorderModule
 
 @UseModules([MockConfigurationModule, MockRecorderModule])
 class DefaultRecorderSpec extends Specification {
@@ -100,6 +100,19 @@ class DefaultRecorderSpec extends Specification {
     1 * backend.isRecording()
     def ex = thrown(RecordingException)
     ex.message == "Video recording was not started"
+  }
+
+  def "should raise an exception if recording was already started"() {
+    given:
+    backend.isRecording() >> true
+
+    when:
+    recorder.startRecording("testCaseName")
+
+    then:
+    1 * backend.isRecording()
+    def ex = thrown(RecordingException)
+    ex.message == "Video recording was already started"
   }
 
   def "should rename file to destination file on keep recording action"() {
