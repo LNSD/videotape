@@ -28,8 +28,8 @@ package es.lnsd.videotape.core;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import es.lnsd.videotape.core.config.Configuration;
-import es.lnsd.videotape.core.config.RecordingMode;
 import es.lnsd.videotape.core.config.KeepStrategy;
+import es.lnsd.videotape.core.config.RecordingMode;
 import es.lnsd.videotape.core.di.BackendModule;
 import es.lnsd.videotape.core.di.ConfigurationModule;
 import es.lnsd.videotape.core.di.RecorderModule;
@@ -77,14 +77,18 @@ public class TestFrameworkAdapter {
       return;
     }
 
-    String fName = getVideoName(annotation, name);
-    recorder.startRecording(fName);
+    try {
+      String fName = getVideoName(annotation, name);
+      recorder.startRecording(fName);
+    } catch (RecordingException ignored) {
+      // Do not start recording
+    }
   }
 
   public void onTestSuccess() {
     try {
       recorder.stopRecording();
-    } catch (RecordingException ex) {
+    } catch (RecordingException ignored) {
       return;
     }
 
@@ -98,7 +102,7 @@ public class TestFrameworkAdapter {
   public void onTestFailure() {
     try {
       recorder.stopRecording();
-    } catch (RecordingException ex) {
+    } catch (RecordingException ignored) {
       return;
     }
 

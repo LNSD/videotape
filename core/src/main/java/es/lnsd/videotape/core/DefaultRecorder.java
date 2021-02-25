@@ -57,6 +57,10 @@ public class DefaultRecorder implements Recorder {
   }
 
   public void startRecording(String name) {
+    if (recorder.isRecording()) {
+      throw new RecordingException("Video recording already started");
+    }
+
     Path dstDir = config.output();
 
     try {
