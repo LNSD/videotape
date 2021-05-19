@@ -42,7 +42,7 @@
   <properties>
     <revision>3.0.0-SNAPSHOT</revision>
     <java.version>9</java.version>
-    <groovy.version>3.0.7</groovy.version>
+    <groovy.version>3.0.8</groovy.version>
     <lombok.version>1.18.20</lombok.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
