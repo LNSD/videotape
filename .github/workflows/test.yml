@@ -5,6 +5,16 @@ on:
       - main
     paths-ignore:
       - 'docs/**'
+  pull_request:
+    types:
+      - assigned
+      - opened
+      - synchronize
+      - reopened
+    branches:
+      - main
+    paths-ignore:
+      - 'docs/**'
 
 jobs:
   run-unit-tests:
