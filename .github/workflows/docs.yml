@@ -36,7 +36,7 @@ jobs:
         run: ./mvnw clean compile -pl docs
 
       - name: Deploy to Github pages
-        uses: JamesIves/github-pages-deploy-action@4.1.3
+        uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
           branch: gh-pages
           folder: docs/target/html
