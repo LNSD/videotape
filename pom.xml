@@ -41,7 +41,8 @@
 
   <properties>
     <revision>3.0.0-SNAPSHOT</revision>
-    <java.version>9</java.version>
+    <maven.compiler.target>9</maven.compiler.target>
+    <maven.compiler.source>9</maven.compiler.source>
     <groovy.version>3.0.8</groovy.version>
     <lombok.version>1.18.20</lombok.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -52,7 +53,6 @@
     <module>junit4</module>
     <module>junit5</module>
     <module>testng</module>
-    <module>common</module>
     <module>docs</module>
   </modules>
 
@@ -163,8 +163,6 @@
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.8.1</version>
           <configuration>
-            <source>${java.version}</source>
-            <target>${java.version}</target>
             <annotationProcessorPaths>
               <path>
                 <groupId>org.projectlombok</groupId>

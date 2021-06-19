@@ -70,12 +70,6 @@
 
     <!-- Test dependencies -->
     <dependency>
-      <groupId>es.lnsd.videotape</groupId>
-      <artifactId>common</artifactId>
-      <version>${revision}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
       <scope>test</scope>

@@ -97,12 +97,6 @@
 
     <!-- Test dependencies -->
     <dependency>
-      <groupId>es.lnsd.videotape</groupId>
-      <artifactId>common</artifactId>
-      <version>${revision}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.spockframework</groupId>
       <artifactId>spock-core</artifactId>
       <scope>test</scope>
