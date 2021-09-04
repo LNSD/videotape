@@ -28,8 +28,9 @@ package es.lnsd.videotape.core;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import es.lnsd.videotape.core.config.Configuration;
-import es.lnsd.videotape.core.config.RecordingMode;
 import es.lnsd.videotape.core.config.KeepStrategy;
+import es.lnsd.videotape.core.config.RecordingMode;
+import es.lnsd.videotape.core.di.BackendModule;
 import es.lnsd.videotape.core.di.ConfigurationModule;
 import es.lnsd.videotape.core.di.RecorderModule;
 import es.lnsd.videotape.core.exception.RecordingException;
@@ -37,8 +38,6 @@ import java.util.Optional;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-
-import static java.lang.Boolean.FALSE;
 
 @Slf4j
 public class TestFrameworkAdapter {
@@ -55,8 +54,10 @@ public class TestFrameworkAdapter {
   public static TestFrameworkAdapter getInstance() {
     Injector injector = Guice.createInjector(
         new ConfigurationModule(),
-        new RecorderModule()
+        new RecorderModule(),
+        new BackendModule()
     );
+
     return new TestFrameworkAdapter(
         injector.getInstance(Configuration.class),
         injector.getInstance(Recorder.class)
@@ -75,8 +76,8 @@ public class TestFrameworkAdapter {
       return;
     }
 
-    String fName = getVideoName(annotation, name);
-    recorder.startRecording(fName);
+    String filename = getVideoName(annotation, name);
+    recorder.startRecording(filename);
   }
 
   public void onTestSuccess() {
@@ -112,7 +113,7 @@ public class TestFrameworkAdapter {
   }
 
   private boolean shouldRecord(Video annotation) {
-    if (config.videoEnabled().equals(FALSE)) {
+    if (config.videoEnabled().equals(false)) {
       return false;
     }
 

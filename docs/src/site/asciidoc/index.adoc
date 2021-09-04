@@ -2,6 +2,30 @@
 
 A library that allows you to record videos of your UI tests by just putting a couple of annotations.
 
+.pom.xml
+[source,xml,subs="attributes,verbatim"]
+----
+<dependency>
+  <groupId>es.lnsd.videotape</groupId>
+  <artifactId>videotape-testng<integration></artifactId>
+  <version>{revnumber}</version>
+  <scope>test</scope>
+</dependency>
+<dependency>
+  <groupId>es.lnsd.videotape</groupId>
+  <artifactId>videotape-backend-monte</artifactId>
+  <version>{revnumber}</version>
+  <scope>test</scope>
+</dependency>
+----
+
+.build.gradle
+[source,groovy,subs="attributes,verbatim"]
+----
+testImplementation group: 'es.lnsd.videotape', name: 'videotape-testng', version: '{revnumber}'
+testRuntimeOnly group: 'es.lnsd.videotape', name: 'videotape-backend-monte', version: '{revnumber}'
+----
+
 .ExampleTest.java
 [source,java]
 ----
@@ -38,9 +62,9 @@ And supports the following video recording backends:
 
 include::_include/integration.adoc[leveloffset=+1]
 
-include::_include/configuration.adoc[leveloffset=+1]
-
 include::_include/backend.adoc[leveloffset=+1]
+
+include::_include/configuration.adoc[leveloffset=+1]
 
 == Project fork and renaming
 

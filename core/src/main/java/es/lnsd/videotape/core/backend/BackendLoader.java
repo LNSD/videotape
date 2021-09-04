@@ -23,20 +23,27 @@
  * SOFTWARE.
  */
 
-package es.lnsd.videotape.core.di;
+package es.lnsd.videotape.core.backend;
 
-import com.google.inject.AbstractModule;
-import es.lnsd.videotape.core.DefaultRecorder;
-import es.lnsd.videotape.core.Recorder;
-import es.lnsd.videotape.core.utils.FileManager;
-import es.lnsd.videotape.core.utils.FileNameBuilder;
+import com.google.inject.Provider;
+import es.lnsd.videotape.core.exception.ConfigurationException;
+import java.util.ServiceLoader;
 
-public class RecorderModule extends AbstractModule {
+public class BackendLoader implements Provider<Backend> {
+
+  private final ServiceLoader<BackendProvider> loader;
+
+  public BackendLoader() {
+    this.loader = ServiceLoader.load(BackendProvider.class);
+  }
 
   @Override
-  protected void configure() {
-    bind(Recorder.class).to(DefaultRecorder.class);
-    bind(FileManager.class).toInstance(new FileManager());
-    bind(FileNameBuilder.class).toInstance(new FileNameBuilder());
+  public Backend get() {
+    final var backend = this.loader.findFirst();
+
+    if (backend.isEmpty()) {
+      throw new ConfigurationException("TODO");
+    }
+    return backend.get().get();
   }
 }

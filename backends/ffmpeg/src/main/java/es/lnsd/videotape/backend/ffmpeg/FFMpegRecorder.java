@@ -23,7 +23,7 @@
  * SOFTWARE.
  */
 
-package es.lnsd.videotape.core.backend.ffmpeg.wrapper;
+package es.lnsd.videotape.backend.ffmpeg;
 
 import com.github.kokorin.jaffree.ffmpeg.CaptureInput;
 import com.github.kokorin.jaffree.ffmpeg.FFmpeg;

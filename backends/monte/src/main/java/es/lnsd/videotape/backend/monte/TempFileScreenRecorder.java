@@ -23,7 +23,7 @@
  * SOFTWARE.
  */
 
-package es.lnsd.videotape.core.backend.monte;
+package es.lnsd.videotape.backend.monte;
 
 import es.lnsd.videotape.core.exception.RecordingException;
 import java.awt.AWTException;

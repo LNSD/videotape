@@ -1,33 +1,50 @@
 = Recording backends
 
-The video recording backend to be used by videotape library is specified by the `video.recorder`
-configuration option.
-Valid values are:
+This library uses the `java.utils.ServiceLoader` plugins system to load dynamically from the classpath the video recording backend.
 
-* `MONTE`: Use _Monte Screen Recorder_ java library.
-* `FFMPEG`: Use _FFPMEG_ as recording backend.
-Alias to `FFMPEG_WRAPPER`.
-* `FFMPEG_WRAPPER`: Use _FFMPEG_ with the link:https://github.com/kokorin/Jaffree[Jaffree] command-line wrapper.
-* `VLC`: Use _VLC_ (via link:https://github.com/caprica/vlcj[vlcj]]) as recording backend.
+For example to use this library with JUnit5 Test Framework and Monte Scree Recorder video backend:
+
 
 == Monte screen recorder
 
-[%autowidth,options="header"]
-|===
-|Configuration option | Value
-|_video.recorder.backend_ | `MONTE`
-|===
+.pom.xml
+[source,xml,subs="attributes,verbatim"]
+----
+<dependency>
+  <groupId>es.lnsd.videotape</groupId>
+  <artifactId>videotape-backend-monte</artifactId>
+  <version>{revnumber}</version>
+  <scope>test</scope>
+</dependency>
+----
 
-Recorder based on the link:http://www.randelshofer.ch/monte/[Monte Media Library].A java library for processing
-media files based on Java Media Framework (JMF).
+.build.gradle
+[source,groovy,subs="attributes,verbatim"]
+----
+testRuntimeOnly group: 'es.lnsd.videotape', name: 'videotape-backend-monte', version: '{revnumber}'
+----
+
+Recorder based on the link:http://www.randelshofer.ch/monte/[Monte Media Library].
+A java library for processing media files based on Java Media Framework (JMF).
 
 == FFMPEG wrapper
 
-[%autowidth,options="header"]
-|===
-|Configuration option | Value
-|_video.recorder.backend_ | `FFMPEG` or `FFMPEG_WRAPPER`
-|===
+.pom.xml
+[source,xml,subs="attributes,verbatim"]
+----
+<dependency>
+  <groupId>es.lnsd.videotape</groupId>
+  <artifactId>videotape-backend-ffmpeg</artifactId>
+  <version>{revnumber}</version>
+  <scope>test</scope>
+</dependency>
+----
+
+.build.gradle
+[source,groovy,subs="attributes,verbatim"]
+----
+testRuntimeOnly group: 'es.lnsd.videotape', name: 'videotape-backend-ffmpeg', version: '{revnumber}'
+----
 
 Recorder backend based on a wrapper around FFMPEG command line interface.
 This requires the ffmpeg command line executable to be available in the system.
@@ -78,20 +95,29 @@ Binaries can be found at FFMPEG's project link:https://ffmpeg.org/download.html[
 
 |video.ffmpeg.pixelFormat
 |`yuv420p`
-|Specific pixel format (See: link:https://ffmpeg.org/ffmpeg-devices.html#Input-Devices[ffmpeg's `-pixel_format` option]). MacOS specific option.
+|Specific pixel format (See: link:https://ffmpeg.org/ffmpeg-devices.html#Input-Devices[ffmpeg's `-pixel_format` option]).MacOS specific option.
 |===
-
 
 == VLC
 
-[%autowidth, options="header"]
-|===
-|Configuration option | Value
-|_video.recorder.backend_ | `VLC`
-|===
+.pom.xml
+[source,xml,subs="attributes,verbatim"]
+----
+<dependency>
+  <groupId>es.lnsd.videotape</groupId>
+  <artifactId>videotape-backend-vlc</artifactId>
+  <version>{revnumber}</version>
+  <scope>test</scope>
+</dependency>
+----
 
-VLC recorder backend is based on link:https://github.com/caprica/vlcj[vlcj], a Java framework that
-hides a lot of the complexities of working with LibVLC.
+.build.gradle
+[source,groovy,subs="attributes,verbatim"]
+----
+testRuntimeOnly group: 'es.lnsd.videotape', name: 'videotape-backend-vlc', version: '{revnumber}'
+----
+
+VLC recorder backend is based on link:https://github.com/caprica/vlcj[vlcj], a Java framework that hides a lot of the complexities of working with LibVLC.
 
 === Requirements
 
