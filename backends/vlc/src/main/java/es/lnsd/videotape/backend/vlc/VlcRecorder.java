@@ -23,10 +23,10 @@
  * SOFTWARE.
  */
 
-package es.lnsd.videotape.core.backend.vlc;
+package es.lnsd.videotape.backend.vlc;
 
-import es.lnsd.videotape.core.backend.BackendConfiguration;
 import es.lnsd.videotape.core.backend.Backend;
+import es.lnsd.videotape.core.backend.BackendConfiguration;
 import java.nio.file.Path;
 import uk.co.caprica.vlcj.factory.MediaPlayerFactory;
 import uk.co.caprica.vlcj.player.base.MediaPlayer;

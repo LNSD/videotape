@@ -23,31 +23,20 @@
  * SOFTWARE.
  */
 
-package es.lnsd.videotape.core.backend.ffmpeg.wrapper;
+package es.lnsd.videotape.backend.vlc;
 
+import com.google.auto.service.AutoService;
+import es.lnsd.videotape.core.backend.Backend;
 import es.lnsd.videotape.core.backend.BackendConfiguration;
-import java.nio.file.Path;
-import org.aeonbits.owner.Config;
+import es.lnsd.videotape.core.backend.BackendProvider;
+import es.lnsd.videotape.core.config.ConfigLoader;
 
-@Config.LoadPolicy(Config.LoadType.MERGE)
-@Config.Sources( {
-    "system:properties",
-    "${conf.file}",
-    "classpath:video.properties",
-    "classpath:presets/ffmpeg-${os.type}.properties"
-})
-public interface FFMpegConfiguration extends BackendConfiguration {
+@AutoService(BackendProvider.class)
+public class VlcBackendProvider implements BackendProvider {
 
-  @Key("video.ffmpeg.binary")
-  Path ffmpegBinary();
-
-  @Key("video.ffmpeg.format")
-  String ffmpegFormat();
-
-  @Key("video.ffmpeg.display")
-  String ffmpegDisplay();
-
-  @Key("video.ffmpeg.pixelFormat")
-  @DefaultValue("uyvy422")
-  String ffmpegPixelFormat();
+  @Override
+  public Backend get() {
+    final var configuration = ConfigLoader.load(BackendConfiguration.class);
+    return new VlcRecorder(configuration);
+  }
 }

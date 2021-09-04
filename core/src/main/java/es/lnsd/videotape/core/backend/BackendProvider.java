@@ -23,23 +23,9 @@
  * SOFTWARE.
  */
 
-package es.lnsd.videotape.core.backend.monte;
+package es.lnsd.videotape.core.backend;
 
-import es.lnsd.videotape.core.backend.BackendConfiguration;
-import org.aeonbits.owner.Config.LoadPolicy;
-import org.aeonbits.owner.Config.LoadType;
-import org.aeonbits.owner.Config.Sources;
+import javax.inject.Provider;
 
-@LoadPolicy(LoadType.MERGE)
-@Sources( {
-    "system:properties",
-    "${conf.file}",
-    "classpath:video.properties"
-})
-public interface MonteConfiguration extends BackendConfiguration {
-
-  // Monte recorder only supports avi format
-  default String fileFormat() {
-    return "avi";
-  }
+public interface BackendProvider extends Provider<Backend> {
 }

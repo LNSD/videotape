@@ -23,24 +23,23 @@
  * SOFTWARE.
  */
 
-package es.lnsd.videotape.core.config;
+package es.lnsd.videotape.backend.monte;
 
-import es.lnsd.videotape.core.exception.InvalidConfigurationValueException;
-import java.lang.reflect.Method;
+import es.lnsd.videotape.core.backend.BackendConfiguration;
+import org.aeonbits.owner.Config.LoadPolicy;
+import org.aeonbits.owner.Config.LoadType;
+import org.aeonbits.owner.Config.Sources;
 
-public enum BackendType {
-  MONTE,
-  FFMPEG, FFMPEG_WRAPPER,
-  VLC;
+@LoadPolicy(LoadType.MERGE)
+@Sources({
+    "system:properties",
+    "${conf.file}",
+    "classpath:video.properties"
+})
+public interface MonteConfiguration extends BackendConfiguration {
 
-  public static class Converter implements org.aeonbits.owner.Converter<BackendType> {
-    @Override
-    public BackendType convert(Method method, String input) {
-      try {
-        return valueOf(input.toUpperCase());
-      } catch (IllegalArgumentException ex) {
-        throw new InvalidConfigurationValueException(method, input);
-      }
-    }
+  // Monte recorder only supports avi format
+  default String fileFormat() {
+    return "avi";
   }
 }

@@ -23,23 +23,18 @@
  * SOFTWARE.
  */
 
-package videotape.core.inttests
+package videotape.backend.vlc.inttests
 
+import es.lnsd.videotape.backend.vlc.VlcBackendProvider
 import es.lnsd.videotape.core.backend.Backend
-import es.lnsd.videotape.core.backend.BackendFactory
-import es.lnsd.videotape.core.config.BackendType
+import es.lnsd.videotape.core.backend.BackendProvider
 import java.nio.file.Path
 import org.apache.commons.io.FileUtils
-import spock.lang.Requires
 import spock.lang.Shared
 import spock.lang.Specification
-import spock.lang.Unroll
-import spock.util.environment.RestoreSystemProperties
 
 import static org.apache.commons.io.FileUtils.ONE_KB
 
-@Unroll
-@RestoreSystemProperties
 class RecorderBackendSpec extends Specification {
 
   static final Long TEN_KB = 10 * ONE_KB
@@ -80,9 +75,10 @@ class RecorderBackendSpec extends Specification {
     }
   }
 
-  def "should be video in folder with #type recorder"() {
+  def "should be video in folder with vlc backend"() {
     given:
-    Backend backend = BackendFactory.getRecorder(type as BackendType)
+    BackendProvider provider = new VlcBackendProvider()
+    Backend backend = provider.get()
 
     when:
     recordAFewSecondsVideo(backend, VIDEO_FILE)
@@ -96,33 +92,5 @@ class RecorderBackendSpec extends Specification {
         length() >= TEN_KB
       }
     }
-
-    where:
-    type << BackendType.values()
-  }
-
-  @Requires({ os.macOs })
-  def "ffmpeg should record video with custom pixel format for #type"() {
-    given:
-    Backend backend = BackendFactory.getRecorder(type as BackendType)
-
-    // TODO Allow passing backend configuration via guice
-    System.setProperty("video.ffmpeg.pixelFormat", "yuyv422")
-
-    when:
-    recordAFewSecondsVideo(backend, VIDEO_FILE)
-
-    then:
-    with(VIDEO_FILE.toFile()) {
-      verifyAll {
-        exists()
-        parentFile.toPath() == OUTPUT_DIR
-        name.startsWith(VIDEO_FILE_NAME)
-        length() >= TEN_KB
-      }
-    }
-
-    where:
-    type << [BackendType.FFMPEG, BackendType.FFMPEG_WRAPPER]
   }
 }

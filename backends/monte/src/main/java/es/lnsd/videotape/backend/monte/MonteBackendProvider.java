@@ -23,20 +23,19 @@
  * SOFTWARE.
  */
 
-package es.lnsd.videotape.core.di;
+package es.lnsd.videotape.backend.monte;
 
-import com.google.inject.AbstractModule;
-import es.lnsd.videotape.core.DefaultRecorder;
-import es.lnsd.videotape.core.Recorder;
-import es.lnsd.videotape.core.utils.FileManager;
-import es.lnsd.videotape.core.utils.FileNameBuilder;
+import com.google.auto.service.AutoService;
+import es.lnsd.videotape.core.backend.Backend;
+import es.lnsd.videotape.core.backend.BackendProvider;
+import es.lnsd.videotape.core.config.ConfigLoader;
 
-public class RecorderModule extends AbstractModule {
+@AutoService(BackendProvider.class)
+public class MonteBackendProvider implements BackendProvider {
 
   @Override
-  protected void configure() {
-    bind(Recorder.class).to(DefaultRecorder.class);
-    bind(FileManager.class).toInstance(new FileManager());
-    bind(FileNameBuilder.class).toInstance(new FileNameBuilder());
+  public Backend get() {
+    final var configuration = ConfigLoader.load(MonteConfiguration.class);
+    return new MonteRecorder(configuration);
   }
 }

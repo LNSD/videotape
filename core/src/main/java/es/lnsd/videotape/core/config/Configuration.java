@@ -64,9 +64,4 @@ public interface Configuration extends Config {
   @ConverterClass(LowerCaseConverter.class)
   @DefaultValue("mp4")
   String fileFormat();
-
-  @Key("video.recorder.backend")
-  @ConverterClass(BackendType.Converter.class)
-  @DefaultValue("MONTE")
-  BackendType backend();
 }

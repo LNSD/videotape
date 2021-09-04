@@ -48,6 +48,21 @@
     </dependency>
     <dependency>
       <groupId>es.lnsd.videotape</groupId>
+      <artifactId>videotape-backend-monte</artifactId>
+      <version>${revision}</version>
+    </dependency>
+    <dependency>
+      <groupId>es.lnsd.videotape</groupId>
+      <artifactId>videotape-backend-ffmpeg</artifactId>
+      <version>${revision}</version>
+    </dependency>
+    <dependency>
+      <groupId>es.lnsd.videotape</groupId>
+      <artifactId>videotape-backend-vlc</artifactId>
+      <version>${revision}</version>
+    </dependency>
+    <dependency>
+      <groupId>es.lnsd.videotape</groupId>
       <artifactId>videotape-junit4</artifactId>
       <version>${revision}</version>
     </dependency>
