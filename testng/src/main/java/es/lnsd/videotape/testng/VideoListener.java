@@ -42,7 +42,7 @@ public class VideoListener implements ITestListener {
   @Override
   public void onTestStart(ITestResult result) {
     String name = result.getMethod().getMethodName();
-    Video annotation = TestNGUtils.getVideoAnnotation(result);
+    Video annotation = TestNgUtils.getVideoAnnotation(result);
 
     recorder.onTestStart(name, annotation);
   }

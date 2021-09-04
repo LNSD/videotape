@@ -30,7 +30,7 @@ import java.nio.file.Path;
 import org.aeonbits.owner.Config;
 
 @Config.LoadPolicy(Config.LoadType.MERGE)
-@Config.Sources( {
+@Config.Sources({
     "system:properties",
     "${conf.file}",
     "classpath:video.properties",

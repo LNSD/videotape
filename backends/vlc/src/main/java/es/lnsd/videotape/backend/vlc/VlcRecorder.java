@@ -41,7 +41,8 @@ public class VlcRecorder implements Backend {
   };
 
   private static final String MRL = "screen://";
-  private static final String SOUT = ":sout=#transcode{vcodec=h264,vb=%d}:duplicate{dst=file{dst=%s}}";
+  private static final String SOUT =
+      ":sout=#transcode{vcodec=h264,vb=%d}:duplicate{dst=file{dst=%s}}";
   private static final String FPS = ":screen-fps=%d";
   private static final String SCREEN_CACHING_OPTION = ":screen-caching=%d";
 
