@@ -1,4 +1,4 @@
-name: Unit tests
+name: Quality checks
 on:
   push:
     branches:
@@ -17,7 +17,7 @@ on:
       - 'docs/**'
 
 jobs:
-  run-unit-tests:
+  unit-tests:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -39,4 +39,4 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Run unit tests
-        run: ./mvnw clean test
+        run: ./mvnw --batch-mode --update-snapshots test
