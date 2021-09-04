@@ -49,7 +49,8 @@ public class DefaultRecorder implements Recorder {
   private Path dstFilePath;
 
   @Inject
-  public DefaultRecorder(Configuration config, Backend backend, FileManager fileManager, FileNameBuilder fileNameBuilder) {
+  public DefaultRecorder(Configuration config, Backend backend, FileManager fileManager,
+                         FileNameBuilder fileNameBuilder) {
     this.config = config;
     this.recorder = backend;
     this.fileManager = fileManager;

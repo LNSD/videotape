@@ -23,31 +23,24 @@
  * SOFTWARE.
  */
 
-package es.lnsd.videotape.core.utils;
+package es.lnsd.videotape.testng;
 
-import org.apache.commons.lang3.NotImplementedException;
-import org.apache.commons.lang3.SystemUtils;
+import es.lnsd.videotape.core.Video;
+import org.testng.ITestNGMethod;
+import org.testng.ITestResult;
 
 
-public class OSUtils {
+public class TestNgUtils {
 
-  private OSUtils() {
+  private TestNgUtils() {
   }
 
-  public static String getOsType() {
-    if (SystemUtils.IS_OS_WINDOWS) {
-      return "windows";
-    }
-
-    if (SystemUtils.IS_OS_MAC) {
-      return "mac";
-    }
-
-    if (SystemUtils.IS_OS_LINUX) {
-      return "linux";
-    }
-
-    String os = System.getProperty("os.name", "unknown");
-    throw new NotImplementedException(String.format("OS '%s' not supported", os));
+  public static Video getVideoAnnotation(ITestNGMethod method) {
+    return method.getConstructorOrMethod().getMethod().getAnnotation(Video.class);
   }
+
+  public static Video getVideoAnnotation(ITestResult result) {
+    return getVideoAnnotation(result.getMethod());
+  }
+
 }

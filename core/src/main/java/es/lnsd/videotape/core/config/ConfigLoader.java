@@ -25,7 +25,7 @@
 
 package es.lnsd.videotape.core.config;
 
-import es.lnsd.videotape.core.utils.OSUtils;
+import es.lnsd.videotape.core.utils.OsUtils;
 import java.util.Map;
 import org.aeonbits.owner.Config;
 import org.aeonbits.owner.ConfigFactory;
@@ -39,7 +39,7 @@ public final class ConfigLoader {
     String file = System.getProperty("video.configurationFile", "classpath:video.properties");
 
     ConfigFactory.setProperty("conf.file", file);
-    ConfigFactory.setProperty("os.type", OSUtils.getOsType());
+    ConfigFactory.setProperty("os.type", OsUtils.getOsType());
 
     return ConfigFactory.create(configClass, imports);
   }

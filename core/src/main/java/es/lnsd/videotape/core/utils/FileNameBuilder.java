@@ -39,7 +39,8 @@ public class FileNameBuilder {
   }
 
   private String getTimeStamp(Instant instant, String format) {
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format).withZone(ZoneId.systemDefault());
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format)
+        .withZone(ZoneId.systemDefault());
     return formatter.format(instant);
   }
 }

@@ -46,7 +46,8 @@ public class TempFileScreenRecorder extends ScreenRecorder {
                                 Format screenFormat,
                                 Format mouseFormat,
                                 Format audioFormat) throws IOException, AWTException {
-    super(graphicsConfiguration, captureArea, fileFormat, screenFormat, mouseFormat, audioFormat, null);
+    super(graphicsConfiguration, captureArea, fileFormat, screenFormat, mouseFormat,
+        audioFormat, null);
   }
 
   @Override

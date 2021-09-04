@@ -34,7 +34,7 @@ import org.aeonbits.owner.Config.LoadType;
 import org.aeonbits.owner.Config.Sources;
 
 @LoadPolicy(LoadType.MERGE)
-@Sources( {
+@Sources({
     "system:properties",
     "${conf.file}",
     "classpath:video.properties"
