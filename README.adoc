@@ -61,7 +61,7 @@ And supports the following video recording backends:
 
 == Documentation
 
-The full project documentation can be found https://videotape.lnsd.es[here]
+The project documentation can be found https://videotape.lnsd.es[here]
 
 == Fork and renaming
 
