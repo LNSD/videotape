@@ -37,12 +37,12 @@
   <parent>
     <groupId>es.lnsd.videotape</groupId>
     <artifactId>videotape</artifactId>
-    <version>${revision}</version>
+    <version>3.0-SNAPSHOT</version>
   </parent>
 
   <!-- Module info -->
   <artifactId>docs</artifactId>
-  <version>${revision}</version>
+  <version>3.0-SNAPSHOT</version>
 
   <build>
     <defaultGoal>process-resources</defaultGoal>
@@ -54,7 +54,7 @@
         <configuration>
           <sourceDirectory>src/site/asciidoc</sourceDirectory>
           <attributes>
-            <revnumber>${revision}</revnumber>
+            <revnumber>${project.version}</revnumber>
           </attributes>
           <resources>
             <resource>

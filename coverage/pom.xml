@@ -32,49 +32,49 @@
   <parent>
     <groupId>es.lnsd.videotape</groupId>
     <artifactId>videotape</artifactId>
-    <version>${revision}</version>
+    <version>3.0-SNAPSHOT</version>
   </parent>
 
   <!-- Module info -->
   <artifactId>coverage</artifactId>
-  <version>${revision}</version>
+  <version>3.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <dependencies>
     <dependency>
       <groupId>es.lnsd.videotape</groupId>
       <artifactId>videotape-core</artifactId>
-      <version>${revision}</version>
+      <version>3.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>es.lnsd.videotape</groupId>
       <artifactId>videotape-backend-monte</artifactId>
-      <version>${revision}</version>
+      <version>3.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>es.lnsd.videotape</groupId>
       <artifactId>videotape-backend-ffmpeg</artifactId>
-      <version>${revision}</version>
+      <version>3.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>es.lnsd.videotape</groupId>
       <artifactId>videotape-backend-vlc</artifactId>
-      <version>${revision}</version>
+      <version>3.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>es.lnsd.videotape</groupId>
       <artifactId>videotape-junit4</artifactId>
-      <version>${revision}</version>
+      <version>3.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>es.lnsd.videotape</groupId>
       <artifactId>videotape-junit5</artifactId>
-      <version>${revision}</version>
+      <version>3.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>es.lnsd.videotape</groupId>
       <artifactId>videotape-testng</artifactId>
-      <version>${revision}</version>
+      <version>3.0-SNAPSHOT</version>
     </dependency>
   </dependencies>
 

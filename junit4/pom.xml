@@ -36,12 +36,12 @@
   <parent>
     <groupId>es.lnsd.videotape</groupId>
     <artifactId>videotape</artifactId>
-    <version>${revision}</version>
+    <version>3.0-SNAPSHOT</version>
   </parent>
 
   <!-- Module info -->
   <artifactId>videotape-junit4</artifactId>
-  <version>${revision}</version>
+  <version>3.0-SNAPSHOT</version>
 
   <build>
 
@@ -77,6 +77,10 @@
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+      </plugin>
     </plugins>
   </build>
 
@@ -84,7 +88,7 @@
     <dependency>
       <groupId>es.lnsd.videotape</groupId>
       <artifactId>videotape-core</artifactId>
-      <version>${revision}</version>
+      <version>3.0-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -155,7 +159,7 @@
     <dependency>
       <groupId>es.lnsd.videotape</groupId>
       <artifactId>videotape-backend-monte</artifactId>
-      <version>${revision}</version>
+      <version>3.0-SNAPSHOT</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
