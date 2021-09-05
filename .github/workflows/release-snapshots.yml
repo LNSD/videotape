@@ -1,0 +1,37 @@
+name: release-snapshots
+on:
+  workflow_run:
+    workflows: [ "quality-checks" ]
+    branches: [ main ]
+    types:
+      - completed
+
+jobs:
+  deploy-packages:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install GPG secret key
+        run: |
+          cat <(echo -e "${{ secrets.OSSRH_GPG_SECRET_KEY }}") | gpg --batch --import
+          gpg --list-secret-keys --keyid-format SHORT
+
+      - name: SCM checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Java SDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+          cache: 'maven'
+          check-latest: true
+          server-id: ossrh
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+
+      - name: Build and deploy to Maven Central repository
+        env:
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+        run: mvn --batch-mode deploy -DskipTests

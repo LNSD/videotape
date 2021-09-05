@@ -1,4 +1,4 @@
-name: Quality checks
+name: quality-checks
 on:
   push:
     branches:
@@ -28,39 +28,25 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '11'
+          cache: 'maven'
           check-latest: true
 
-      - name: Cache local Maven repository
-        uses: actions/cache@v2
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-
       - name: Run linter
-        run: ./mvnw --batch-mode --update-snapshots checkstyle:check
+        run: mvn --batch-mode --update-snapshots checkstyle:check
 
   unit-tests:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: SCM checkout
         uses: actions/checkout@v2
 
-      - name: Set up JDK 11
+      - name: Setup Java SDK
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
           java-version: '11'
+          cache: 'maven'
           check-latest: true
 
-      - name: Cache local Maven repository
-        uses: actions/cache@v2
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-
       - name: Run unit tests
-        run: ./mvnw --batch-mode --update-snapshots test
+        run: mvn --batch-mode --update-snapshots test
