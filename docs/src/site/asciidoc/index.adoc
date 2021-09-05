@@ -1,6 +1,6 @@
 = 📼 Videotape
 
-A library that allows you to record videos of your UI tests by just putting a couple of annotations.
+> Record videos of your UI tests by just putting a couple of annotations.
 
 .pom.xml
 [source,xml,subs="attributes,verbatim"]
