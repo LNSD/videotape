@@ -43,7 +43,7 @@
     <revision>3.0-SNAPSHOT</revision>
     <maven.compiler.target>9</maven.compiler.target>
     <maven.compiler.source>9</maven.compiler.source>
-    <groovy.version>3.0.8</groovy.version>
+    <groovy.version>3.0.9</groovy.version>
     <lombok.version>1.18.20</lombok.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
