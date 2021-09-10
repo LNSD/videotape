@@ -23,17 +23,17 @@
  * SOFTWARE.
  */
 
-package videotape.testng.inttests
+package videotape.testng.tests
 
 import com.squareup.javapoet.AnnotationSpec
 import com.squareup.javapoet.JavaFile
 import com.squareup.javapoet.MethodSpec
 import com.squareup.javapoet.TypeSpec
+import es.lnsd.videotape.core.TestFrameworkAdapter
 import java.lang.annotation.Annotation
 import java.nio.file.Path
 import java.nio.file.Paths
 import javax.lang.model.element.Modifier
-import org.apache.commons.io.FileUtils
 import org.testng.ITestNGListener
 import org.testng.TestNG
 import org.testng.annotations.AfterMethod
@@ -52,18 +52,10 @@ class BaseSpec extends Specification {
   private static final Path CLASSES_DIR = BUILD_DIR.resolve("classes/java/test")
 
   @Shared
-  File OUTPUT_DIR = Paths.get(System.getProperty("project.test.resultsdir"), "/video").toFile()
-
-  def setupSpec() {
-    FileUtils.deleteDirectory(OUTPUT_DIR)
-  }
+  TestFrameworkAdapter adapter
 
   def setup() {
-    System.setProperty("user.dir", System.getProperty("project.test.resultsdir"))
-  }
-
-  def cleanup() {
-    FileUtils.deleteDirectory(OUTPUT_DIR)
+    adapter = Mock(TestFrameworkAdapter)
   }
 
   protected static void runTestNGClass(Class testClass, ITestNGListener... listeners = []) {

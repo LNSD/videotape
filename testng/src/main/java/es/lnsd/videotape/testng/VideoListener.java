@@ -33,27 +33,36 @@ import org.testng.ITestResult;
 
 public class VideoListener implements ITestListener {
 
-  private final TestFrameworkAdapter recorder;
+  private final TestFrameworkAdapter adapter;
 
   public VideoListener() {
-    this.recorder = TestFrameworkAdapter.getInstance();
+    this.adapter = TestFrameworkAdapter.getInstance();
+  }
+
+  public VideoListener(TestFrameworkAdapter adapter) {
+    this.adapter = adapter;
   }
 
   @Override
   public void onTestStart(ITestResult result) {
+    // Do not start recording if test case is already failed
+    if (result.getThrowable() != null) {
+      return;
+    }
+
     String name = result.getMethod().getMethodName();
     Video annotation = TestNgUtils.getVideoAnnotation(result);
 
-    recorder.onTestStart(name, annotation);
+    adapter.onTestStart(name, annotation);
   }
 
   @Override
   public void onTestSuccess(ITestResult result) {
-    recorder.onTestSuccess();
+    adapter.onTestSuccess();
   }
 
   @Override
   public void onTestFailure(ITestResult result) {
-    recorder.onTestFailure();
+    adapter.onTestFailure();
   }
 }

@@ -28,45 +28,25 @@ package videotape.testng.inttests
 import com.squareup.javapoet.AnnotationSpec
 import com.squareup.javapoet.MethodSpec
 import es.lnsd.videotape.core.Video
-import es.lnsd.videotape.core.config.RecordingMode
 import es.lnsd.videotape.core.config.KeepStrategy
+import es.lnsd.videotape.core.config.RecordingMode
 import es.lnsd.videotape.testng.VideoListener
-import java.nio.file.Paths
 import javax.lang.model.element.Modifier
-import org.apache.commons.io.FileUtils
 import org.testng.Assert
 import org.testng.annotations.Test
-import spock.lang.Shared
-import spock.util.environment.RestoreSystemProperties
 
-@RestoreSystemProperties
-class TestNGIntegrationTest extends BaseSpec {
-
-  @Shared
-  File OUTPUT_DIR = Paths.get(System.getProperty("project.test.resultsdir"), "/video").toFile()
-
-  def setupSpec() {
-    FileUtils.deleteDirectory(OUTPUT_DIR)
-  }
-
-  def setup() {
-    System.setProperty("user.dir", System.getProperty("project.test.resultsdir"))
-  }
-
-  def cleanup() {
-    FileUtils.deleteDirectory(OUTPUT_DIR)
-  }
+class SingleTestMethodsIT extends BaseSpec {
 
   def "should be one recording on test fail"() {
     given:
     def testClass = generateTestNGTestClass("FailWithVideoTest") {
       MethodSpec.methodBuilder("failWithVideo")
-          .addAnnotation(Test)
-          .addAnnotation(Video)
-          .addModifiers(Modifier.PUBLIC)
-          .returns(void)
-          .addStatement('$T.fail()', Assert)
-          .build()
+              .addAnnotation(Test)
+              .addAnnotation(Video)
+              .addModifiers(Modifier.PUBLIC)
+              .returns(void)
+              .addStatement('$T.fail()', Assert)
+              .build()
     }
 
     when:
@@ -81,11 +61,11 @@ class TestNGIntegrationTest extends BaseSpec {
     given:
     def testClass = generateTestNGTestClass("SuccessTest") {
       MethodSpec.methodBuilder("successTest")
-          .addAnnotation(Test)
-          .addAnnotation(Video)
-          .addModifiers(Modifier.PUBLIC)
-          .returns(void)
-          .build()
+              .addAnnotation(Test)
+              .addAnnotation(Video)
+              .addModifiers(Modifier.PUBLIC)
+              .returns(void)
+              .build()
     }
 
     when:
@@ -99,14 +79,14 @@ class TestNGIntegrationTest extends BaseSpec {
     given:
     def testClass = generateTestNGTestClass("FailWithCustomVideoNameTest") {
       MethodSpec.methodBuilder("failWithCustomVideoName")
-          .addAnnotation(Test)
-          .addAnnotation(AnnotationSpec.builder(Video)
-              .addMember("name", '$S', "custom_name")
-              .build())
-          .addModifiers(Modifier.PUBLIC)
-          .returns(void)
-          .addStatement('$T.fail()', Assert)
-          .build()
+              .addAnnotation(Test)
+              .addAnnotation(AnnotationSpec.builder(Video)
+                      .addMember("name", '$S', "custom_name")
+                      .build())
+              .addModifiers(Modifier.PUBLIC)
+              .returns(void)
+              .addStatement('$T.fail()', Assert)
+              .build()
     }
 
     when:
@@ -122,11 +102,11 @@ class TestNGIntegrationTest extends BaseSpec {
     System.setProperty("video.keep", KeepStrategy.ALL.toString())
     def testClass = generateTestNGTestClass("PassWithVideoTest") {
       MethodSpec.methodBuilder("passWithVideo")
-          .addAnnotation(Test)
-          .addAnnotation(Video)
-          .addModifiers(Modifier.PUBLIC)
-          .returns(void)
-          .build()
+              .addAnnotation(Test)
+              .addAnnotation(Video)
+              .addModifiers(Modifier.PUBLIC)
+              .returns(void)
+              .build()
     }
 
     when:
@@ -142,12 +122,12 @@ class TestNGIntegrationTest extends BaseSpec {
     System.setProperty("video.keep", KeepStrategy.FAILED_ONLY.toString())
     def testClass = generateTestNGTestClass("FailAndFailedOnlyTest") {
       MethodSpec.methodBuilder("failAndFailedOnlyTest")
-          .addAnnotation(Test)
-          .addAnnotation(Video)
-          .addModifiers(Modifier.PUBLIC)
-          .returns(void)
-          .addStatement('$T.fail()', Assert)
-          .build()
+              .addAnnotation(Test)
+              .addAnnotation(Video)
+              .addModifiers(Modifier.PUBLIC)
+              .returns(void)
+              .addStatement('$T.fail()', Assert)
+              .build()
     }
 
     when:
@@ -163,11 +143,11 @@ class TestNGIntegrationTest extends BaseSpec {
     System.setProperty("video.keep", KeepStrategy.FAILED_ONLY.toString())
     def testClass = generateTestNGTestClass("PassWithoutVideoTest") {
       MethodSpec.methodBuilder("passWithoutVideo")
-          .addAnnotation(Test)
-          .addAnnotation(Video)
-          .addModifiers(Modifier.PUBLIC)
-          .returns(void)
-          .build()
+              .addAnnotation(Test)
+              .addAnnotation(Video)
+              .addModifiers(Modifier.PUBLIC)
+              .returns(void)
+              .build()
     }
 
     when:
@@ -181,11 +161,11 @@ class TestNGIntegrationTest extends BaseSpec {
     given:
     def testClass = generateTestNGTestClass("FailWithoutVideoTest") {
       MethodSpec.methodBuilder("failWithoutVideo")
-          .addAnnotation(Test)
-          .addModifiers(Modifier.PUBLIC)
-          .returns(void)
-          .addStatement('$T.fail()', Assert)
-          .build()
+              .addAnnotation(Test)
+              .addModifiers(Modifier.PUBLIC)
+              .returns(void)
+              .addStatement('$T.fail()', Assert)
+              .build()
     }
 
     when:
@@ -200,17 +180,37 @@ class TestNGIntegrationTest extends BaseSpec {
     System.setProperty("video.mode", RecordingMode.ALL.toString())
     def testClass = generateTestNGTestClass("FailWithVideoDisabledTest") {
       MethodSpec.methodBuilder("failWithVideoDisabled")
-          .addAnnotation(Test)
-          .addAnnotation(Video)
-          .addModifiers(Modifier.PUBLIC)
-          .returns(void)
-          .addStatement('$T.fail()', Assert)
-          .build()
+              .addAnnotation(Test)
+              .addAnnotation(Video)
+              .addModifiers(Modifier.PUBLIC)
+              .returns(void)
+              .addStatement('$T.fail()', Assert)
+              .build()
     }
 
     when:
     runTestNGClass(testClass, new VideoListener())
     then:
     !OUTPUT_DIR.isDirectory()
+  }
+
+  def "should exist video for method without annotation and record mode ALL"() {
+    given:
+    System.setProperty("video.mode", RecordingMode.ALL.toString())
+    def testClass = generateTestNGTestClass("FailWithVideoNonAnnotatedTest") {
+      MethodSpec.methodBuilder("failWithVideoNonAnnotated")
+              .addAnnotation(Test)
+              .addModifiers(Modifier.PUBLIC)
+              .returns(void)
+              .addStatement('$T.fail()', Assert)
+              .build()
+    }
+
+    when:
+    runTestNGClass(testClass, new VideoListener())
+    then:
+    OUTPUT_DIR.isDirectory()
+    OUTPUT_DIR.listFiles().size() == 1
+    OUTPUT_DIR.listFiles().first().getName().startsWith("failWithVideoNonAnnotated_")
   }
 }
