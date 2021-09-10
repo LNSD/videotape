@@ -50,8 +50,8 @@ class ScreenCaptureInput {
 
       result = CaptureInput.LinuxX11Grab.captureHostDisplayAndScreen(
           matcher.group("host"),
-          Integer.getInteger(matcher.group("display")),
-          Integer.getInteger(matcher.group("screen"))
+          Integer.parseInt(matcher.group("display")),
+          Integer.parseInt(matcher.group("screen"))
       );
     }
 
