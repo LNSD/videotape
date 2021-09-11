@@ -47,6 +47,9 @@
     <lombok.version>1.18.20</lombok.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <it.backend>monte</it.backend>
+
+    <sonar.organization>lnsd</sonar.organization>
+    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
   </properties>
 
   <modules>

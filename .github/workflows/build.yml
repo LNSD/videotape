@@ -1,4 +1,4 @@
-name: quality-checks
+name: build
 on:
   push:
     branches:
@@ -6,35 +6,14 @@ on:
     paths-ignore:
       - 'docs/**'
   pull_request:
-    types:
-      - assigned
-      - opened
-      - synchronize
-      - reopened
+    types: [ 'assigned', 'opened', 'synchronize', 'reopened' ]
     branches:
       - main
     paths-ignore:
       - 'docs/**'
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Set up JDK 11
-        uses: actions/setup-java@v2
-        with:
-          distribution: 'adopt'
-          java-version: '11'
-          cache: 'maven'
-          check-latest: true
-
-      - name: Run linter
-        run: mvn --batch-mode --update-snapshots checkstyle:check
-
-  unit-tests:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: SCM checkout
@@ -48,7 +27,7 @@ jobs:
           cache: 'maven'
           check-latest: true
 
-      - name: Run unit tests
+      - name: Run tests
         run: mvn --batch-mode test -Pcov-report
 
       - name: Upload coverage report

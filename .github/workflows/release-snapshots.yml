@@ -1,7 +1,7 @@
 name: release-snapshots
 on:
   workflow_run:
-    workflows: [ "quality-checks" ]
+    workflows: [ "build" ]
     branches: [ main ]
     types:
       - completed
