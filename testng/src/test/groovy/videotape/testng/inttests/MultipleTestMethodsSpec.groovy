@@ -33,12 +33,15 @@ import javax.lang.model.element.Modifier
 import org.testng.Assert
 import org.testng.annotations.Test
 
-class MultipleTestMethodsIT extends BaseSpec {
+import static videotape.testng.fixtures.TestNgRunner.runClass
+import static videotape.testng.fixtures.TestNgTestGenerator.generateClassWithMultipleMethods
+
+class MultipleTestMethodsSpec extends BaseSpec {
 
   def "should exist only one video for non dependent methods"() {
     given:
     System.setProperty("video.mode", RecordingMode.ALL.toString())
-    def testClass = generateTestNGTestClassWithMultipleMethods("FailWithVideoNonAnnotatedTest2") {
+    def testClass = generateClassWithMultipleMethods("FailWithVideoNonAnnotatedTest2") {
       def failing = MethodSpec.methodBuilder("failingTestMethod")
               .addAnnotation(Test)
               .addModifiers(Modifier.PUBLIC)
@@ -56,7 +59,7 @@ class MultipleTestMethodsIT extends BaseSpec {
     }
 
     when:
-    runTestNGClass(testClass, new VideoListener())
+    runClass(testClass, new VideoListener())
     then:
     OUTPUT_DIR.isDirectory()
     OUTPUT_DIR.listFiles().size() == 1
@@ -66,7 +69,7 @@ class MultipleTestMethodsIT extends BaseSpec {
   def "should exist video only for non skipped methods"() {
     given:
     System.setProperty("video.mode", RecordingMode.ALL.toString())
-    def testClass = generateTestNGTestClassWithMultipleMethods("FailAndSkipDependentMethod") {
+    def testClass = generateClassWithMultipleMethods("FailAndSkipDependentMethod") {
       def failed = MethodSpec.methodBuilder("failingTestMethod")
               .addAnnotation(Test)
               .addModifiers(Modifier.PUBLIC)
@@ -86,7 +89,7 @@ class MultipleTestMethodsIT extends BaseSpec {
     }
 
     when:
-    runTestNGClass(testClass, new VideoListener())
+    runClass(testClass, new VideoListener())
     then:
     OUTPUT_DIR.isDirectory()
     OUTPUT_DIR.listFiles().size() == 1

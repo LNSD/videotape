@@ -27,97 +27,74 @@ package videotape.testng.tests
 
 import com.squareup.javapoet.AnnotationSpec
 import com.squareup.javapoet.MethodSpec
-import es.lnsd.videotape.core.Video
+import es.lnsd.videotape.core.config.RecordingMode
 import es.lnsd.videotape.testng.VideoListener
 import javax.lang.model.element.Modifier
 import org.testng.Assert
 import org.testng.annotations.Test
 
-class SingleTestMethodsTest extends BaseSpec {
+import static videotape.testng.fixtures.TestNgRunner.runClass
+import static videotape.testng.fixtures.TestNgTestGenerator.generateClassWithMultipleMethods
 
-  def "single failing test method with @Video annotation"() {
+class MultipleTestMethodsSpec extends BaseSpec {
+
+  def "failing and passing test methods"() {
     given:
-    def testClass = generateTestNGTestClass("FailWithVideoTest") {
-      MethodSpec.methodBuilder("failingTestMethod")
+    System.setProperty("video.mode", RecordingMode.ALL.toString())
+    def testClass = generateClassWithMultipleMethods("FailWithVideoNonAnnotatedTest2") {
+      def failing = MethodSpec.methodBuilder("failingTestMethod")
               .addAnnotation(Test)
-              .addAnnotation(Video)
               .addModifiers(Modifier.PUBLIC)
               .returns(void)
               .addStatement('$T.fail()', Assert)
               .build()
+
+      def passing = MethodSpec.methodBuilder("passingTestMethod")
+              .addAnnotation(Test)
+              .addModifiers(Modifier.PUBLIC)
+              .returns(void)
+              .build()
+
+      return [failing, passing]
     }
 
     when:
-    runTestNGClass(testClass, new VideoListener(adapter))
+    runClass(testClass, new VideoListener(adapter))
     then:
     with(adapter) {
-      1 * onTestStart("failingTestMethod", !null)
-      0 * onTestSuccess()
+      2 * onTestStart(*_)
+      1 * onTestSuccess()
       1 * onTestFailure()
     }
   }
 
-  def "single passing test method with @Video annotation"() {
+  def "failing and skipped dependent test methods"() {
     given:
-    def testClass = generateTestNGTestClass("SuccessTest") {
-      MethodSpec.methodBuilder("passingTestMethod")
+    System.setProperty("video.mode", RecordingMode.ALL.toString())
+    def testClass = generateClassWithMultipleMethods("FailAndSkipDependentMethod") {
+      def failed = MethodSpec.methodBuilder("failingTestMethod")
               .addAnnotation(Test)
-              .addAnnotation(Video)
               .addModifiers(Modifier.PUBLIC)
               .returns(void)
+              .addStatement('$T.fail()', Assert)
               .build()
-    }
 
-    when:
-    runTestNGClass(testClass, new VideoListener(adapter))
-    then:
-    with(adapter) {
-      1 * onTestStart("passingTestMethod", !null)
-      1 * onTestSuccess()
-      0 * onTestFailure()
-    }
-  }
-
-  def "single failing test method with @Video annotation and custom name"() {
-    given:
-    def testClass = generateTestNGTestClass("FailWithCustomVideoNameTest") {
-      MethodSpec.methodBuilder("failingTestMethod")
-              .addAnnotation(Test)
-              .addAnnotation(AnnotationSpec.builder(Video)
-                      .addMember("name", '$S', "custom_name")
+      def skipped = MethodSpec.methodBuilder("skippedTestMethod")
+              .addAnnotation(AnnotationSpec.builder(Test)
+                      .addMember("dependsOnMethods", '$L', "{\"failingTestMethod\"}")
                       .build())
               .addModifiers(Modifier.PUBLIC)
               .returns(void)
-              .addStatement('$T.fail()', Assert)
               .build()
+
+      return [failed, skipped]
     }
 
     when:
-    runTestNGClass(testClass, new VideoListener(adapter))
+    runClass(testClass, new VideoListener(adapter))
     then:
     with(adapter) {
-      1 * onTestStart("failingTestMethod", !null)
-      0 * onTestSuccess()
-      1 * onTestFailure()
-    }
-  }
-
-  def "single failing test method with no @Video annotation"() {
-    given:
-    def testClass = generateTestNGTestClass("FailWithoutVideoTest") {
-      MethodSpec.methodBuilder("failingTestMethod")
-              .addAnnotation(Test)
-              .addModifiers(Modifier.PUBLIC)
-              .returns(void)
-              .addStatement('$T.fail()', Assert)
-              .build()
-    }
-
-    when:
-    runTestNGClass(testClass, new VideoListener(adapter))
-    then:
-    with(adapter) {
-      1 * onTestStart("failingTestMethod", null)
+      1 * onTestStart("failingTestMethod", _)
       0 * onTestSuccess()
       1 * onTestFailure()
     }

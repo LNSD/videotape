@@ -23,26 +23,20 @@
  * SOFTWARE.
  */
 
-package videotape.testng.tests
+package videotape.testng.fixtures
 
-import es.lnsd.videotape.core.TestFrameworkAdapter
-import java.nio.file.Path
-import java.nio.file.Paths
-import spock.lang.Shared
-import spock.lang.Specification
-import spock.util.environment.RestoreSystemProperties
+import org.testng.ITestNGListener
+import org.testng.TestNG
 
-@RestoreSystemProperties
-class BaseSpec extends Specification {
+class TestNgRunner {
 
-  private static final Path BUILD_DIR = Paths.get(System.getProperty("project.builddir"))
-  private static final Path GENERATED_DIR = BUILD_DIR.resolve("generated/sources/test-resources/java/test")
-  private static final Path CLASSES_DIR = BUILD_DIR.resolve("classes/java/test")
-
-  @Shared
-  TestFrameworkAdapter adapter
-
-  def setup() {
-    adapter = Mock(TestFrameworkAdapter)
+  static void runClass(Class testClass, ITestNGListener... listeners = []) {
+    TestNG testSuite = new TestNG()
+    testSuite.setUseDefaultListeners(false)
+    for (listener in listeners) {
+      testSuite.addListener(listener)
+    }
+    testSuite.setTestClasses(testClass)
+    testSuite.run()
   }
 }

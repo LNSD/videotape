@@ -25,24 +25,12 @@
 
 package videotape.testng.inttests
 
-import com.squareup.javapoet.AnnotationSpec
-import com.squareup.javapoet.JavaFile
-import com.squareup.javapoet.MethodSpec
-import com.squareup.javapoet.TypeSpec
-import java.lang.annotation.Annotation
 import java.nio.file.Path
 import java.nio.file.Paths
-import javax.lang.model.element.Modifier
 import org.apache.commons.io.FileUtils
-import org.testng.ITestNGListener
-import org.testng.TestNG
-import org.testng.annotations.AfterMethod
-import org.testng.annotations.BeforeMethod
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.util.environment.RestoreSystemProperties
-
-import static videotape.common.inttests.JavaPoetExtension.compile
 
 @RestoreSystemProperties
 class BaseSpec extends Specification {
@@ -64,57 +52,5 @@ class BaseSpec extends Specification {
 
   def cleanup() {
     FileUtils.deleteDirectory(OUTPUT_DIR)
-  }
-
-  protected static void runTestNGClass(Class testClass, ITestNGListener... listeners = []) {
-    TestNG testSuite = new TestNG()
-    testSuite.setUseDefaultListeners(false)
-    for (listener in listeners) {
-      testSuite.addListener(listener)
-    }
-    testSuite.setTestClasses(testClass)
-    testSuite.run()
-  }
-
-  protected Class generateTestNGTestClass(String className, Closure<MethodSpec> testMethodSpec) {
-    String resPackage = "${this.class.getPackage().name}.resources"
-
-    TypeSpec clazz = TypeSpec.classBuilder(className)
-            .addModifiers(Modifier.PUBLIC)
-            .addMethod(configMethodSpec("setup", BeforeMethod))
-            .addMethod(configMethodSpec("cleanup", AfterMethod))
-            .addMethod(testMethodSpec())
-            .build()
-
-    JavaFile javaFile = JavaFile.builder(resPackage, clazz).build()
-
-    return compile(javaFile)
-  }
-
-  protected Class generateTestNGTestClassWithMultipleMethods(String className, Closure<List<MethodSpec>> testMethodSpec) {
-    String resPackage = "${this.class.getPackage().name}.resources"
-
-    TypeSpec clazz = TypeSpec.classBuilder(className)
-            .addModifiers(Modifier.PUBLIC)
-            .addMethod(configMethodSpec("setup", BeforeMethod))
-            .addMethod(configMethodSpec("cleanup", AfterMethod))
-            .addMethods(testMethodSpec())
-            .build()
-
-    JavaFile javaFile = JavaFile.builder(resPackage, clazz).build()
-
-    return compile(javaFile)
-  }
-
-  private static MethodSpec configMethodSpec(String name, Class<? extends Annotation> annotation) {
-    return MethodSpec.methodBuilder(name)
-            .addAnnotation(AnnotationSpec.builder(annotation)
-                    .addMember("alwaysRun", '$L', true)
-                    .build())
-            .addModifiers(Modifier.PUBLIC)
-            .returns(void)
-            .addException(InterruptedException)
-            .addStatement('$T.sleep($L)', Thread, 500)
-            .build()
   }
 }
