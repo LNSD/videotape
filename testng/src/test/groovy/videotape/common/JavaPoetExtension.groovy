@@ -23,7 +23,7 @@
  * SOFTWARE.
  */
 
-package videotape.common.inttests
+package videotape.common
 
 import com.squareup.javapoet.JavaFile
 import net.openhft.compiler.CachedCompiler

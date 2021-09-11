@@ -35,11 +35,14 @@ import javax.lang.model.element.Modifier
 import org.testng.Assert
 import org.testng.annotations.Test
 
-class SingleTestMethodsIT extends BaseSpec {
+import static videotape.testng.fixtures.TestNgRunner.runClass
+import static videotape.testng.fixtures.TestNgTestGenerator.generateTestClass
+
+class SingleTestMethodsSpec extends BaseSpec {
 
   def "should be one recording on test fail"() {
     given:
-    def testClass = generateTestNGTestClass("FailWithVideoTest") {
+    def testClass = generateTestClass("FailWithVideoTest") {
       MethodSpec.methodBuilder("failWithVideo")
               .addAnnotation(Test)
               .addAnnotation(Video)
@@ -50,7 +53,7 @@ class SingleTestMethodsIT extends BaseSpec {
     }
 
     when:
-    runTestNGClass(testClass, new VideoListener())
+    runClass(testClass, new VideoListener())
     then:
     OUTPUT_DIR.isDirectory()
     OUTPUT_DIR.listFiles().size() == 1
@@ -59,7 +62,7 @@ class SingleTestMethodsIT extends BaseSpec {
 
   def "should not be recording on test success"() {
     given:
-    def testClass = generateTestNGTestClass("SuccessTest") {
+    def testClass = generateTestClass("SuccessTest") {
       MethodSpec.methodBuilder("successTest")
               .addAnnotation(Test)
               .addAnnotation(Video)
@@ -69,7 +72,7 @@ class SingleTestMethodsIT extends BaseSpec {
     }
 
     when:
-    runTestNGClass(testClass, new VideoListener())
+    runClass(testClass, new VideoListener())
     then:
     OUTPUT_DIR.isDirectory()
     OUTPUT_DIR.listFiles().size() == 0
@@ -77,7 +80,7 @@ class SingleTestMethodsIT extends BaseSpec {
 
   def "should be recording with custom name"() {
     given:
-    def testClass = generateTestNGTestClass("FailWithCustomVideoNameTest") {
+    def testClass = generateTestClass("FailWithCustomVideoNameTest") {
       MethodSpec.methodBuilder("failWithCustomVideoName")
               .addAnnotation(Test)
               .addAnnotation(AnnotationSpec.builder(Video)
@@ -90,7 +93,7 @@ class SingleTestMethodsIT extends BaseSpec {
     }
 
     when:
-    runTestNGClass(testClass, new VideoListener())
+    runClass(testClass, new VideoListener())
     then:
     OUTPUT_DIR.isDirectory()
     OUTPUT_DIR.listFiles().size() == 1
@@ -100,7 +103,7 @@ class SingleTestMethodsIT extends BaseSpec {
   def "should be recording for successful test and save strategy ALL"() {
     given:
     System.setProperty("video.keep", KeepStrategy.ALL.toString())
-    def testClass = generateTestNGTestClass("PassWithVideoTest") {
+    def testClass = generateTestClass("PassWithVideoTest") {
       MethodSpec.methodBuilder("passWithVideo")
               .addAnnotation(Test)
               .addAnnotation(Video)
@@ -110,7 +113,7 @@ class SingleTestMethodsIT extends BaseSpec {
     }
 
     when:
-    runTestNGClass(testClass, new VideoListener())
+    runClass(testClass, new VideoListener())
     then:
     OUTPUT_DIR.isDirectory()
     OUTPUT_DIR.listFiles().size() == 1
@@ -120,7 +123,7 @@ class SingleTestMethodsIT extends BaseSpec {
   def "should be recording for failed test and save strategy FAILED_ONLY"() {
     given:
     System.setProperty("video.keep", KeepStrategy.FAILED_ONLY.toString())
-    def testClass = generateTestNGTestClass("FailAndFailedOnlyTest") {
+    def testClass = generateTestClass("FailAndFailedOnlyTest") {
       MethodSpec.methodBuilder("failAndFailedOnlyTest")
               .addAnnotation(Test)
               .addAnnotation(Video)
@@ -131,7 +134,7 @@ class SingleTestMethodsIT extends BaseSpec {
     }
 
     when:
-    runTestNGClass(testClass, new VideoListener())
+    runClass(testClass, new VideoListener())
     then:
     OUTPUT_DIR.isDirectory()
     OUTPUT_DIR.listFiles().size() == 1
@@ -141,7 +144,7 @@ class SingleTestMethodsIT extends BaseSpec {
   def "should not be recording for successful test and save strategy FAILED_ONLY"() {
     given:
     System.setProperty("video.keep", KeepStrategy.FAILED_ONLY.toString())
-    def testClass = generateTestNGTestClass("PassWithoutVideoTest") {
+    def testClass = generateTestClass("PassWithoutVideoTest") {
       MethodSpec.methodBuilder("passWithoutVideo")
               .addAnnotation(Test)
               .addAnnotation(Video)
@@ -151,7 +154,7 @@ class SingleTestMethodsIT extends BaseSpec {
     }
 
     when:
-    runTestNGClass(testClass, new VideoListener())
+    runClass(testClass, new VideoListener())
     then:
     OUTPUT_DIR.isDirectory()
     OUTPUT_DIR.listFiles().size() == 0
@@ -159,7 +162,7 @@ class SingleTestMethodsIT extends BaseSpec {
 
   def "should not be video for method without annotation"() {
     given:
-    def testClass = generateTestNGTestClass("FailWithoutVideoTest") {
+    def testClass = generateTestClass("FailWithoutVideoTest") {
       MethodSpec.methodBuilder("failWithoutVideo")
               .addAnnotation(Test)
               .addModifiers(Modifier.PUBLIC)
@@ -169,7 +172,7 @@ class SingleTestMethodsIT extends BaseSpec {
     }
 
     when:
-    runTestNGClass(testClass, new VideoListener())
+    runClass(testClass, new VideoListener())
     then:
     !OUTPUT_DIR.isDirectory()
   }
@@ -178,7 +181,7 @@ class SingleTestMethodsIT extends BaseSpec {
     given:
     System.setProperty("video.enable", "false")
     System.setProperty("video.mode", RecordingMode.ALL.toString())
-    def testClass = generateTestNGTestClass("FailWithVideoDisabledTest") {
+    def testClass = generateTestClass("FailWithVideoDisabledTest") {
       MethodSpec.methodBuilder("failWithVideoDisabled")
               .addAnnotation(Test)
               .addAnnotation(Video)
@@ -189,7 +192,7 @@ class SingleTestMethodsIT extends BaseSpec {
     }
 
     when:
-    runTestNGClass(testClass, new VideoListener())
+    runClass(testClass, new VideoListener())
     then:
     !OUTPUT_DIR.isDirectory()
   }
@@ -197,7 +200,7 @@ class SingleTestMethodsIT extends BaseSpec {
   def "should exist video for method without annotation and record mode ALL"() {
     given:
     System.setProperty("video.mode", RecordingMode.ALL.toString())
-    def testClass = generateTestNGTestClass("FailWithVideoNonAnnotatedTest") {
+    def testClass = generateTestClass("FailWithVideoNonAnnotatedTest") {
       MethodSpec.methodBuilder("failWithVideoNonAnnotated")
               .addAnnotation(Test)
               .addModifiers(Modifier.PUBLIC)
@@ -207,7 +210,7 @@ class SingleTestMethodsIT extends BaseSpec {
     }
 
     when:
-    runTestNGClass(testClass, new VideoListener())
+    runClass(testClass, new VideoListener())
     then:
     OUTPUT_DIR.isDirectory()
     OUTPUT_DIR.listFiles().size() == 1
