@@ -1,5 +1,7 @@
 = 📼 Videotape
 
+https://codecov.io/gh/LNSD/videotape[image:https://codecov.io/gh/LNSD/videotape/branch/main/graph/badge.svg?token=ZTSBHKLIOE[codecov]]
+
 > Record videos of your UI tests by just putting a couple of annotations.
 
 .pom.xml
