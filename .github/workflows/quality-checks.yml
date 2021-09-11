@@ -49,4 +49,10 @@ jobs:
           check-latest: true
 
       - name: Run unit tests
-        run: mvn --batch-mode --update-snapshots test
+        run: mvn --batch-mode test -Pcov-report
+
+      - name: Upload coverage report
+        uses: codecov/codecov-action@v2
+        with:
+          directory: ./coverage/target/site/jacoco-aggregate/
+          flags: unittests
