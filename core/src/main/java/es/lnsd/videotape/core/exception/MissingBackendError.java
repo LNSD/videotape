@@ -23,27 +23,11 @@
  * SOFTWARE.
  */
 
-package es.lnsd.videotape.core.backend;
+package es.lnsd.videotape.core.exception;
 
-import com.google.inject.Provider;
-import es.lnsd.videotape.core.exception.MissingBackendError;
-import java.util.ServiceLoader;
+public class MissingBackendError extends RecordingException {
 
-public class BackendLoader implements Provider<Backend> {
-
-  private final ServiceLoader<BackendProvider> loader;
-
-  public BackendLoader() {
-    this.loader = ServiceLoader.load(BackendProvider.class);
-  }
-
-  @Override
-  public Backend get() {
-    final var backend = this.loader.findFirst();
-
-    if (backend.isEmpty()) {
-      throw new MissingBackendError();
-    }
-    return backend.get().get();
+  public MissingBackendError() {
+    super("No recording backend found in classpath");
   }
 }
