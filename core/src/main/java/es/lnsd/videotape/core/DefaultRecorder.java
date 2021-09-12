@@ -102,7 +102,7 @@ public class DefaultRecorder implements Recorder {
   }
 
   private Path getOutputFile(Path parent, String name, String extension) {
-    String fileName = fileNameBuilder.fileNameWithTimestamp(name, extension);
+    String fileName = fileNameBuilder.withTimestamp(name, extension);
     return parent.resolve(fileName);
   }
 }

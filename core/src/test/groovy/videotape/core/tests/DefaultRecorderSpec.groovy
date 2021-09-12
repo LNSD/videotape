@@ -36,8 +36,8 @@ import java.nio.file.Path
 import javax.inject.Inject
 import spock.guice.UseModules
 import spock.lang.Specification
-import videotape.core.di.MockRecorderModule
 import videotape.core.di.MockConfigurationModule
+import videotape.core.di.MockRecorderModule
 
 @UseModules([MockConfigurationModule, MockRecorderModule])
 class DefaultRecorderSpec extends Specification {
@@ -70,7 +70,7 @@ class DefaultRecorderSpec extends Specification {
     def fileName = "screen_recording_2015_10_21_19_28.$extension"
     configuration.output() >> dstDir
     configuration.fileFormat() >> extension
-    fileNameBuilder.fileNameWithTimestamp(*_) >> fileName
+    fileNameBuilder.withTimestamp(*_) >> fileName
 
     when:
     recorder.startRecording("testCaseName")
@@ -109,7 +109,7 @@ class DefaultRecorderSpec extends Specification {
     def extension = "mp4"
     configuration.output() >> dstDir
     configuration.fileFormat() >> extension
-    fileNameBuilder.fileNameWithTimestamp(*_) >> { String name, String ext -> "${name}_2015_10_21_19_28.$ext" }
+    fileNameBuilder.withTimestamp(*_) >> { String name, String ext -> "${name}_2015_10_21_19_28.$ext" }
 
     when:
     recorder.startRecording(testCaseName)
