@@ -33,7 +33,7 @@ public class FileNameBuilder {
 
   private static final String DEFAULT_TIMESTAMP_PATTERN = "yyyy_MM_dd_HH_mm_ss";
 
-  public String fileNameWithTimestamp(String name, String extension) {
+  public String withTimestamp(String name, String extension) {
     String timestamp = getTimeStamp(Instant.now(), DEFAULT_TIMESTAMP_PATTERN);
     return name + "_" + timestamp + "." + extension;
   }
