@@ -38,7 +38,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DefaultRecorder implements Recorder {
 
-  private static final String TEMP_FILENAME = "screen_recording";
+  private static final String TEMP_FILENAME = "temp";
 
   private final Configuration config;
   private final Backend recorder;
