@@ -23,17 +23,24 @@
  * SOFTWARE.
  */
 
-package videotape.core.di
+package videotape.backend.monte.di
 
-import es.lnsd.videotape.core.config.Configuration
-import es.lnsd.videotape.core.di.ConfigurationModule
+
+import es.lnsd.videotape.core.Recorder
+import es.lnsd.videotape.core.backend.Backend
+import es.lnsd.videotape.core.di.RecorderModule
+import es.lnsd.videotape.core.utils.FileManager
+import es.lnsd.videotape.core.utils.FileNameBuilder
 import spock.mock.DetachedMockFactory
 
-class MockConfigurationModule extends ConfigurationModule {
+class MockRecorderModule extends RecorderModule {
 
   @Override
   protected void configure() {
     DetachedMockFactory factory = new DetachedMockFactory()
-    bind(Configuration).toInstance(factory.Stub(Configuration))
+    bind(Recorder).toInstance(factory.Mock(Recorder))
+    bind(Backend).toInstance(factory.Mock(Backend))
+    bind(FileManager).toInstance(factory.Mock(FileManager))
+    bind(FileNameBuilder).toInstance(factory.Stub(FileNameBuilder))
   }
 }
