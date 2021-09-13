@@ -34,18 +34,18 @@ import es.lnsd.videotape.core.exception.RecordingException;
 import java.awt.Dimension;
 import java.nio.file.Path;
 import java.util.concurrent.ExecutionException;
-import lombok.experimental.Accessors;
+import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.SystemUtils;
 
 @Slf4j
-@Accessors(fluent = true)
-public class FFMpegRecorder implements Backend {
+public class FFMpegRecorderBackend implements Backend {
 
   private final FFMpegConfiguration config;
   private FFmpegResultFuture future;
 
-  public FFMpegRecorder(FFMpegConfiguration config) {
+  @Inject
+  public FFMpegRecorderBackend(FFMpegConfiguration config) {
     this.config = config;
   }
 

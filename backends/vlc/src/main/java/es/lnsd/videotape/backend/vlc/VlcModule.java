@@ -26,17 +26,23 @@
 package es.lnsd.videotape.backend.vlc;
 
 import com.google.auto.service.AutoService;
+import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
 import es.lnsd.videotape.core.backend.Backend;
 import es.lnsd.videotape.core.backend.BackendConfiguration;
-import es.lnsd.videotape.core.backend.BackendProvider;
+import es.lnsd.videotape.core.backend.BackendModule;
 import es.lnsd.videotape.core.config.ConfigLoader;
 
-@AutoService(BackendProvider.class)
-public class VlcBackendProvider implements BackendProvider {
+@AutoService(BackendModule.class)
+public class VlcModule extends AbstractModule implements BackendModule {
 
   @Override
-  public Backend get() {
-    final var configuration = ConfigLoader.load(BackendConfiguration.class);
-    return new VlcRecorder(configuration);
+  protected void configure() {
+    bind(Backend.class).to(VlcRecorderBackend.class);
+  }
+
+  @Provides
+  public BackendConfiguration getBackendConfiguration() {
+    return ConfigLoader.load(BackendConfiguration.class);
   }
 }

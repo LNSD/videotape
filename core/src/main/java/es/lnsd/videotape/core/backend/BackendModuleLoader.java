@@ -25,7 +25,27 @@
 
 package es.lnsd.videotape.core.backend;
 
-import javax.inject.Provider;
+import com.google.inject.AbstractModule;
+import com.google.inject.Module;
+import es.lnsd.videotape.core.exception.MissingBackendError;
+import java.util.ServiceLoader;
 
-public interface BackendProvider extends Provider<Backend> {
+public class BackendModuleLoader extends AbstractModule {
+
+  public static BackendModuleLoader load() {
+    return new BackendModuleLoader();
+  }
+
+  @Override
+  protected void configure() {
+    ServiceLoader<BackendModule> modules = ServiceLoader.load(BackendModule.class);
+
+    if (!modules.iterator().hasNext()) {
+      throw new MissingBackendError();
+    }
+
+    for (Module module : modules) {
+      install(module);
+    }
+  }
 }

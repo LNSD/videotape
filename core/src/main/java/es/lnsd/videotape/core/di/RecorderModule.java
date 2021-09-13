@@ -28,15 +28,20 @@ package es.lnsd.videotape.core.di;
 import com.google.inject.AbstractModule;
 import es.lnsd.videotape.core.DefaultRecorder;
 import es.lnsd.videotape.core.Recorder;
+import es.lnsd.videotape.core.backend.BackendModuleLoader;
 import es.lnsd.videotape.core.utils.FileManager;
 import es.lnsd.videotape.core.utils.FileNameBuilder;
+
+import static com.google.inject.multibindings.OptionalBinder.newOptionalBinder;
 
 public class RecorderModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    bind(Recorder.class).to(DefaultRecorder.class);
     bind(FileManager.class).toInstance(new FileManager());
     bind(FileNameBuilder.class).toInstance(new FileNameBuilder());
+
+    install(BackendModuleLoader.load());
+    newOptionalBinder(binder(), Recorder.class).setDefault().to(DefaultRecorder.class);
   }
 }

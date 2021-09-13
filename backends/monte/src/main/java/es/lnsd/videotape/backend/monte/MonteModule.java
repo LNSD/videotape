@@ -23,16 +23,25 @@
  * SOFTWARE.
  */
 
-package es.lnsd.videotape.core.di;
+package es.lnsd.videotape.backend.monte;
 
+import com.google.auto.service.AutoService;
 import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
 import es.lnsd.videotape.core.backend.Backend;
-import es.lnsd.videotape.core.backend.BackendLoader;
+import es.lnsd.videotape.core.backend.BackendModule;
+import es.lnsd.videotape.core.config.ConfigLoader;
 
-public class BackendModule extends AbstractModule {
+@AutoService(BackendModule.class)
+public class MonteModule extends AbstractModule implements BackendModule {
 
   @Override
   protected void configure() {
-    bind(Backend.class).toProvider(BackendLoader.class);
+    bind(Backend.class).to(MonteBackend.class);
+  }
+
+  @Provides
+  public MonteConfiguration getBackendConfiguration() {
+    return ConfigLoader.load(MonteConfiguration.class);
   }
 }

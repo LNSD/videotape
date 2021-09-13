@@ -35,7 +35,7 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.nio.file.Path;
-import lombok.experimental.Accessors;
+import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import org.monte.media.Format;
 import org.monte.media.FormatKeys;
@@ -53,13 +53,13 @@ import static org.monte.media.VideoFormatKeys.ENCODING_AVI_TECHSMITH_SCREEN_CAPT
 import static org.monte.media.VideoFormatKeys.QualityKey;
 
 @Slf4j
-@Accessors(fluent = true)
-public class MonteRecorder implements Backend {
+public class MonteBackend implements Backend {
 
   private final TempFileScreenRecorder screenRecorder;
   private boolean isRecording = false;
 
-  public MonteRecorder(BackendConfiguration config) {
+  @Inject
+  public MonteBackend(MonteConfiguration config) {
     this.screenRecorder = getWrapperInstance(config);
   }
 

@@ -31,11 +31,12 @@ import es.lnsd.videotape.core.exception.ConfigurationException;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 class ScreenCaptureInput {
+
+  private ScreenCaptureInput() {
+    throw new AssertionError("Utility method. Do not instantiate");
+  }
 
   public static CaptureInput<?> captureDesktop(String display) {
     CaptureInput<?> result = null;

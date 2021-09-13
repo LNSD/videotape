@@ -25,16 +25,20 @@
 
 package videotape.backend.vlc.inttests
 
-import es.lnsd.videotape.backend.vlc.VlcBackendProvider
+import es.lnsd.videotape.backend.vlc.VlcModule
+import es.lnsd.videotape.backend.vlc.VlcRecorderBackend
 import es.lnsd.videotape.core.backend.Backend
-import es.lnsd.videotape.core.backend.BackendProvider
+import es.lnsd.videotape.core.backend.BackendConfiguration
 import java.nio.file.Path
+import javax.inject.Inject
 import org.apache.commons.io.FileUtils
+import spock.guice.UseModules
 import spock.lang.Shared
 import spock.lang.Specification
 
 import static org.apache.commons.io.FileUtils.ONE_KB
 
+@UseModules([VlcModule])
 class RecorderBackendSpec extends Specification {
 
   static final Long TEN_KB = 10 * ONE_KB
@@ -44,6 +48,9 @@ class RecorderBackendSpec extends Specification {
   Path OUTPUT_DIR = Path.of(System.getProperty("project.test.resultsdir")).resolve("video")
   @Shared
   Path VIDEO_FILE = OUTPUT_DIR.resolve(VIDEO_FILE_NAME + ".mp4")
+
+  @Inject
+  private BackendConfiguration configuration
 
   def setupSpec() {
     try {
@@ -77,8 +84,7 @@ class RecorderBackendSpec extends Specification {
 
   def "should be video in folder with vlc backend"() {
     given:
-    BackendProvider provider = new VlcBackendProvider()
-    Backend backend = provider.get()
+    Backend backend = new VlcRecorderBackend(configuration)
 
     when:
     recordAFewSecondsVideo(backend, VIDEO_FILE)

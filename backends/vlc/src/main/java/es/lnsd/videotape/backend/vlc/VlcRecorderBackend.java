@@ -28,10 +28,11 @@ package es.lnsd.videotape.backend.vlc;
 import es.lnsd.videotape.core.backend.Backend;
 import es.lnsd.videotape.core.backend.BackendConfiguration;
 import java.nio.file.Path;
+import javax.inject.Inject;
 import uk.co.caprica.vlcj.factory.MediaPlayerFactory;
 import uk.co.caprica.vlcj.player.base.MediaPlayer;
 
-public class VlcRecorder implements Backend {
+public class VlcRecorderBackend implements Backend {
 
   private static final String[] OPTIONS = {
       "--quiet",
@@ -52,7 +53,8 @@ public class VlcRecorder implements Backend {
   private MediaPlayerFactory mediaPlayerFactory;
   private MediaPlayer mediaPlayer;
 
-  public VlcRecorder(BackendConfiguration config) {
+  @Inject
+  public VlcRecorderBackend(BackendConfiguration config) {
     this.config = config;
   }
 

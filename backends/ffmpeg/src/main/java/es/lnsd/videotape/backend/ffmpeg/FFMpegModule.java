@@ -26,16 +26,22 @@
 package es.lnsd.videotape.backend.ffmpeg;
 
 import com.google.auto.service.AutoService;
+import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
 import es.lnsd.videotape.core.backend.Backend;
-import es.lnsd.videotape.core.backend.BackendProvider;
+import es.lnsd.videotape.core.backend.BackendModule;
 import es.lnsd.videotape.core.config.ConfigLoader;
 
-@AutoService(BackendProvider.class)
-public class FFMpegBackendProvider implements BackendProvider {
+@AutoService(BackendModule.class)
+public class FFMpegModule extends AbstractModule implements BackendModule {
 
   @Override
-  public Backend get() {
-    final var configuration = ConfigLoader.load(FFMpegConfiguration.class);
-    return new FFMpegRecorder(configuration);
+  protected void configure() {
+    bind(Backend.class).to(FFMpegRecorderBackend.class);
+  }
+
+  @Provides
+  public FFMpegConfiguration getBackendConfiguration() {
+    return ConfigLoader.load(FFMpegConfiguration.class);
   }
 }
