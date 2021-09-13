@@ -23,19 +23,9 @@
  * SOFTWARE.
  */
 
-package es.lnsd.videotape.backend.monte;
+package es.lnsd.videotape.core.backend;
 
-import com.google.auto.service.AutoService;
-import es.lnsd.videotape.core.backend.Backend;
-import es.lnsd.videotape.core.backend.BackendProvider;
-import es.lnsd.videotape.core.config.ConfigLoader;
+import com.google.inject.Module;
 
-@AutoService(BackendProvider.class)
-public class MonteBackendProvider implements BackendProvider {
-
-  @Override
-  public Backend get() {
-    final var configuration = ConfigLoader.load(MonteConfiguration.class);
-    return new MonteRecorder(configuration);
-  }
+public interface BackendModule extends Module {
 }

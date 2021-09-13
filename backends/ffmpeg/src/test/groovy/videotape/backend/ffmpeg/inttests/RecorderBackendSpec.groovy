@@ -25,11 +25,14 @@
 
 package videotape.backend.ffmpeg.inttests
 
-import es.lnsd.videotape.backend.ffmpeg.FFMpegBackendProvider
+import es.lnsd.videotape.backend.ffmpeg.FFMpegConfiguration
+import es.lnsd.videotape.backend.ffmpeg.FFMpegModule
+import es.lnsd.videotape.backend.ffmpeg.FFMpegRecorderBackend
 import es.lnsd.videotape.core.backend.Backend
-import es.lnsd.videotape.core.backend.BackendProvider
 import java.nio.file.Path
+import javax.inject.Inject
 import org.apache.commons.io.FileUtils
+import spock.guice.UseModules
 import spock.lang.Requires
 import spock.lang.Shared
 import spock.lang.Specification
@@ -37,6 +40,7 @@ import spock.util.environment.RestoreSystemProperties
 
 import static org.apache.commons.io.FileUtils.ONE_KB
 
+@UseModules([FFMpegModule])
 @RestoreSystemProperties
 class RecorderBackendSpec extends Specification {
 
@@ -47,6 +51,9 @@ class RecorderBackendSpec extends Specification {
   Path OUTPUT_DIR = Path.of(System.getProperty("project.test.resultsdir")).resolve("video")
   @Shared
   Path VIDEO_FILE = OUTPUT_DIR.resolve(VIDEO_FILE_NAME + ".mp4")
+
+  @Inject
+  FFMpegConfiguration configuration
 
   def setupSpec() {
     try {
@@ -80,8 +87,7 @@ class RecorderBackendSpec extends Specification {
 
   def "should be video in folder with ffmpeg backend"() {
     given:
-    BackendProvider provider = new FFMpegBackendProvider()
-    Backend backend = provider.get()
+    Backend backend = new FFMpegRecorderBackend(configuration)
 
     when:
     recordAFewSecondsVideo(backend, VIDEO_FILE)
@@ -103,8 +109,7 @@ class RecorderBackendSpec extends Specification {
     // TODO Allow passing backend configuration via guice
     System.setProperty("video.ffmpeg.pixelFormat", "yuyv422")
 
-    BackendProvider provider = new FFMpegBackendProvider()
-    Backend backend = provider.get()
+    Backend backend = new FFMpegRecorderBackend(configuration)
 
     when:
     recordAFewSecondsVideo(backend, VIDEO_FILE)
