@@ -46,6 +46,7 @@
     <groovy.version>3.0.9</groovy.version>
     <lombok.version>1.18.20</lombok.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <it.backend>monte</it.backend>
   </properties>
 
   <modules>

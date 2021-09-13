@@ -180,7 +180,7 @@
     <!-- backend test dependency -->
     <dependency>
       <groupId>es.lnsd.videotape</groupId>
-      <artifactId>videotape-backend-monte</artifactId>
+      <artifactId>videotape-backend-${it.backend}</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
     </dependency>
