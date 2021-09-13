@@ -23,23 +23,17 @@
  * SOFTWARE.
  */
 
-package es.lnsd.videotape.backend.monte;
+package videotape.backend.monte.di
 
-import es.lnsd.videotape.core.backend.BackendConfiguration;
-import org.aeonbits.owner.Config.LoadPolicy;
-import org.aeonbits.owner.Config.LoadType;
-import org.aeonbits.owner.Config.Sources;
+import es.lnsd.videotape.core.config.Configuration
+import es.lnsd.videotape.core.di.ConfigurationModule
+import spock.mock.DetachedMockFactory
 
-@LoadPolicy(LoadType.MERGE)
-@Sources({
-    "system:properties",
-    "${conf.file}",
-    "classpath:video.properties"
-})
-public interface MonteConfiguration extends BackendConfiguration {
+class MockConfigurationModule extends ConfigurationModule {
 
-  // Monte recorder only supports avi format
-  default String fileFormat() {
-    return "avi";
+  @Override
+  protected void configure() {
+    DetachedMockFactory factory = new DetachedMockFactory()
+    bind(Configuration).toInstance(factory.Stub(Configuration))
   }
 }

@@ -28,9 +28,13 @@ package es.lnsd.videotape.backend.monte;
 import com.google.auto.service.AutoService;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
+import es.lnsd.videotape.core.Recorder;
 import es.lnsd.videotape.core.backend.Backend;
+import es.lnsd.videotape.core.backend.BackendConfiguration;
 import es.lnsd.videotape.core.backend.BackendModule;
 import es.lnsd.videotape.core.config.ConfigLoader;
+
+import static com.google.inject.multibindings.OptionalBinder.newOptionalBinder;
 
 @AutoService(BackendModule.class)
 public class MonteModule extends AbstractModule implements BackendModule {
@@ -38,10 +42,11 @@ public class MonteModule extends AbstractModule implements BackendModule {
   @Override
   protected void configure() {
     bind(Backend.class).to(MonteBackend.class);
+    newOptionalBinder(binder(), Recorder.class).setBinding().to(MonteRecorder.class);
   }
 
   @Provides
-  public MonteConfiguration getBackendConfiguration() {
-    return ConfigLoader.load(MonteConfiguration.class);
+  public BackendConfiguration getBackendConfiguration() {
+    return ConfigLoader.load(BackendConfiguration.class);
   }
 }

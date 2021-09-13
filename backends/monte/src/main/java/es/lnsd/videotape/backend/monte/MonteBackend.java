@@ -59,7 +59,7 @@ public class MonteBackend implements Backend {
   private boolean isRecording = false;
 
   @Inject
-  public MonteBackend(MonteConfiguration config) {
+  public MonteBackend(BackendConfiguration config) {
     this.screenRecorder = getWrapperInstance(config);
   }
 
