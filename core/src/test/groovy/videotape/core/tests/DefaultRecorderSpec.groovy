@@ -67,7 +67,7 @@ class DefaultRecorderSpec extends Specification {
     given:
     def dstDir = Path.of("/video/")
     def extension = "webm"
-    def fileName = "screen_recording_2015_10_21_19_28.$extension"
+    def fileName = "temp_2015_10_21_19_28.$extension"
     configuration.output() >> dstDir
     configuration.fileFormat() >> extension
     fileNameBuilder.withTimestamp(*_) >> fileName
@@ -119,7 +119,7 @@ class DefaultRecorderSpec extends Specification {
     then:
     1 * backend.isRecording() >> true
     1 * fileManager.renameFile(
-            { it.fileName.toString().startsWith("screen_recording") },
+            { it.fileName.toString().startsWith("temp") },
             { it.fileName.toString().startsWith(testCaseName) }
     )
     videoFilePath == dstDir.resolve("${testCaseName}_2015_10_21_19_28.$extension")
