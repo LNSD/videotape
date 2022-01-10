@@ -29,7 +29,7 @@ jobs:
         run: mvn --batch-mode compile -P docs -pl docs
 
       - name: Deploy to Github pages
-        uses: JamesIves/github-pages-deploy-action@4.1.8
+        uses: JamesIves/github-pages-deploy-action@4.2.1
         with:
           branch: gh-pages
           folder: docs/target/html
