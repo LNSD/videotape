@@ -44,7 +44,7 @@
     <maven.compiler.target>9</maven.compiler.target>
     <maven.compiler.source>9</maven.compiler.source>
     <groovy.version>3.0.11</groovy.version>
-    <lombok.version>1.18.22</lombok.version>
+    <lombok.version>1.18.24</lombok.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <it.backend>monte</it.backend>
 
